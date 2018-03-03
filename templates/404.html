@@ -1,0 +1,30 @@
+{% extends "layout_bar_only.html" %}
+{% block tabs_content %}
+    <style>
+        body {
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+            background-image: url("../static/imgs/DarkBg.jpg");
+        }
+    </style>
+    <div class="container center-align">
+        <div class="col s12">
+            <br><br><br>
+            <h1 class="white-text darken-2">404 </h1>
+            <h5 class="white-text darken-2">您访问的页面不存在</h5>
+            <br><br>
+            <a class="waves-effect waves-light btn red lighten-2" id="back">
+                <i class="material-icons left">chevron_left</i>
+                返回上一页</a>
+        </div>
+    </div>
+{% endblock %}
+{% block script_content %}
+<script type="text/javascript">
+    $('#back').click(function () {
+        window.history.go(-1);
+    });
+</script>
+{% endblock %}

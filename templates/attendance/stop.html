@@ -1,0 +1,138 @@
+{% extends "layout_back.html" %}
+{% block tabs_content %}
+    <img src="{{ url_for("get_image",imagep="stop_background.jpg") }}">
+    <div class="container">
+        {% if status %}
+            <div class="row center" style="padding-top: 20%">
+                <h1>{{ sign_code }}</h1>
+                <h1 class="pulse" style="position: relative; top: -93px">{{ sign_code }}</h1>
+            </div>
+            <div class="row center">
+                <a class="btn btn-large waves-effect waves-light orange"
+                   href="{{ url_for('attendance.stop_sign',sign_name = sign_name) }}">
+                    <i class="material-icons left">do_not_disturb</i>
+                    <span class="flow-text">停止签到</span></a>
+            </div>
+        {% else %}
+            <script type="text/javascript">$("img").css("display", "none");</script>
+            <div class="container">
+                <br>
+                <div class="row center">
+                    <div class="col s6">
+                        <i class="material-icons left">group</i>
+                        <span class="flow-text left">应到人数<br>
+                            <font size="10"><strong>{{ need_sign_num }}</strong></font></span></div>
+                    <div class="col s6">
+                        <i class="material-icons left">group</i>
+                        <span class="flow-text left">实到人数<br>
+                            <font size="10"><strong>{{ actual_sign_num }}</strong></font></span></div>
+                    <div class="progress orange accent-1" style="height: 18px">
+                        <div class="determinate orange" style="width: {{ actual_sign_num/need_sign_num*100 }}%;"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <ul class="collapsible" data-collapsible="accordion">
+                        <li>
+                            <div class="collapsible-header"><i class="material-icons">filter_drama</i>未签到用户</div>
+                            <div class="collapsible-body">
+                                <table>
+                                    <thead>
+                                    <tr>
+                                        <th data-field="id">姓名</th>
+                                        <th data-field="price">学号</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for user in not_sign_users %}
+                                        <tr>
+                                            <td><span class="red-text">{{ user.student.name }}</span></td>
+                                            <td><span class="red-text">{{ user.student.number }}</span></td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="collapsible-header"><i class="material-icons">filter_drama</i>已签到用户</div>
+                            <div class="collapsible-body ">
+                                <table>
+                                    <thead>
+                                    <tr>
+                                        <th data-field="id">姓名</th>
+                                        <th data-field="price">学号</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for user in sign_users %}
+                                        <tr>
+                                            <td><span class="red-text">{{ user.student.name }}</span></td>
+                                            <td><span class="red-text">{{ user.student.number }}</span></td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
+{% block script_content %}
+    <style>
+        img {
+            position: fixed;
+            height: 100%;
+            width: auto;
+            z-index: -1;
+            opacity: 1;
+        }
+
+        @keyframes pulse_t {
+            from {
+                transform: scale(1);
+                opacity: 1;
+            }
+            to {
+                transform: scale(1.2, 1.3);
+                opacity: 0;
+            }
+        }
+
+        h1 {
+            color: #ffffff;
+            text-shadow: 0px 0px 10px #000000;
+
+        }
+
+        h1.pulse {
+            text-shadow: 0px 0px 0px #000000;
+            animation-name: pulse_t;
+            animation-timing-function: ease;
+            animation-duration: 1s;
+            animation-iteration-count: infinite;
+            animation-direction: normal;
+            animation-play-state: running;
+            display:;
+        }
+    </style>
+    <script type="text/javascript" src="../../static/jquery.cookie.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("img").css("left", document.body.clientWidth - 960);
+            $(".collapsible").collapsible("open", 0);
+        });
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    if ($.cookie('toast_ctrl_att_sign') !== '{{ message }}') {
+                        Materialize.toast('{{ message }}', 3000);
+                        $.cookie('toast_ctrl_att_sign', '{{ message }}');
+                    }
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </script>
+{% endblock %}

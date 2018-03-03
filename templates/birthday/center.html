@@ -1,0 +1,115 @@
+{#
+TODO：相册的AJAX响应我还没写...
+#}
+
+{% extends "layout_tab.html" %}
+{% block navbar_content %}
+     <ul class="right">
+     {% if g.user.permission.name=="teacher" %}
+        <li><a href="{{ url_for('birthday.register') }}">注册生日<i class="material-icons left">date_range</i></a></li>
+     {% endif %}
+    </ul>
+{% endblock %}
+{% block navbar_tabs %}
+    <li class="tab"><a href="#center">生日中心<i class="material-icons left">home</i></a></li>
+    {#    <li class="tab"><a id="gallary_trigger" href="#gallary">相册<i class="material-icons left">image</i></a></li>#}
+{% endblock %}
+{% block tabs_content %}
+    <div class="col s12" id="center">
+        <ul class="collection">
+            <style>
+                .row:after {
+                    clear: none;
+                }
+            </style>
+            {% if not birthdays.count %}
+                <li class="collection-header center"><span class="flow-text">暂时没有生日信息~</span></li>
+            {% endif %}
+            {% for birthday in birthdays %}
+                <li class="collection-item avatar">
+                    <div class="row">
+                        <div class="col s6">
+                            <img src="{{ url_for("get_image",imagep=str(birthday.user.avatar)) }}" alt="" class="circle">
+                            <span class="title">{{ birthday.user.nickname }}</span>
+                            <br>
+                            <span class="flow-text" id="tu_{{ birthday.id }}">
+                                <i class="material-icons tiny">thumb_up</i> {{ birthday.thumb_up }} <font
+                                    size="2">个赞</font></span>
+                            <br>
+                            <span class="flow-text">
+                                <i class="material-icons tiny">cake</i> {{ birthday.bless_num }} <font
+                                    size="2">个祝福</font></span>
+                        </div>
+                        <div class="col s3 center">
+                            <a class="btn btn-floating btn-medium waves-effect waves-light orange accent-2 pulse"
+                               onclick="thumb_up({{ birthday.id }})">
+                                <i class="material-icons">thumb_up</i></a>
+                            <br>
+                            <span class="flow-text"><font size="2.5">赞</font></span>
+                        </div>
+                        <div class="col s3 center">
+                            <a class="btn-floating btn-medium waves-effect waves-light pink lighten-2"
+                                href="{{ url_for('birthday.details', birthday_id=birthday.id) }}">
+                                <i class="material-icons">cake</i></a>
+                            <br>
+                            <span class="flow-text"><font size="2.5">详情</font></span>
+                        </div>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}
+{% block script_content %}
+    <style>
+        @import url(https://fonts.googleapis.com/css?family=Roboto);
+
+        .msg blockquote {
+            color: #0a0a0a;
+            background-color: #ffebee;
+            border-left: 4px solid #ac2925;
+            padding: 1em 1.5em 1em 1.5em;
+            position: relative;
+            font-family: 'Roboto', sans-serif;
+            line-height: 150%;
+            text-indent: 35px;
+        }
+
+        .msg blockquote:before {
+            color: #8b1014;
+            content: "\201C";
+            font-size: 5em;
+            position: absolute;
+            left: -15px;
+            top: 40px;
+            line-height: 0.1em;
+        }
+
+        .msg blockquote:after {
+            color: #8b1014;
+            content: "\201D";
+            font-size: 5em;
+            position: absolute;
+            right: 15px;
+            bottom: 0em;
+            line-height: 0.1em;
+        }
+
+        .card .card-image .card-title {
+            right: 0;
+            bottom: 5%;
+            left: auto;
+            line-height: 20px;
+        }
+
+
+    </style>
+    <script type="text/javascript">
+        function thumb_up(id) {
+            $.getJSON("{{ url_for("birthday.thumbup") }}", {"id": id}, function (data) {
+                if (data)
+                    $('#tu_' + id).html("<i class=\"material-icons tiny\">thumb_up</i> " + data.toString() + " <font size=\"2\">个赞</font>");
+            });
+        }
+    </script>
+{% endblock %}

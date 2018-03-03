@@ -1,0 +1,129 @@
+{% extends "layout_back.html" %}
+{% block navbar_content %}
+    <ul class="right">
+        <li>
+            <a href="{{ url_for('profile.change_info') }}"><i class="material-icons left">edit</i>编辑</a>
+        </li>
+    </ul>
+{% endblock %}
+{% block tabs_content %}
+    {#    <img class="bg" src="..\..\static\imgs\background.jpg"/>#}
+    <div class="container">
+        <blockquote>个人中心</blockquote>
+        <div class="container">
+            <div class="row">
+                <div class="col s6" style="padding: 0 .2rem">
+                    <div class="card-panel z-depth-1 center" style="height: 192px">
+                        <div class="row">
+                            <img src="{{ url_for('get_image',imagep='avatar.jpg') }}" class="circle avatar" style="{height: 64px; width:64px;}">
+                        </div>
+                        <span class="flow-text">头像</span>
+                        <div class="row">
+                            <a class="waves-effect waves-orange btn-flat blue-text"
+                               style="width: 80%; padding: 0 1rem">
+                                <i class="material-icons tiny left"
+                                   style="margin-right: 0px">edit</i>修改
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s6" style="padding: 0 .2rem">
+                    <div class="card-panel z-depth-1" style="padding-top: 0px; height: 192px">
+                        <div class="row">
+                            <div class="col s12">
+                                <blockquote>
+                                    姓名
+                                </blockquote>
+                                <span class="flow-text">
+                                    {% if user.permission.name == "student" %}
+                                        {% set
+                                            list={"性别":user.sex.value,
+                                                  "生日":user.birthday,
+                                                  "学号":user.student.number,
+                                                  "学院":user.student.faculty,
+                                                  "专业":user.student.department,
+                                                  "年级":user.student.grade} %}
+                                        {{ user.student.name }}
+                                    {% elif user.permission.name == "teacher" %}
+                                        {% set
+                                            list={"性别":user.sex.value,
+                                                  "生日":user.birthday,
+                                                  "工号":user.teacher.number,
+                                                  "隶属部门":user.teacher.faculty,
+                                                  "直属部门":user.teacher.department} %}
+                                        {{ user.teacher.name }}
+                                    {% endif %}
+                                    </span>
+                            </div>
+                            <div class="col s12">
+                                <blockquote>
+                                    昵称
+                                </blockquote>
+                                <span class="flow-text">{{ user.nickname }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% for name,info in list.items() %}
+                    <div class="col s6" style="padding: 0 .2rem">
+                        <div class="card-panel z-depth-1" style="padding-top: 0px; height: 100px">
+                            <div class="row">
+                                <div class="col s12">
+                                    <blockquote>
+                                        {{ name }}
+                                    </blockquote>
+                                    <span class="flow-text">{{ info }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="row">
+                <form action="{{ url_for('profile.profile') }}" method="POST">
+                    <div class="col s12 m12 l12 textarea ">
+                        {{ form.hidden_tag() }}
+                        {{ form.info.label }}
+                        {{ form.info(class="materialize-textarea") }}
+                    </div>
+                    <div class="button col s6 m6 l6">
+                        <button class="btn waves-effect waves-light #ef5350 orange" type="submit" id="btn">确定
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
+{% block script_content %}
+
+    <style>
+        img.bg {
+            z-index: -1;
+            position: absolute;
+            top: 56px;
+            left: 0px;
+            bottom: 0px;
+            right: 0px;
+        }
+
+        img.avatar {
+            position: relative;
+        }
+
+        .card-panel {
+            margin: .15rem 0 .15rem 0;
+        }
+    </style>
+    <script type="text/javascript">
+        var info = document.getElementById("info").value;
+        if (info != '') {
+            document.getElementById("info").innerHTML = "这个人很懒, 什么也没有留下。";
+        }
+        else {
+            document.getElementById("info").innerHTML = "{{ user.info }}"
+        }
+        $('.materialize-textarea').trigger('autoresize');
+    </script>
+{% endblock %}

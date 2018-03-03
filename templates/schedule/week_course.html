@@ -1,0 +1,135 @@
+{% extends "layout_tab.html" %}
+
+
+{% block navbar_content %}
+    <ul class="right">
+        <li><a href={{ url_for('schedule.today_course_') }}>今日课程</a></li>
+        <li><a class="dropdown-button" href="#!" data-activates="dropdown1">第{{ week }}周<i
+                class="material-icons right">arrow_drop_down</i></a></li>
+    </ul>
+    <ul id="dropdown1" class="dropdown-content">
+        {% for w in total_weeks %}
+            <li><a href={{ url_for('schedule.toweek_course',week=w) }} class="orange-text darken-2">第{{ w }}周</a></li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+
+
+{% block navbar_tabs %}
+    <li class="tab"><a href="#course_offline">常规课程</a></li>
+    <li class="tab"><a href="#course_online">线上课程</a></li>
+{% endblock %}
+
+
+{% block tabs_content %}
+    <div class="container">
+        <div id="course_offline" class="col s12">
+            <blockquote>
+                第{{ week }}周课程
+            </blockquote>
+            <table class="bordered highlight centered responsive-table" width=100%>
+                <thead>
+                <tr>
+                    <th>&nbsp;<br></th>
+                    <th>第1节<br><br></th>
+                    <th>第2节<br><br></th>
+                    <th>第3节<br><br></th>
+                    <th>第4节<br><br></th>
+                    <th>第5节<br><br></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for day, courses in week_courses.items() %}
+                    <tr>
+                        <td>
+                            {{ day }}
+                        </td>
+                        {% for sec in Section %}
+                            {% if sec.value in [1,4,6,8,11] %}
+                                <td>
+                                    {% for course in courses[sec.name] %}
+                                        {{ course.name }}
+                                    {% endfor %}
+                                    <br>
+                                    {% for course in courses[sec.name] %}
+                                        {{ course.location }}
+                                    {% endfor %}
+                                    <br>
+                                </td>
+                            {% endif %}
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+                {#                {% for sec in Section %}#}
+                {#                    {% if sec.value in [1,4,6,8,11] %}#}
+                {#                        <tr>#}
+                {#                            <td id="sec_text_{{ Sectionl[sec.name] }}">#}
+                {#                                第{{ Sectionl[sec.name] }}大节&nbsp;&nbsp;#}
+                {#                            </td>#}
+                {#                            {% for day, courses in week_courses.items() %}#}
+                {#                                <td id="course_text">#}
+                {#                                    {% for course in courses[sec.name] %}#}
+                {#                                        {{ course.name }}#}
+                {#                                        <br>#}
+                {#                                        {{ course.location }}#}
+                {#                                        <br>#}
+                {#                                    {% endfor %}#}
+                {#                                </td>#}
+                {#                            {% endfor %}#}
+                {#                        </tr>#}
+                {#                    {% endif %}#}
+                {#                {% endfor %}#}
+                </tbody>
+            </table>
+        </div>
+        <div id="course_online" class="col s12">
+            <blockquote>
+                线上课程
+            </blockquote>
+            <div class="container">
+                <table class="bordered highlight centered" width=100%>
+                    <thead>
+                    <tr>
+                        <th>周一</th>
+                        <th>周二</th>
+                        <th>周三</th>
+                        <th>周四</th>
+                        <th>周五</th>
+                        <th>周六</th>
+                        <th>周日</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        {% for day, courses in week_courses.items() %}
+                            <td>
+                                {% for course in courses[Section.online.name] %}
+                                    {{ course.name }}
+                                    <br/>
+                                    {{ course.location }}
+                                {% endfor %}
+                            </td>
+                        {% endfor %}
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block script_content %}
+    <style>
+        td{
+            border-bottom: 1px solid #e0e0e0 !important;
+        }
+    </style>
+    <script type="text/javascript">
+        $("document").ready(function () {
+            var window_width = $(window).width();
+            if (window_width < 500)
+                $("#course_text").attr('width', (window_width / 8).toString());
+        });
+    </script>
+{% endblock %}

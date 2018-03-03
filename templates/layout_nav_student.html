@@ -1,0 +1,18 @@
+<li>
+    <div class="user-view">
+        <div class="background">
+            <img src="../static/imgs/UserBg.png">
+        </div>
+        <!-- TODO:加入头像功能 -->
+        <a href=""><img class="circle" src="{{ url_for('get_image',imagep='avatar.jpg') }}"></a>
+        <a href=""><span class="white-text name">{{ current_user.student.name }}</span></a>
+        <a href=""><span class="white-text email">{{ current_user.student.number }}</span></a>
+    </div>
+</li>
+<li></li>
+<!-- 用户组专有链接 -->
+<li><a class="waves-effect" href="{{ url_for('index') }}"><i class="material-icons">home</i>主页</a></li>
+<li><a class="waves-effect" href="{{ url_for('schedule.today_course_') }}"><i class="material-icons">event_notes</i>今日课程</a></li>
+<li><a class="waves-effect" href="{{ url_for('schedule.toweek_course_') }}"><i class="material-icons">event_notes</i>本周课程</a></li>
+<li><a class="waves-effect" href="{{ url_for('attendance.center', permission="student") }}">
+    <i class="material-icons">event_available</i>签到</a></li>

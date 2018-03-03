@@ -1,0 +1,29 @@
+{% extends "layout_back.html" %}
+{% block tabs_content %}
+    <div class="container">
+        <blockquote>
+            生日注册
+        </blockquote>
+        <form method="POST">
+            <div class="input-field col s12">
+                <i class="material-icons prefix">account_circle</i>
+                {{ form.hidden_tag() }}
+                {{ form.name }}
+                {{ form.name.label }}
+            </div>
+            <div class="input-field col s12">
+                <i class="material-icons prefix">mode_edit</i>
+                {{ form.info }}
+                {{ form.info.label }}
+            </div>
+            <button class="waves-effect waves-light btn orange lighten-2" type="submit">确定</button>
+        </form>
+    </div>
+{% endblock %}
+{% block navbar_content %}
+{% endblock %}
+{% block script_content %}
+    <script type="text/javascript">
+        $("textarea").addClass("materialize-textarea");
+    </script>
+{% endblock %}
