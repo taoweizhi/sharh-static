@@ -1,3 +1,9 @@
-### 重定向不再采用redirect, 转为返回jsonify(status=302, location=${url})
-###group的表单，以及签到的表单需要完善
-###profile/center简介未写 以及info里的生日
+- 重定向不再采用redirect, 转为返回jsonify(status=302, location=${url})
+- 在相关页面写表单post之后处理函数, 例如form#loginForm, 则
+```html
+<script>
+function loginFormHandler(result) {
+  //处理逻辑
+}
+</script>
+```

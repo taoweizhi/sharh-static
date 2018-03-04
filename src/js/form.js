@@ -17,6 +17,14 @@ const field = {
     maxlength: 30,
     equalTo: '#password',
   },
+  date: {
+    required: true,
+    dateISO:true
+  },
+  text: {
+    required: false,
+    maxlength: 500,
+  },
   email: {
     maxlength: 30,
     required: false,
@@ -28,7 +36,7 @@ const field = {
     minlength: 11,
     maxlength: 11,
   },
-  code: {
+  number: {
     required: true,
     digits: true
   },
@@ -58,7 +66,7 @@ const Form = {
   phoneForm: {
     content: {
       phoneNumber: field.phoneNumber,
-      code: code,
+      code: field.number,
     },
     url: '/profile/validate_phone',
   },
@@ -67,22 +75,44 @@ const Form = {
       nickname: field.username,
       sex: field.require,
       email: field.email,
+      birthday: field.date,
       password: field.password,
       confimPassword: field.confimPassword,
     },
     url: '/post_test',
   },
+  infoForm: {
+    content: {
+      info: field.text,
+    },
+    url: '/profile/change_info'
+  },
+  codeSubmitForm: {
+    content: {
+      codeSubmit: field.number,
+    },
+    url: '/attendance/register'
+  },
   attendanceForm: {
     content: {
-      code: field.code,
+      code: field.number,
     },
-    url: 'attendance/validate',
+    url: '/attendance/validate',
   },
   reAttendanceForm: {
     content: {
       account: field.username,
     },
-    url: 'attendance/resign',
+    url: '/attendance/resign',
+  },
+  groupForm: {
+    content: {
+      groupName: field.username,
+      groupOption: field.require,
+      groupInfo: field.text,
+      groupClass: field.require,
+    },
+    url: '/group/regidter'
   },
 };
 
@@ -91,7 +121,7 @@ const Input = (id, name, type, value) => {
   return `<label for="${id}">${value}</label><input id="${id}" type="${type}" name="${name}"/>`
 };
 
-const errorPlacement = (error, elem) => {
+const defaultErrorPlacement = (error, elem) => {
   if (elem.parent().next().attr('id') === `${elem.id}-wrapper`)
     error.appendTo(elem.parent().next());
   else {
@@ -124,41 +154,85 @@ $.fn.serializeJSON = function () {
   return JSON.stringify(obj);
 };
 
-$.afterPOST = (action = (result) => {}) => (url) => (form) => {
+$.afterPOST = (action) => (url) => (form) => {
   $.post(url, $(form).serializeArray(), defaultAction(action))
 };
+
+$.optional = (callable, default_) => {
+  try {
+    return callable;
+  }
+  catch (e) {
+    return default_;
+  }
+};
+
+const doNothing = (result) => {};
 
 $(document).ready(
   function () {
     $('#signinForm').validate({
       rules: Form.signinForm.content,
-      errorPlacement: errorPlacement,
-      submitHandler:$.afterPOST()(Form.signinForm.url),
+      errorPlacement: defaultErrorPlacement,
+      submitHandler:$.afterPOST(
+        $.optional(signinFormHandler, doNothing)
+      )(Form.signinForm.url),
     });
     $('#loginForm').validate({
       rules: Form.loginForm.content,
-      errorPlacement: errorPlacement,
-      submitHandler: $.afterPOST()(Form.loginForm.url),
+      errorPlacement: defaultErrorPlacement,
+      submitHandler: $.afterPOST(
+        $.optional(loginFormHandler, doNothing)
+      )(Form.loginForm.url),
     });
     $('#phoneForm').validate({
       rules: Form.phoneForm.content,
-      errorPlacement: errorPlacement,
-      submitHandler: $.afterPOST()(Form.phoneForm.url),
+      errorPlacement: defaultErrorPlacement,
+      submitHandler: $.afterPOST(
+        $.optional(phoneFormHandler, doNothing)
+      )(Form.phoneForm.url),
     });
     $('#profileForm').validate({
       rules: Form.profileForm.content,
-      errorPlacement: errorPlacement,
-      submitHandler: $.afterPOST()(Form.profileForm.url)
+      errorPlacement: defaultErrorPlacement,
+      submitHandler: $.afterPOST(
+        $.optional(profileFormHandler, doNothing)
+      )(Form.profileForm.url)
     });
     $('#attendanceForm').validate({
       rules: Form.attendanceForm.content,
-      errorPlacement: errorPlacement,
-      submitHandler: $.afterPOST()(Form.attendanceForm.url)
+      errorPlacement: defaultErrorPlacement,
+      submitHandler: $.afterPOST(
+        $.optional(attendanceFormHandler, doNothing)
+      )(Form.attendanceForm.url)
     });
     $('#reAttendanceForm').validate({
       rules: Form.reAttendanceForm.content,
-      errorPlacement: errorPlacement,
-      submitHandler: $.afterPOST()(Form.attendanceForm.url)
+      errorPlacement: defaultErrorPlacement,
+      submitHandler: $.afterPOST(
+        $.optional(reAttendanceFormHandler, doNothing)
+      )(Form.attendanceForm.url)
+    });
+    $('#infoForm').validate({
+      rules: Form.infoForm.content,
+      errorPlacement: defaultErrorPlacement,
+      submitHandler: $.afterPOST(
+        $.optional(infoFormHandler, doNothing)
+      )(Form.infoForm.url)
+    });
+    $('#codeSubmitForm').validate({
+      rules: Form.codeSubmitForm.content,
+      errorPlacement: defaultErrorPlacement,
+      submitHandler: $.afterPOST(
+        $.optional(codeSubmitFormHandler, doNothing)
+      )(Form.codeSubmitForm.url)
+    });
+    $('#groupForm').validate({
+      rules: Form.groupForm.content,
+      errorPlacement: defaultErrorPlacement,
+      submitHandler: $.afterPOST(
+        $.optional(groupFormHandler, doNothing)
+      )(Form.groupForm.url)
     });
     $("title").append(style);
   }
