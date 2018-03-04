@@ -1,6 +1,7 @@
 - 重定向不再采用redirect, 转为返回jsonify(status=302, location=${url})
 - 修改所有静态页面的链接, 具体请查看static文件夹结构
 - 弃用materialize的导航条, 改为"src/example.html"的导航条
+- 自定义样式写在"src/css/style.css"里面
 - 重新修改layout, 舍弃原有"layout_*", 改为在layouts文件夹下定义sideBar,
 navBar, footerBar, 并由defaultLayout include, 并修改其他页面其他页面:
 ```html

@@ -11,14 +11,14 @@ body {
   background: #E3C400;
   color: #fff;
   line-height: 150px;
-    -webkit-transition: height .5s, line-height .5s; /* Safari */
-    transition: height .5s, line-height .5s;
+  -webkit-transition: height .5s, line-height .5s; /* Safari */
+  transition: height .5s, line-height .5s;
 }
 
 .site-title {
   display: inline-block;
   -webkit-transition: all .5s;
-    transition: all .5s;
+  transition: all .5s;
 }
 
 .scrolled-nav .site-title  {
@@ -33,6 +33,29 @@ body {
   list-style: none;
   display: inline-block;
   padding-left: 20px;
+}
+
+.hero-section,
+.content-section {
+  height: 500px;
+  padding: 100px;
+}
+
+.hero-text,
+.content-text {
+  max-width: 550px;
+}
+
+.hero-section h1 {
+  color: #333;
+}
+
+.hero-section p {
+  color: #333;
+}
+
+.content-section {
+  background: aqua;
 }
 
 .scrolled-nav {
