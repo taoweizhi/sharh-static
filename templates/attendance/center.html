@@ -1,232 +1,232 @@
 {#<!DOCTYPE html>#}
 {#<html>#}
 {#<head>#}
-{#    <!--Import Google Icon Font-->#}
-{#    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">#}
-{#    <!--Import materialize.css-->#}
-{#    <link type="text/css" rel="stylesheet" href="../../static/materialize/css/materialize.min.css"#}
-{#          media="screen,projection"/>#}
-{#    <!--Let browser know website is optimized for mobile-->#}
-{#    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>#}
-{#    <meta charset="utf-8">#}
-{#    <title>{{ title }}</title>#}
-{#    <style>#}
+    {#    <!--Import Google Icon Font-->#}
+    {#    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">#}
+    {#    <!--Import materialize.css-->#}
+    {#    <link type="text/css" rel="stylesheet" href="../../static/materialize/css/materialize.min.css"#}
+                {#          media="screen,projection"/>#}
+    {#    <!--Let browser know website is optimized for mobile-->#}
+    {#    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>#}
+    {#    <meta charset="utf-8">#}
+    {#    <title>{{ title }}</title>#}
+    {#    <style>#}
 {#        ul li {#}
 {#            list-style-type: none;#}
 {#        }#}
 {##}
 {##}
 {#    </style>#}
-{#</head>#}
+    {#</head>#}
 {#<body>#}
 {#<!--Import jQuery before materialize.js-->#}
 {#<script type="text/javascript" src="../../static/jquery-3.2.1.min.js"></script>#}
 {#<script type="text/javascript" src="../../static/materialize/js/materialize.min.js"></script>#}
 {#<!--背景-->#}
 {#<div id="background" style="position:absolute;z-index:-1;width:100%;height:100%;top:0px;left:0px;">#}
-{#    <img src="..\..\static\imgs\background.jpg" width="100%" height="100%"/>#}
-{#</div>#}
+    {#    <img src="..\..\static\imgs\background.jpg" width="100%" height="100%"/>#}
+    {#</div>#}
 {#<!--背景-->#}
 {#<div class="container">#}
-{#    <nav>#}
-{#        <div class="nav-wrapper orange accent-2 ">#}
-{#            <a href="#" class="brand-logo orange accent-2 center">签到中心</a>#}
-{#        </div>#}
-{#    </nav>#}
-{#</body>#}
+    {#    <nav>#}
+        {#        <div class="nav-wrapper orange accent-2 ">#}
+            {#            <a href="#" class="brand-logo orange accent-2 center">签到中心</a>#}
+            {#        </div>#}
+        {#    </nav>#}
+    {#</body>#}
 {#</html>#}
 
 
 {% extends "layout_bar_only.html" %}
 {% block tabs_content %}
-    <div class="container">
-        <blockquote>
-            <h5>签到中心</h5>
-        </blockquote>
-        <ul class="collapsible popout" data-collapsible="accordion">
-            <li>
-                <div class="collapsible-header">
-                    <i class="large material-icons">assignment_late</i>
-                    <span class="flow-text">正在进行</span>
+<div class="container">
+    <blockquote>
+        <h5>签到中心</h5>
+    </blockquote>
+    <ul class="collapsible popout" data-collapsible="accordion">
+        <li>
+            <div class="collapsible-header">
+                <i class="large material-icons">assignment_late</i>
+                <span class="flow-text">正在进行</span>
+            </div>
+            <div class="collapsible-body">
+                {% if not sign_on %}
+                <span class="flow-text">当前没有待签到课程</span>
+                {% endif %}
+                {% for sign in sign_on %}
+                <div class="card-panel white z-depth-1">
+                    <div class="row valign-wrapper" style="margin-bottom: 0px">
+                        <div class="col s2"><i class="material-icons">event</i></div>
+                        <div class="col s7"><span class="flow-text">{{ sign.name }}</span></div>
+                        <div class="col s3"><a href="#modal_{{ sign.id }}"
+                                               class="btn btn-floating waves-effect waves-light modal-trigger orange">
+                            <i class="material-icons">border_color</i></a></div>
+                    </div>
                 </div>
-                <div class="collapsible-body">
-                    {% if not sign_on %}
-                        <span class="flow-text">当前没有待签到课程</span>
-                    {% endif %}
-                    {% for sign in sign_on %}
-                        <div class="card-panel white z-depth-1">
-                            <div class="row valign-wrapper" style="margin-bottom: 0px">
-                                <div class="col s2"><i class="material-icons">event</i></div>
-                                <div class="col s7"><span class="flow-text">{{ sign.name }}</span></div>
-                                <div class="col s3"><a href="#modal_{{ sign.id }}"
-                                                       class="btn btn-floating waves-effect waves-light modal-trigger orange">
-                                    <i class="material-icons">border_color</i></a></div>
-                            </div>
-                        </div>
-                        <div id="modal_{{ sign.id }}" class="modal">
-                            <div class="modal-content">
-                                <h5>请输入签到码</h5>
-                                <form action="{{ url_for('attendance.validate',sign_name=sign.name) }}" method="POST">
-                                    <div class="input-field col s6">
-                                        <i class="material-icons prefix">chevron_right</i>
-                                        {{ form.hidden_tag() }}
-                                        {{ form.sign_code }}
-                                    </div>
-                                    <div class="modal-footer">
-                                        <div class="button col">
-                                            <button class="btn modal-action modal-close waves-effect waves-orange orange"
-                                                    type="submit">确认
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
-            </li>
-            <li>
-                <div class="collapsible-header">
-                    <i class="material-icons medium">assignment</i>
-                    <span class="flow-text">我管理的</span>
-                </div>
-                <div class="collapsible-body">
-                    {% if not (activity_ready or course_ready) %}
-                        <span class="flow-text">当前没有管理签到课程</span>
-                    {% endif %}
-                    {% for activity in activity_ready %}
-                        <div class="card-panel white z-depth-1">
-                            <div class="row valign-wrapper" style="margin-bottom: 0px">
-                                <div class="col s2"><i class="material-icons">event</i></div>
-                                <div class="col s7"><span class="flow-text">{{ activity.name }}</span></div>
-                                <div class="col s3"><a href="#modal_act_{{ activity.id }}"
-                                                       class="btn btn-floating waves-effect waves-light modal-trigger orange">
-                                    <i class="material-icons">border_color</i></a></div>
-                            </div>
-                        </div>
-                        <div id="modal_act_{{ activity.id }}" class="modal">
-                            <div class="modal-content">
-                                <h5>请设置签到码</h5>
-                                <form action="{{ url_for('attendance.register', cls='Activity', instance_id=activity.id) }}"
-                                      method="POST">
-                                    <div class="input-field col s6">
-                                        <i class="material-icons prefix">chevron_right</i>
-                                        {{ form.hidden_tag() }}
-                                        {{ form.sign_code }}
-                                    </div>
-                                    <div class="modal-footer">
-                                        <div class="button col">
-                                            <a class="btn waves-effect waves-orange orange"
-                                               onclick="random_code('modal_act_{{ course.id }}')">随机
-                                            </a>
-                                            <button class="btn modal-action modal-close waves-effect waves-orange orange"
-                                                    type="submit">开始签到
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    {% endfor %}
-                    {% for course in course_ready %}
-                        <div class="card-panel white z-depth-1">
-                            <div class="row valign-wrapper" style="margin-bottom: 0px">
-                                <div class="col s2"><i class="material-icons">event</i></div>
-                                <div class="col s7"><span class="flow-text">{{ course.name }}</span></div>
-                                <div class="col s3"><a href="#modal_cou_{{ course.id }}"
-                                                       class="btn btn-floating waves-effect waves-light modal-trigger orange">
-                                    <i class="material-icons">border_color</i></a></div>
-                            </div>
-                        </div>
-                        <div id="modal_cou_{{ course.id }}" class="modal">
-                            <div class="modal-content">
-                                <h5>设置签到码</h5>
-                                <form action="{{ url_for('attendance.register', cls='Course', instance_id=course.id) }}"
-                                      method="POST">
-                                    <div class="input-field col s6">
-                                        <i class="material-icons prefix">chevron_right</i>
-                                        {{ form.hidden_tag() }}
-                                        {{ form.sign_code }}
-                                    </div>
-                                    <div class="modal-footer">
-                                        <div class="button col">
-                                            <a class="btn waves-effect waves-orange orange"
-                                               onclick="random_code('modal_cou_{{ course.id }}')">随机
-                                            </a>
-                                            <button class="btn modal-action modal-close waves-effect waves-orange orange"
-                                                    type="submit">开始签到
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
-            </li>
-            <li>
-                <div class="collapsible-header">
-                    <i class="large material-icons">assignment_turned_in</i>
-                    <span class="flow-text">已完成</span>
-                </div>
-                <div class="collapsible-body">
-                    {% for leader_id, sign in sign_completed %}
-                        <div class="card-panel white z-depth-1">
-                            <div class="row valign-wrapper" style="margin-bottom: 0px">
-                                <div class="col s6"><i class="material-icons left">event</i><span
-                                        class="flow-text" >{{ sign.name.split('(')[0] }}</span></div>
-                                {% if leader_id == user.id %}
-                                    <div class="col s3 center"><a href="#modal_{{ sign.id }}"
-                                                                  class="btn btn-floating waves-effect waves-light modal-trigger brown lighten-2">
-                                        <i class="material-icons">info_outline</i></a>
-                                        <span class="center" style="white-space: nowrap">详情</span>
-                                    </div>
-                                    <div class="col s3 center"><a
-                                            href="{{ url_for('attendance.resign', sign_name=sign.name) }}"
-                                            class="btn btn-floating waves-effect waves-light modal-trigger blue lighten-2">
-                                        <i class="material-icons">autorenew</i></a><br>
-                                        <span class="center" style="white-space: nowrap">补签</span>
-                                    </div>
-                                {% else %}
-                                    <div class="col s3 offset-3 center"><a href="#modal_{{ sign.id }}"
-                                                                  class="btn btn-floating waves-effect waves-light modal-trigger orange">
-                                        <span class="center" style="white-space: nowrap">详情</span>
-                                    </div>
-                                {% endif %}
-                            </div>
-                            <div class="row left">
-                                <font size="2" color="#a9a9a9">{{ sign.name.split('(')[1].split(')')[0] }}</font>
-                                <br>
-                            </div>
-                        </div>
-                        <div id="modal_{{ sign.id }}" class="modal">
-                            <div class="modal-content">
-                                <blockquote><strong>名称</strong></blockquote>
-                                <p>{{ sign.name }}</p>
-                                <blockquote><strong>类型</strong></blockquote>
-                                <p>{{ sign.cls.value }}</p>
-                                <blockquote><strong>开始时间</strong></blockquote>
-                                <p>{{ sign.start }}</p>
-                                <blockquote><strong>结束时间</strong></blockquote>
-                                <p>{{ sign.end }}</p>
+                <div id="modal_{{ sign.id }}" class="modal">
+                    <div class="modal-content">
+                        <h5>请输入签到码</h5>
+                        <form id="attendanceForm">
+                            <div class="input-field col s6">
+                                <i class="material-icons prefix">chevron_right</i>
+                                <input type="text" id="code" name="code">
+                                <label for="code"></label>
                             </div>
                             <div class="modal-footer">
-                                <a href="#!" class="modal-action modal-close waves-effect waves-orange btn-flat">关闭</a>
+                                <div class="button col">
+                                    <button class="btn modal-action modal-close waves-effect waves-orange orange"
+                                            type="submit">确认
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                    {% endfor %}
+                        </form>
+                    </div>
                 </div>
-            </li>
+                {% endfor %}
+            </div>
+        </li>
+        <li>
+            <div class="collapsible-header">
+                <i class="material-icons medium">assignment</i>
+                <span class="flow-text">我管理的</span>
+            </div>
+            <div class="collapsible-body">
+                {% if not (activity_ready or course_ready) %}
+                <span class="flow-text">当前没有管理签到课程</span>
+                {% endif %}
+                {% for activity in activity_ready %}
+                <div class="card-panel white z-depth-1">
+                    <div class="row valign-wrapper" style="margin-bottom: 0px">
+                        <div class="col s2"><i class="material-icons">event</i></div>
+                        <div class="col s7"><span class="flow-text">{{ activity.name }}</span></div>
+                        <div class="col s3"><a href="#modal_act_{{ activity.id }}"
+                                               class="btn btn-floating waves-effect waves-light modal-trigger orange">
+                            <i class="material-icons">border_color</i></a></div>
+                    </div>
+                </div>
+                <div id="modal_act_{{ activity.id }}" class="modal">
+                    <div class="modal-content">
+                        <h5>请设置签到码</h5>
+                        <form action="{{ url_for('attendance.register', cls='Activity', instance_id=activity.id) }}"
+                              method="POST">
+                            <div class="input-field col s6">
+                                <i class="material-icons prefix">chevron_right</i>
+                                {{ form.hidden_tag() }}
+                                {{ form.sign_code }}
+                            </div>
+                            <div class="modal-footer">
+                                <div class="button col">
+                                    <a class="btn waves-effect waves-orange orange"
+                                       onclick="random_code('modal_act_{{ course.id }}')">随机
+                                    </a>
+                                    <button class="btn modal-action modal-close waves-effect waves-orange orange"
+                                            type="submit">开始签到
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                {% endfor %}
+                {% for course in course_ready %}
+                <div class="card-panel white z-depth-1">
+                    <div class="row valign-wrapper" style="margin-bottom: 0px">
+                        <div class="col s2"><i class="material-icons">event</i></div>
+                        <div class="col s7"><span class="flow-text">{{ course.name }}</span></div>
+                        <div class="col s3"><a href="#modal_cou_{{ course.id }}"
+                                               class="btn btn-floating waves-effect waves-light modal-trigger orange">
+                            <i class="material-icons">border_color</i></a></div>
+                    </div>
+                </div>
+                <div id="modal_cou_{{ course.id }}" class="modal">
+                    <div class="modal-content">
+                        <h5>设置签到码</h5>
+                        <form action="{{ url_for('attendance.register', cls='Course', instance_id=course.id) }}"
+                              method="POST">
+                            <div class="input-field col s6">
+                                <i class="material-icons prefix">chevron_right</i>
+                                {{ form.hidden_tag() }}
+                                {{ form.sign_code }}
+                            </div>
+                            <div class="modal-footer">
+                                <div class="button col">
+                                    <a class="btn waves-effect waves-orange orange"
+                                       onclick="random_code('modal_cou_{{ course.id }}')">随机
+                                    </a>
+                                    <button class="btn modal-action modal-close waves-effect waves-orange orange"
+                                            type="submit">开始签到
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </li>
+        <li>
+            <div class="collapsible-header">
+                <i class="large material-icons">assignment_turned_in</i>
+                <span class="flow-text">已完成</span>
+            </div>
+            <div class="collapsible-body">
+                {% for leader_id, sign in sign_completed %}
+                <div class="card-panel white z-depth-1">
+                    <div class="row valign-wrapper" style="margin-bottom: 0px">
+                        <div class="col s6"><i class="material-icons left">event</i><span
+                                class="flow-text" >{{ sign.name.split('(')[0] }}</span></div>
+                        {% if leader_id == user.id %}
+                        <div class="col s3 center"><a href="#modal_{{ sign.id }}"
+                                                      class="btn btn-floating waves-effect waves-light modal-trigger brown lighten-2">
+                            <i class="material-icons">info_outline</i></a>
+                            <span class="center" style="white-space: nowrap">详情</span>
+                        </div>
+                        <div class="col s3 center"><a
+                                href="{{ url_for('attendance.resign', sign_name=sign.name) }}"
+                                class="btn btn-floating waves-effect waves-light modal-trigger blue lighten-2">
+                            <i class="material-icons">autorenew</i></a><br>
+                            <span class="center" style="white-space: nowrap">补签</span>
+                        </div>
+                        {% else %}
+                        <div class="col s3 offset-3 center"><a href="#modal_{{ sign.id }}"
+                                                               class="btn btn-floating waves-effect waves-light modal-trigger orange">
+                            <span class="center" style="white-space: nowrap">详情</span>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="row left">
+                        <font size="2" color="#a9a9a9">{{ sign.name.split('(')[1].split(')')[0] }}</font>
+                        <br>
+                    </div>
+                </div>
+                <div id="modal_{{ sign.id }}" class="modal">
+                    <div class="modal-content">
+                        <blockquote><strong>名称</strong></blockquote>
+                        <p>{{ sign.name }}</p>
+                        <blockquote><strong>类型</strong></blockquote>
+                        <p>{{ sign.cls.value }}</p>
+                        <blockquote><strong>开始时间</strong></blockquote>
+                        <p>{{ sign.start }}</p>
+                        <blockquote><strong>结束时间</strong></blockquote>
+                        <p>{{ sign.end }}</p>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#!" class="modal-action modal-close waves-effect waves-orange btn-flat">关闭</a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </li>
 
 
-        </ul>
-    </div>
+    </ul>
+</div>
 
-    </div>
+</div>
 
 {% endblock %}
 {% block script_content %}
-    <style>
+<style>
         .input-field .prefix {
             bottom: 45%
         }
@@ -239,36 +239,36 @@
             font-weight: 900;
         }
     </style>
-    <script type="text/javascript" src="../../static/jquery.cookie.js"></script>
-    <script type="text/javascript">
-        var chars = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-            'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
-            'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
-        $(document).ready(function () {
-            $('.collapsible').collapsible();
-        });
+<script type="text/javascript" src="../../static/jquery.cookie.js"></script>
+<script type="text/javascript">
+    var chars = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+    'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
+    'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+    $(document).ready(function () {
+    $('.collapsible').collapsible();
+    });
 
-        $(document).ready(function () {
-            $('.modal').modal();
-        });
+    $(document).ready(function () {
+    $('.modal').modal();
+    });
 
-        function random_code(input_id) {
-            var res = "";
-            for (var i = 0; i < 6; i++) {
-                var id = Math.ceil(Math.random() * 35);
-                res += chars[id];
-            }
-            $('#' + input_id).find("#sign_code").val(res);
-        }
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                {% for message in messages %}
-                    if ($.cookie('toast_ctrl_att_cen') !== '{{ message }}') {
-                        Materialize.toast('{{ message }}', 3000);
-                        $.cookie('toast_ctrl_att_cen', '{{ message }}');
-                    }
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
-    </script>
+    function random_code(input_id) {
+    var res = "";
+    for (var i = 0; i < 6; i++) {
+    var id = Math.ceil(Math.random() * 35);
+    res += chars[id];
+    }
+    $('#' + input_id).find("#sign_code").val(res);
+    }
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    {% for message in messages %}
+    if ($.cookie('toast_ctrl_att_cen') !== '{{ message }}') {
+    Materialize.toast('{{ message }}', 3000);
+    $.cookie('toast_ctrl_att_cen', '{{ message }}');
+    }
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+</script>
 {% endblock %}

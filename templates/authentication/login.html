@@ -32,7 +32,7 @@
         <div class="container login">
             <a class="waves-effect waves-orange btn-flat" onclick="window.history.go(-1);"
                style="position: absolute; top:10px; left:10px; padding: 0 1rem"><i class="material-icons large">arrow_back</i></a>
-            <form method="POST">
+            <form id="loginForm">
                 <div class="photo"></div>
                 <div class="row">
                     <a class="waves-effect waves-light btn col s6 orange disabled"
@@ -44,48 +44,43 @@
                 <div class="row">
                     <div class="input-field s10 m=8 l=6">
                         <i class="material-icons prefix"><i class="material-icons ">account_circle</i></i>
-                        {{ form.hidden_tag() }}
-                        {{ form.account }}
-                        {{ form.account.label }}
+                        <input type="text" id="account" name="account">
+                        <label for="account"></label>
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-field s10 m=8 l=6">
                         <i class="material-icons prefix"><i class="material-icons ">mode_edit</i></i>
-                        {{ form.password }}
-                        {{ form.password.label }}
+                        <input type="password" id="password" name="password">
+                        <label for="password"></label>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col s6 left-align">
-                        {{ form.remember_me }}
-                        {{ form.remember_me.label }}
-                    </div>
                     <div class="col s6 right-align">
                         <button class="btn waves-effect waves-light #ef5350 orange" type="submit">确定
                         </button>
                     </div>
                 </div>
                 {% with messages = get_flashed_messages(with_categories=true) %}
-                    <div class="row">
-                        {% if messages %}
-                            <ul id="flashes">
-                                {% for message in messages %}
-                                    {% if message[0] == 'message' %}
-                                        <li class="blue-grey-text" style="opacity: 0">
-                                            <i class="material-icons left">warning</i>
-                                            <span class="flow-text">{{ message[1] }}</span>
-                                        </li>
-                                    {% elif message[0] == '错误' %}
-                                        <li class="red-text" style="opacity: 0">
-                                            <i class="material-icons left">clear</i>
-                                            <span class="flow-text">{{ message[1] }}</span>
-                                        </li>
-                                    {% endif %}
-                                {% endfor %}
-                            </ul>
+                <div class="row">
+                    {% if messages %}
+                    <ul id="flashes">
+                        {% for message in messages %}
+                        {% if message[0] == 'message' %}
+                        <li class="blue-grey-text" style="opacity: 0">
+                            <i class="material-icons left">warning</i>
+                            <span class="flow-text">{{ message[1] }}</span>
+                        </li>
+                        {% elif message[0] == '错误' %}
+                        <li class="red-text" style="opacity: 0">
+                            <i class="material-icons left">clear</i>
+                            <span class="flow-text">{{ message[1] }}</span>
+                        </li>
                         {% endif %}
-                    </div>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </div>
                 {% endwith %}
             </form>
         </div>
@@ -212,8 +207,8 @@
 </style>
 <script type="text/javascript">
     $(document).ready(function () {
-        $('ul.tabs').tabs();
-        Materialize.showStaggeredList('#flashes');
+    $('ul.tabs').tabs();
+    Materialize.showStaggeredList('#flashes');
     });
 </script>
 </html>

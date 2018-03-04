@@ -26,7 +26,7 @@
         <div class="container login">
             <a class="waves-effect waves-orange btn-flat" onclick="window.history.go(-1);"
                style="position: absolute; top:10px; left:10px; padding: 0 1rem"><i class="material-icons large">arrow_back</i></a>
-            <form action={{ url_for('authentication.signin') }} method="POST">
+            <form id="signinForm">
                 <div class="photo"></div>
                 <div class="row">
                     <div>
@@ -37,47 +37,46 @@
                     </div>
                 </div>
                 <div class="row">
-                    {{ form.hidden_tag() }}
-                    {{ form.permission.label }}
-                    {{ form.permission }}
+                    <input type="text" id="permission" name="permission">
+                    <label for="permission"></label>
                 </div>
                 <div class="row" id="number">
                     <div class="input-field s10 m=8 l=6">
                         <i class="material-icons prefix"><i class="material-icons ">perm_identity</i></i>
-                        {{ form.account }}
-                        {{ form.account.label }}
+                        <input type="text" id="account" name="account">
+                        <label for="account"></label>
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-field s10 m=8 l=6">
                         <i class="material-icons prefix"><i class="material-icons ">mode_edit</i></i>
-                        {{ form.password }}
-                        {{ form.password.label }}
+                       <input type="text" id="password" name="password">
+                        <label for="password"></label>
                     </div>
                 </div>
                 <div class="row right-align">
                     <button class="btn waves-effect waves-light orange" type="submit">确定</button>
                 </div>
                 {% with messages = get_flashed_messages(with_categories=true) %}
-                    <div class="row">
-                        {% if messages %}
-                            <ul id="flashes">
-                                {% for message in messages %}
-                                    {% if message[0] == 'message' %}
-                                        <li class="blue-grey-text" style="opacity: 0">
-                                            <i class="material-icons left">warning</i>
-                                            <span class="flow-text">{{ message[1] }}</span>
-                                        </li>
-                                    {% elif message[0] == '错误' %}
-                                        <li class="red-text" style="opacity: 0">
-                                            <i class="material-icons left">clear</i>
-                                            <span class="flow-text">{{ message[1] }}</span>
-                                        </li>
-                                    {% endif %}
-                                {% endfor %}
-                            </ul>
+                <div class="row">
+                    {% if messages %}
+                    <ul id="flashes">
+                        {% for message in messages %}
+                        {% if message[0] == 'message' %}
+                        <li class="blue-grey-text" style="opacity: 0">
+                            <i class="material-icons left">warning</i>
+                            <span class="flow-text">{{ message[1] }}</span>
+                        </li>
+                        {% elif message[0] == '错误' %}
+                        <li class="red-text" style="opacity: 0">
+                            <i class="material-icons left">clear</i>
+                            <span class="flow-text">{{ message[1] }}</span>
+                        </li>
                         {% endif %}
-                    </div>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </div>
                 {% endwith %}
             </form>
         </div>
@@ -203,22 +202,22 @@
 </style>
 <script type="text/javascript">
     $(document).ready(function () {
-        $('select').material_select();
-        $('ul.tabs').tabs();
-        Materialize.showStaggeredList('#flashes');
+    $('select').material_select();
+    $('ul.tabs').tabs();
+    Materialize.showStaggeredList('#flashes');
     });
 
     function change() {
-        var val = document.getElementById("permission").value;
-        if (val == "学生") {
-            document.getElementsByTagName("label")[1].innerHTML = "学号";
-        }
-        else if (val == "老师") {
-            document.getElementsByTagName("label")[1].innerHTML = "工号";
-        }
-        else {
-            document.getElementsByTagName("label")[1].innerHTML = "帐号";
-        }
+    var val = document.getElementById("permission").value;
+    if (val == "学生") {
+    document.getElementsByTagName("label")[1].innerHTML = "学号";
+    }
+    else if (val == "老师") {
+    document.getElementsByTagName("label")[1].innerHTML = "工号";
+    }
+    else {
+    document.getElementsByTagName("label")[1].innerHTML = "帐号";
+    }
     }
 
     document.getElementById('permission').setAttribute("onchange", "change()");

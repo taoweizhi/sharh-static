@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-     <link rel="stylesheet" type="text/css" href="../../static/datepicker/css/pikaday.css">
+    <link rel="stylesheet" type="text/css" href="../../static/datepicker/css/pikaday.css">
     <script type="text/javascript" src="../../static/datepicker/js/pikaday.min.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!--Import materialize.css-->
@@ -31,28 +31,26 @@
 </nav>
 <div class="container">
     <div class="row">
-        <form action="{{ url_for(
-                        'profile.change_info') }}" method="POST">
+        <form id="profileForm">
             <div class="input-field s10 m=8 l=6">
                 <i class="material-icons prefix"><i class="material-icons ">person</i></i>
-                {{ form.hidden_tag() }}
-                {{ form.nickname }}
-                {{ form.nickname.label }}
+                <input type="text" id=" nickname" name=" nickname">
+                <label for=" nickname"></label>
             </div>
             <div class="input-field s10 m=8 l=6">
                 <i class="material-icons prefix"><i class="material-icons ">cake</i></i>
-                {{ form.birthday }}
-                {{ form.birthday.label }}
+               <input type="text" id="birthday" name="birthday">
+                <label for="birthday"></label>
             </div>
             <div class="input-field s10 m=8 l=6">
                 <i class="material-icons prefix"><i class="material-icons ">mail</i></i>
-                {{ form.email.label }}
-                {{ form.email }}
+               <input type="text" id="email" name="email">
+                <label for="email"></label>
             </div>
             <div class="input-field s10 m=8 l=6">
                 <i class="material-icons prefix"><i class="material-icons ">mode_edit</i></i>
-                {{ form.password.label }}
-                {{ form.password }}
+                <input type="password" id="password" name="password">
+                <label for="password"></label>
             </div>
             <div class="row">
                 {% for s in form.sex %}
@@ -100,11 +98,11 @@
     today.getFullYear();
     var picker = new Pikaday(
     {
-        field: document.getElementById('birthday'),
-        firstDay: 1,
-        minDate: new Date('1940-01-01'),
-        maxDate: new Date('250-12-31'),
-        yearRange: [1940,today.getFullYear()]
+    field: document.getElementById('birthday'),
+    firstDay: 1,
+    minDate: new Date('1940-01-01'),
+    maxDate: new Date('250-12-31'),
+    yearRange: [1940,today.getFullYear()]
     });
 
 </script>

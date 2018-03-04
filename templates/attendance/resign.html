@@ -28,14 +28,13 @@
 <!--背景-->
 <div class="container">
     <div class="main">
-        <form action="{{ url_for('attendance.resign', sign_name=sign_name) }}" method="POST">
-            {{ form.hidden_tag() }}
+        <form id="reAttendanceForm">
             <div class="main">
                 <div class="row">
                     <div class="input-field s10 m8 l8">
                         <i class="material-icons prefix"><i class="material-icons ">perm_identity</i></i>
-                        {{ form.account }}
-                        {{ form.account.label }}
+                           <input type="text" id="account"name="account">
+                           <label for="account"></label>
                     </div>
                 </div>
                 <div class="row">

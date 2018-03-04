@@ -27,17 +27,16 @@
 {#            </div>#}
 {#        </nav>#}
 {#    </div>#}
-{#    <form action="{{ url_for('profile.validate_phone') }}" method="POST">#}
-{#        {{ form.hidden_tag() }}#}
+{#    <form id="phoneForm">#}
 {#        <div class="input-field s10 m8 l8">#}
 {#            <i class="material-icons prefix"><i class="material-icons ">perm_identity</i></i>#}
-{#            {{ form.phone_number }}#}
-{#            {{ form.phone_number.label }}#}
+{#          <input type="text" id="phoneNumber" name="phoneNumber">#}
+{#           <label for="phoneNumber"></label>#}
 {#        </div>#}
 {#        <div class="input-field s10 m8 l8">#}
 {#            <i class="material-icons prefix"><i class="material-icons ">perm_identity</i></i>#}
-{#            {{ form.code }}#}
-{#            {{ form.code.label }}#}
+{#            <input type="text" id="code" name="code">#}
+{#           <label for="code"></label>#}
 {#        </div>#}
 {#        <div class="row">#}
 {#            <div class="button col s6 m6 l6">#}
@@ -84,18 +83,18 @@
             手机绑定
         </blockquote>
         <div class="card-panel">
-            <form action="{{ url_for('profile.validate_phone') }}" method="POST">
+            <form id="phoneForm">
                 {{ form.hidden_tag() }}
                 <div class="row"></div>
                 <div class="input-field s10 m8 l8">
                     <i class="material-icons prefix"><i class="material-icons ">perm_identity</i></i>
-                    {{ form.phone_number }}
-                    {{ form.phone_number.label }}
+                  <input type="text" id="phoneNumber" name="phoneNuber">
+                    <label for="phoneNumber"></label>
                 </div>
                 <div class="input-field s10 m8 l8">
                     <i class="material-icons prefix"><i class="material-icons ">info_outline</i></i>
-                    {{ form.code }}
-                    {{ form.code.label }}
+                    <input type="text"id="code"name="code">
+                    <label for="code"></label>
                 </div>
                 <div class="row"></div>
                 <div class="row">
