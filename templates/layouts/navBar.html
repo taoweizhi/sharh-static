@@ -1,0 +1,12 @@
+<nav id="global-nav" class="nav">
+  <div class="container">
+    <div class="pull-left"><h1 class="site-title">{{ logo }}</h1></div>
+    <div class="pull-right">
+      <ul class="nav-list">
+        {% for link in links %}
+        <li><a href={{link.href}}>{{link.title}}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</nav>
