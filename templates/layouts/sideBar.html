@@ -1,0 +1,21 @@
+<ul id="slide-out" class="side-nav fixed" style="transform: translateX(-100%);">
+    <li>
+        <div class="user-view">
+            <div class="background">
+                <img src="../../static/images/UserBg.png">
+            </div>
+            <!-- TODO:加入头像功能 -->
+            <a href=""><img class="circle" src="{{ side_info['avatar'] }}"></a>
+            <a href=""><span class="white-text name">{{ side_info['name'] }}</span></a>
+            <a href=""><span class="white-text email">{{ side_info['number'] }}</span></a>
+        </div>
+    </li>
+    <li></li>
+    {% for option in side_options %}
+        <li><a class="waves-effect" href="{{ option['href'] }}"><i
+                class="material-icons">{{ option['icon'] }}</i>{{ option['title'] }}</a></li>
+    {% endfor %}
+    <li><a class="subheader">平台相关</a></li>
+    <li><a class="waves-effect" href="">问题反馈</a></li>
+    <li><a class="waves-effect" href="">关于</a></li>
+</ul>

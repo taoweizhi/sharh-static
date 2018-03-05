@@ -6,11 +6,11 @@ body {
   position: fixed;
   top: 0;
   z-index: 9999;
-  height: 150px;
+  height: 125px;
   width: 100%;
   background: #E3C400;
   color: #fff;
-  line-height: 150px;
+  line-height: 125px;
   -webkit-transition: height .5s, line-height .5s; /* Safari */
   transition: height .5s, line-height .5s;
 }

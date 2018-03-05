@@ -1,12 +1,19 @@
-<nav id="global-nav" class="nav">
-  <div class="container">
-    <div class="pull-left"><h1 class="site-title">{{ logo }}</h1></div>
-    <div class="pull-right">
-      <ul class="nav-list">
-        {% for link in links %}
-        <li><a href={{link.href}}>{{link.title}}</a></li>
-        {% endfor %}
-      </ul>
+<nav id="global-nav" class="nav-extended orange accent-2">
+    <div class="nav-wrapper">
+        <ul id="tabs-slide" class="left">
+            <li><a href="#" data-activates="slide-out" class="hide-on-large-only side-nav-slide">
+                <i class="material-icons">menu</i></a>
+            </li>
+        </ul>
+        {% block navbar_content %}
+        {% endblock %}
     </div>
-  </div>
+    <div class="nav-content">
+        <ul id="tabs-slide" class="tabs tabs-transparent tabs-fixed-width">
+            <!-- navbar_tabs href对应tabs_content中标签的id-->
+            {% block navbar_tabs %}
+            {% endblock %}
+        </ul>
+    </div>
+
 </nav>

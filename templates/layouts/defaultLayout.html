@@ -1,40 +1,90 @@
+<!--
+    需要传入的参数：
+    links: list[dict]
+        'href':'',
+        'title':''
+    side_info: dict
+        'avatar':'',
+        'name':'',
+        'number':''
+    side_option: list[dict]
+        'href':'',
+        'icon':'',
+        'title':''
+-->
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 
 <head>
-  <meta charset="UTF-8">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <!--Import materialize.css-->
-  <link type="text/css" rel="stylesheet" href="../static/css/materialize.min.css"
-        media="screen,projection"/>
-  <link type="text/css" rel="stylesheet" href="../static/css/mobiscroll.custom-2.17.1.min.css">
-  <!--Let browser know website is optimized for mobile-->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta charset="utf-8">
-  <link rel='stylesheet prefetch' href='css/normalize.min.css'>
-  <link rel='stylesheet prefetch' href='css/bootstrap.min.css'>
-  <link rel="stylesheet" href="css/style.css">
-  <title>{{title}}</title>
-</head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="../static/css/materialize.min.css"
+          media="screen,projection"/>
+    <link type="text/css" rel="stylesheet" href="../static/css/mobiscroll.custom-2.17.1.min.css">
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="css/style.css">
+    <title>{{ title }}</title>
+    <style>
+        #global-nav {
+            position: fixed;
+            top: 0;
+            height: 125px;
+            line-height: 125px;
+            -webkit-transition: height .5s, line-height .5s; /* Safari */
+            transition: height .5s, line-height .5s;
+        }
 
+        .scrolled-nav .site-title {
+            font-size: 16px;
+        }
+
+        .scrolled-nav {
+            height: 60px !important;
+            line-height: 60px !important;
+        }
+
+        @media screen and (max-width: 992px) {
+            main, footer, nav {
+                padding-left: 0px !important;
+            }
+        }
+
+        main, nav {
+            padding-left: 300px;
+        }
+
+        footer {
+            height: 50px;
+            background: #333;
+            color: #fff;
+            padding-top: 18px;
+        }
+    </style>
+</head>
 <body>
 <header>
-  {% include "./NavBar.html" %}
-  {% include "./SideBar.html" %}
-
+    {% include "layouts/navBar.html" %}
+    {% include "layouts/sideBar.html" %}
 </header>
-{% block content %}
-{% endblock %}
-<footer>
-  <div class="container">
-    {% include "./FootBar.html" %}
-  </div>
-</footer>
+<main>
+    {% block content %}
+    {% endblock %}
+    <footer>
+        {% include "layouts/footerBar.html" %}
+    </footer>
+</main>
 <script type="text/javascript" src="../static/js/jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="../static/js/materialize.min.js"></script>
 <script type="text/javascript" src="../static/js/mobiscroll.custom-2.17.1.min.js"></script>
-<script  type="text/javascript" src="../static/js/common.min.js"></script>
+<script type="text/javascript" src="../static/js/common.min.js"></script>
 <script type="text/javascript" src="../static/js/form.min.js"></script>
+<script type="text/javascript">
+    $('.side-nav-slide').sideNav({'edge': 'left', draggable: true});
+</script>
 </body>
 </html>
 
