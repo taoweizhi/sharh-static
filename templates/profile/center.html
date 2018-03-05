@@ -7,7 +7,7 @@
     </ul>
 {% endblock %}
 {% block tabs_content %}
-    {#    <img class="bg" src="..\..\static\imgs\background.jpg"/>#}
+    {#    <img class="bg" src="..\..\static\images\background.jpg"/>#}
     <div class="container">
         <blockquote>个人中心</blockquote>
         <div class="container">
@@ -80,11 +80,10 @@
                 {% endfor %}
             </div>
             <div class="row">
-                <form id="">
+                <form id="infoForm">
                     <div class="col s12 m12 l12 textarea ">
-                        {{ form.hidden_tag() }}
-                        {{ form.info.label }}
-                        {{ form.info(class="materialize-textarea") }}
+                       <input type="text"id="info"name="info">
+                        <label for="info"></label>
                     </div>
                     <div class="button col s6 m6 l6">
                         <button class="btn waves-effect waves-light #ef5350 orange" type="submit" id="btn">确定
