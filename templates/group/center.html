@@ -1,6 +1,4 @@
 <!DOCTYPE html>
-<!--我加入的群组里模态id未改
-每个群的超链接未改-->
 <html>
 <head>
     <!--Import Google Icon Font-->
@@ -144,11 +142,11 @@
                 <div class="row valign-wrapper" style="margin-bottom: 0px">
                     <div class="col s2"><i class="material-icons black-text">event</i></div>
                     <div class="col s7"><span class="flow-text black-text">{{ group.name }}</span></div>
-                    <div class="col s3"><a href="#{{ group.id_ }}"
+                    <div class="col s3"><a href="#{{ group.id}}"
                                            class="btn btn-floating waves-effect waves-light modal-trigger orange">
                         ...</a>
                     </div>
-                    <div id="{{ group.id_ }}" class="modal modal-fixed-footer">
+                    <div id="{{ group.id }}" class="modal modal-fixed-footer">
                         <div class="modal-content">
                             <h3>{{group.name}}</h3>
                             <h5>群号</h5>
