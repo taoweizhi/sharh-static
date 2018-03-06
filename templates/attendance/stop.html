@@ -1,6 +1,17 @@
-{% extends "layout_back.html" %}
+<!--
+    status:
+    sign_code:
+    need_sign_num:
+    actual_sign_num:
+    not_sign_users: list(user)
+    sign_users: list(user)
+    sign_name:
+
+    message
+-->
+{% extends "layouts/defaultLayout.html" %}
 {% block tabs_content %}
-    <img src="{{ url_for("get_image",imagep="stop_background.jpg") }}">
+    <img src="../../static/images/stop_background.jpg">
     <div class="container">
         {% if status %}
             <div class="row center" style="padding-top: 20%">

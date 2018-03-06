@@ -1,16 +1,25 @@
-{% extends "layout_tab.html" %}
+{#
+    Params:
+
+    enumerate
+    day_courses: dict[course] -> key为小节号 1-14 14为网课
+        course.name
+        course.location
+
+    current_day: time -> 当前所在日期的时间
+
+#}
 
 
+{% extends "layouts/defaultLayout.html" %}
 {% block navbar_content %}
-    <ul class="right">
-        <li><a href={{ url_for('schedule.toweek_course_') }}>本周课程</a></li>
-        <li>
-            <a class="datepicker">
-                <i class="material-icons right">arrow_drop_down</i>
-                {{ day.year }}.{{ day.month }}.{{ day.day }}
-            </a>
-        </li>
-    </ul>
+    <li><a href={{ url_for('schedule.toweek_course_') }}>本周课程</a></li>
+    <li>
+        <a class="datepicker">
+            <i class="material-icons right">arrow_drop_down</i>
+            {{ time.tm_year }}.{{ time.tm_mon }}.{{ time.tm_mday }}
+        </a>
+    </li>
 {% endblock %}
 
 
@@ -27,38 +36,36 @@
                 课程
             </blockquote>
             <ul class="collapsible popout" data-collapsible="accordion" id="collapsible_offline">
-                {% for sec in Section %}
-                    {% if sec.value in [1,4,6,8,11] %}
-                        {% if day_courses[sec.name][0] %}
-                            <li>
-                                <div class="collapsible-header">
-                                    <i class="material-icons">event</i>
-                                    第{{ Sectionl[sec.name] }}大节
-                                </div>
-                                <div class="collapsible-body">
-                                    {% for course in day_courses[sec.name] %}
-                                        {{ course.name }}
-                                        <br>
-                                        {{ course.location }}
-                                    {% endfor %}
-                                </div>
-                            </li>
-                        {% else %}
-                            <li>
-                                <div class="collapsible-header">
-                                    <i class="material-icons">event</i>
-                                    第{{ Sectionl[sec.name] }}大节
-                                </div>
-                                <div class="collapsible-body">
-                                    无
-                                </div>
-                            </li>
-                        {% endif %}
+                {% for _i, sec in enumerate([1,4,6,8,11]) %}
+                    {% if day_courses[sec] %}
+                        <li>
+                            <div class="collapsible-header">
+                                <i class="material-icons">event</i>
+                                第{{ (['一','二','三','四','五'])[_i] }}大节
+                            </div>
+                            <div class="collapsible-body">
+                                {% for course in day_courses[sec] %}
+                                    {{ course.name }}
+                                    <br>
+                                    {{ course.location }}
+                                {% endfor %}
+                            </div>
+                        </li>
+                    {% else %}
+                        <li>
+                            <div class="collapsible-header">
+                                <i class="material-icons">event</i>
+                                第{{ (['一','二','三','四','五'])[_i] }}大节
+                            </div>
+                            <div class="collapsible-body">
+                                无
+                            </div>
+                        </li>
                     {% endif %}
                 {% endfor %}
             </ul>
         </div>
-        <div id="course_online" class="col s12" >
+        <div id="course_online" class="col s12">
             <blockquote>
                 线上课程
             </blockquote>
@@ -70,7 +77,7 @@
                             线上课程
                         </div>
                         <div class="collapsible-body">
-                            {% for course in day_courses[Section.online.name] %}
+                            {% for course in day_courses[14] %}
                                 {{ course.name }}
                                 <br>
                                 {{ course.location }}
@@ -105,9 +112,7 @@
     </style>
     <script type="text/javascript">
         $(document).ready(function () {
-
             $('.collapsible').collapsible();
-
             $('.datepicker').pickadate({
                 selectMonths: true, // Creates a dropdown to control month
                 selectYears: 3,
@@ -116,14 +121,12 @@
                 close: '跳转',
                 closeOnSelect: false
             });
-
             $(".picker__close").bind("click", function () {
                 var year = $(".picker__year>div").text();
                 var month = $(".picker__select--month option:selected").toString();
                 var day = $(".picker__day-display").text();
                 alert(year + month + day);
             });
-
             $("#collapsible_online").collapsible('open', 0);
             var s1 = (new Date()).setHours(10, 25);
             var s2 = (new Date()).setHours(12, 15);
@@ -141,7 +144,5 @@
             else
                 $("#collapsible_offline").collapsible('open', 4);
         });
-
-
     </script>
 {% endblock %}

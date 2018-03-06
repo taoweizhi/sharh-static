@@ -182,22 +182,24 @@
 
     .card-panel {
         position: absolute;
-        top: 40px;
-        bottom: 40px;
-        left: 20px;
-        right: 20px;
+        top: 50%;
+        left: 50%;
+        min-width: 420px;
+        min-height: 540px;
+        transform: translateY(-50%) translateX(-50%);
     }
 
     .row {
         margin-bottom: 10px;
     }
 
-    .dropdown-content li > a, .dropdown-content li > span {
-        color: #ff9800;
-    }
-
     .btn i, .btn-large i, .btn-floating i, .btn-large i, .btn-flat i {
         font-size: 1.8rem;
+    }
+
+    [type="checkbox"]:checked + label:before {
+        border-bottom: 2px solid #f98000;
+        border-right: 2px solid #f98000;
     }
 </style>
 <script type="text/javascript">

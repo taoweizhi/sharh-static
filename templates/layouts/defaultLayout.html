@@ -1,5 +1,9 @@
 <!--
-    需要传入的参数：
+    对于每个页面都需要传入的参数：
+
+    enumerate 内置函数
+
+    title: str
     links: list[dict]
         'href':'',
         'title':''
@@ -12,6 +16,9 @@
         'icon':'',
         'title':''
 -->
+{% macro nav_link(name, class, type='text', size=20) -%}
+
+{%- endmacro %}
 
 <!DOCTYPE html>
 <html lang="zh">
@@ -26,14 +33,14 @@
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="css/style.css">
+    {#    <link type="text/css" rel="stylesheet" href="css/style.css">#}
     <title>{{ title }}</title>
     <style>
         #global-nav {
             position: fixed;
             top: 0;
-            height: 125px;
-            line-height: 125px;
+            height: 112px;
+            line-height: 60px;
             -webkit-transition: height .5s, line-height .5s; /* Safari */
             transition: height .5s, line-height .5s;
         }
@@ -42,13 +49,21 @@
             font-size: 16px;
         }
 
+        .scrolled-nav .nav-content {
+            display: none;
+        }
+
         .scrolled-nav {
             height: 60px !important;
             line-height: 60px !important;
         }
 
         @media screen and (max-width: 992px) {
-            main, footer, nav {
+            #global-nav {
+                height: 104px;
+            }
+
+            main, nav, footer {
                 padding-left: 0px !important;
             }
         }
@@ -67,14 +82,49 @@
 </head>
 <body>
 <header>
-    {% include "layouts/navBar.html" %}
-    {% include "layouts/sideBar.html" %}
+    <ul id="slide-out" class="side-nav fixed">
+        <li>
+            <div class="user-view">
+                <div class="background">
+                    <img src="">
+                </div>
+                <!-- TODO:加入头像功能 -->
+                <a href=""><img class="circle" src="{{ side_info['avatar'] }}"></a>
+                <a href=""><span class="white-text name">{{ side_info['name'] }}</span></a>
+                <a href=""><span class="white-text email">{{ side_info['number'] }}</span></a>
+            </div>
+        </li>
+        <li></li>
+        {% for option in side_options %}
+            <li><a class="waves-effect" href="{{ option['href'] }}"><i
+                    class="material-icons">{{ option['icon'] }}</i>{{ option['title'] }}</a></li>
+        {% endfor %}
+        <li><a class="subheader">平台相关</a></li>
+        <li><a class="waves-effect" href="">问题反馈</a></li>
+        <li><a class="waves-effect" href="">关于</a></li>
+    </ul>
+    <nav id="global-nav" class="nav-extended orange accent-2">
+        <div class="nav-wrapper">
+            <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
+            <ul id="nav-mobile" class="right">
+                {% block navbar_content %}
+                {% endblock %}
+            </ul>
+        </div>
+        <div class="nav-content">
+            <ul class="tabs tabs-transparent tabs-fixed-width">
+                {% block navbar_tabs %}
+                {% endblock %}
+            </ul>
+        </div>
+    </nav>
 </header>
 <main>
     {% block content %}
     {% endblock %}
     <footer>
-        {% include "layouts/footerBar.html" %}
+        <div class="container">© 2017-2018 ShareH, All rights reserved.
+            <a class="grey-text text-lighten-4 right" href="">NJUST License</a></div>
     </footer>
 </main>
 <script type="text/javascript" src="../static/js/jquery-3.2.1.min.js"></script>
@@ -83,8 +133,12 @@
 <script type="text/javascript" src="../static/js/common.min.js"></script>
 <script type="text/javascript" src="../static/js/form.min.js"></script>
 <script type="text/javascript">
-    $('.side-nav-slide').sideNav({'edge': 'left', draggable: true});
+    $(document).ready(function () {
+        $(".button-collapse").sideNav();
+    });
 </script>
+{% block script_content %}
+{% endblock %}
 </body>
 </html>
 

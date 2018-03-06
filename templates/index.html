@@ -1,4 +1,11 @@
-<!--TODO:考虑将应用封装为一个列表，每一个元素包含"name":"str","url":"str","icon":"url"-->
+<!--
+    user
+    功能列表
+     funclist_ess = [['课表', url_for('get_image', imagep="Course.png"), url_for('schedule.today_course_'), 0],
+                    ['签到', url_for('get_image', imagep="Attendance.png"), url_for('attendance.center'), 1],
+                    ['个人中心', url_for('get_image', imagep="Person.png"), url_for('profile.profile'), 0],
+                    ['生日', url_for('get_image', imagep="Birth.png"), url_for('birthday.center'), 0]]
+-->
 {% extends "layout_bar_only.html" %}
 {% block navbar_content %}
     <ul class="right">
@@ -16,28 +23,28 @@
     <div class="slider">
         <ul class="slides">
             <li>
-                <img src="{{ url_for('get_image',imagep="index1.jpg") }}"> <!-- random image -->
+                <img src="../static/images/index1.jpg"> <!-- random image -->
                 <div class="caption center-align">
                     <h4>欢迎回来</h4>
                     <h5 class="light grey-text text-lighten-3"></h5>
                 </div>
             </li>
             <li>
-                <img src="{{ url_for('get_image',imagep="index2.jpg") }}"> <!-- random image -->
+                <img src="../static/images/index2.jpg"> <!-- random image -->
                 <div class="caption left-align">
                     <h4>Stay hungry, Stay foolish</h4>
                     <h5 class="light grey-text text-lighten-3">Steve Jobs.</h5>
                 </div>
             </li>
             <li>
-                <img src="{{ url_for('get_image',imagep="index3.jpg") }}"> <!-- random image -->
+                <img src="../static/images/index3.jpg"> <!-- random image -->
                 <div class="caption right-align">
                     <h4>不积跬步，无以至千里。不积小流，无以成江河。</h4>
                     <h5 class="light grey-text text-lighten-3">荀子</h5>
                 </div>
             </li>
             <li>
-                <img src="{{ url_for('get_image',imagep="index4.jpg") }}"> <!-- random image -->
+                <img src="../static/images/index4.jpg"> <!-- random image -->
                 <div class="caption center-align">
                     <h4>科学赐于人类最大的礼物是什么呢？是使人类相信真理的力量。</h4>
                     <h5 class="light grey-text text-lighten-3">康普顿</h5>
@@ -96,7 +103,7 @@
             text-shadow: 0px 2px 4px #000;
         }
     </style>
-    <script type="text/javascript" src="../../static/js/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../static/js/jquery.cookie.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             $('.collapsible').collapsible();

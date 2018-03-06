@@ -1,82 +1,4 @@
-{#<!DOCTYPE html>#}
-{#<html>#}
-{#<head>#}
-{#    <!--Import Google Icon Font-->#}
-{#    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">#}
-{#    <!--Import materialize.css-->#}
-{#    <link type="text/css" rel="stylesheet" href="../static/materialize/css/materialize.min.css"#}
-{#          media="screen,projection"/>#}
-{#    <!--Let browser know website is optimized for mobile-->#}
-{#    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>#}
-{#    <meta charset="utf-8">#}
-{#    <title>{{ title }}</title>#}
-{#</head>#}
-{#<body>#}
-{#<!--Import jQuery before materialize.js-->#}
-{#<script type="text/javascript" src="../static/js/jquery-3.2.1.min.js"></script>#}
-{#<script type="text/javascript" src="../static/js/materialize.min.js"></script>#}
-{#<!--背景-->#}
-{#<div id="background" style="position:absolute;z-index:-1;width:100%;height:100%;top:0px;left:0px;">#}
-{#    <img src="..\..\static\images\stop_background.jpg" width="100%" height="100%"/>#}
-{#</div>#}
-{#<div class="container">#}
-{#    <div class="row">#}
-{#        <nav>#}
-{#            <div class="nav-wrapper orange accent-2 ">#}
-{#                <a href="#" class="brand-logo orange accent-2 center">绑定手机号</a>#}
-{#            </div>#}
-{#        </nav>#}
-{#    </div>#}
-{#    <form id="phoneForm">#}
-{#        <div class="input-field s10 m8 l8">#}
-{#            <i class="material-icons prefix"><i class="material-icons ">perm_identity</i></i>#}
-{#          <input type="text" id="phoneNumber" name="phoneNumber">#}
-{#           <label for="phoneNumber"></label>#}
-{#        </div>#}
-{#        <div class="input-field s10 m8 l8">#}
-{#            <i class="material-icons prefix"><i class="material-icons ">perm_identity</i></i>#}
-{#            <input type="text" id="code" name="code">#}
-{#           <label for="code"></label>#}
-{#        </div>#}
-{#        <div class="row">#}
-{#            <div class="button col s6 m6 l6">#}
-{##}
-{#                <input class="btn waves-effect waves-light #ef5350 orange" type="button" id="btn" value="获取验证码"#}
-{#                       onclick="settime(this)"/>#}
-{#            </div>#}
-{#        </div>#}
-{#        <div class="row">#}
-{#            <div class="button col s6 m6 l6">#}
-{#                <button class="btn waves-effect waves-light #ef5350 orange" type="submit">确定#}
-{#                </button>#}
-{#            </div>#}
-{#        </div>#}
-{#    </form>#}
-{#</div>#}
-{#</body>#}
-{#</html>#}
-{#<script type="text/javascript">#}
-{#    var countdown = 60;#}
-{##}
-{#    function settime(val) {#}
-{#        if (countdown == 0) {#}
-{#            val.removeAttribute("disabled");#}
-{#            val.value = "重新发送";#}
-{#            countdown = 60;#}
-{#        } else {#}
-{#            val.setAttribute("disabled", true);#}
-{#            val.value = "重新发送(" + countdown + ")";#}
-{#            countdown--;#}
-{#            setTimeout(function () {#}
-{#                settime(val)#}
-{#            }, 1000)#}
-{#        }#}
-{#    }#}
-{##}
-{##}
-{#</script>#}
-
-{% extends "layout_back.html" %}
+{% extends "layouts/backLayout.html" %}
 {% block tabs_content %}
     <div class="container">
         <blockquote>
@@ -84,7 +6,6 @@
         </blockquote>
         <div class="card-panel">
             <form id="phoneForm">
-                {{ form.hidden_tag() }}
                 <div class="row"></div>
                 <div class="input-field s10 m8 l8">
                     <i class="material-icons prefix"><i class="material-icons ">perm_identity</i></i>

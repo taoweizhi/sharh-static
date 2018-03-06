@@ -1,6 +1,4 @@
-{% extends "layout_tab.html" %}
-
-
+{% extends "layouts/defaultLayout.html" %}
 {% block navbar_content %}
     <ul class="right">
         <li><a href={{ url_for('schedule.today_course_') }}>今日课程</a></li>
@@ -9,7 +7,7 @@
     </ul>
     <ul id="dropdown1" class="dropdown-content">
         {% for w in total_weeks %}
-            <li><a href={{ url_for('schedule.toweek_course',week=w) }} class="orange-text darken-2">第{{ w }}周</a></li>
+            <li><a href="{{ url_for('schedule.toweek_course',week=w) }}" class="orange-text darken-2">第{{ w }}周</a></li>
         {% endfor %}
     </ul>
 {% endblock %}
@@ -21,7 +19,7 @@
 {% endblock %}
 
 
-{% block tabs_content %}
+{% block content %}
     <div class="container">
         <div id="course_offline" class="col s12">
             <blockquote>
@@ -60,25 +58,26 @@
                         {% endfor %}
                     </tr>
                 {% endfor %}
-                {#                {% for sec in Section %}#}
-                {#                    {% if sec.value in [1,4,6,8,11] %}#}
-                {#                        <tr>#}
-                {#                            <td id="sec_text_{{ Sectionl[sec.name] }}">#}
-                {#                                第{{ Sectionl[sec.name] }}大节&nbsp;&nbsp;#}
-                {#                            </td>#}
-                {#                            {% for day, courses in week_courses.items() %}#}
-                {#                                <td id="course_text">#}
-                {#                                    {% for course in courses[sec.name] %}#}
-                {#                                        {{ course.name }}#}
-                {#                                        <br>#}
-                {#                                        {{ course.location }}#}
-                {#                                        <br>#}
-                {#                                    {% endfor %}#}
-                {#                                </td>#}
-                {#                            {% endfor %}#}
-                {#                        </tr>#}
-                {#                    {% endif %}#}
-                {#                {% endfor %}#}
+{#
+                {% for sec in Section %}
+                    {% if sec.value in [1,4,6,8,11] %}
+                        <tr>
+                            <td id="sec_text_{{ Sectionl[sec.name] }}">
+                                第{{ Sectionl[sec.name] }}大节&nbsp;&nbsp;
+                            </td>
+                            {% for day, courses in week_courses.items() %}
+                                <td id="course_text">
+                                    {% for course in courses[sec.name] %}
+                                        {{ course.name }}
+                                        <br>
+                                        {{ course.location }}
+                                        <br>
+                                    {% endfor %}
+                                </td>
+                            {% endfor %}
+                        </tr>
+                    {% endif %}
+                {% endfor %}#}
                 </tbody>
             </table>
         </div>
@@ -121,7 +120,7 @@
 
 {% block script_content %}
     <style>
-        td{
+        td {
             border-bottom: 1px solid #e0e0e0 !important;
         }
     </style>

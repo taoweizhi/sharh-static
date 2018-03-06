@@ -1,4 +1,13 @@
 {% extends "layouts/defaultLayout.html" %}
+{% block navbar_content %}
+    <li>
+        <input type="text" class="datepicker" id="date-picker">
+    </li>
+{% endblock %}
+
+{% block navbar_tabs %}
+{% endblock %}
+
 {% block content %}
     <br>
     <br>
@@ -40,4 +49,25 @@
     <br>
     <br>
     <br>
+{% endblock %}
+
+{% block script_content %}
+    <script type="text/javascript">
+        $('.datepicker').pickadate({
+            selectMonths: true, // Creates a dropdown to control month
+            selectYears: 3,
+            today: '今天',
+            clear: '清空',
+            close: '跳转',
+            closeOnSelect: false
+        });
+
+        $(".picker__close").bind('click', function () {
+            var year = $(".picker__year>div").text();
+            var month = $(".picker__select--month option:selected").toString();
+            var day = $(".picker__day-display").text();
+            alert(year + month + day);
+        });
+        $("#collapsible_online").collapsible('open', 0);
+    </script>
 {% endblock %}

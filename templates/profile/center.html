@@ -1,4 +1,7 @@
-{% extends "layout_back.html" %}
+<!--
+    user
+-->
+{% extends "layouts/backLayout.html" %}
 {% block navbar_content %}
     <ul class="right">
         <li>
@@ -15,7 +18,7 @@
                 <div class="col s6" style="padding: 0 .2rem">
                     <div class="card-panel z-depth-1 center" style="height: 192px">
                         <div class="row">
-                            <img src="{{ url_for('get_image',imagep='avatar.jpg') }}" class="circle avatar" style="{height: 64px; width:64px;}">
+                            <img src="../../static/images/avatar.jpg" class="circle avatar" style="{height: 64px; width:64px;}">
                         </div>
                         <span class="flow-text">头像</span>
                         <div class="row">
@@ -37,7 +40,7 @@
                                 <span class="flow-text">
                                     {% if user.permission.name == "student" %}
                                         {% set
-                                            list={"性别":user.sex.value,
+                                            profile_dict={"性别":user.sex.value,
                                                   "生日":user.birthday,
                                                   "学号":user.student.number,
                                                   "学院":user.student.faculty,
@@ -46,7 +49,7 @@
                                         {{ user.student.name }}
                                     {% elif user.permission.name == "teacher" %}
                                         {% set
-                                            list={"性别":user.sex.value,
+                                            profile_dict={"性别":user.sex.value,
                                                   "生日":user.birthday,
                                                   "工号":user.teacher.number,
                                                   "隶属部门":user.teacher.faculty,
@@ -64,7 +67,7 @@
                         </div>
                     </div>
                 </div>
-                {% for name,info in list.items() %}
+                {% for name, info in profile_dict.items() %}
                     <div class="col s6" style="padding: 0 .2rem">
                         <div class="card-panel z-depth-1" style="padding-top: 0px; height: 100px">
                             <div class="row">
@@ -72,7 +75,7 @@
                                     <blockquote>
                                         {{ name }}
                                     </blockquote>
-                                    <span class="flow-text">{{ info }}</span>
+                                    <span class="flow-text">{% if info %}{{ info }}{% else %}{{ "tan90" }}{% endif %}</span>
                                 </div>
                             </div>
                         </div>
@@ -82,7 +85,7 @@
             <div class="row">
                 <form id="infoForm">
                     <div class="col s12 m12 l12 textarea ">
-                       <input type="text"id="info"name="info">
+                       <input type="text" id="info" name="info">
                         <label for="info"></label>
                     </div>
                     <div class="button col s6 m6 l6">

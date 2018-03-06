@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!--TODO: 之后可以对整体色彩进行调整-->
+    <!--
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="../static/materialize/css/materialize.min.css"
+          media="screen,projection"/>
+    <link type="text/css" rel="stylesheet" href="../../static/mobiscroll/css/mobiscroll.custom-2.17.1.css">
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="utf-8">
+    {% if title %}
+        <title>{{ title }}</title>
+    {% else %}
+        <title></title>
+    {% endif %}
+</head>
+<body>
+<!--Import jQuery before materialize.js-->
+<script type="text/javascript" src="../../static/js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="../../static/js/materialize.min.js"></script>
+<script type="text/javascript" src="../../static/js/mobiscroll.custom-2.17.1.min.js"></script>
+<header>
+</header>
+<main>
+    <nav>
+        <div class="nav-wrapper orange accent-2">
+            <ul id="nav-mobile" class="left">
+                <li><a onclick="window.history.go(-1);"><i class="material-icons">chevron_left</i></a>
+                </li>
+            </ul>
+            {% block navbar_content %}
+            {% endblock %}
+        </div>
+    </nav>
+    {% block tabs_content %}
+    {% endblock %}
+</main>
+</body>
+<style>
+    blockquote {
+        border-left: 4px solid #ffb74d;
+    }
+</style>
+<script type="text/javascript">
+</script>
+{% block script_content %}
+{% endblock %}
+</html>
