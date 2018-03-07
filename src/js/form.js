@@ -156,6 +156,7 @@ $.fn.serializeJSON = function () {
 };
 
 $.afterPOST = (action) => (url) => (form) => {
+  alert(form);
   $.post(url, $(form).serializeArray(), defaultAction(action))
 };
 
