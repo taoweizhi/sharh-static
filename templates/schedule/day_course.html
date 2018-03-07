@@ -36,7 +36,7 @@
                 课程
             </blockquote>
             <ul class="collapsible popout" data-collapsible="accordion" id="collapsible_offline">
-                {% for _i, sec in enumerate([1,4,6,8,11]) %}
+                {% for _i, sec in enumerate([Section(1),Section(4),Section(6),Section(8),Section(11)]) %}
                     {% if day_courses[sec] %}
                         <li>
                             <div class="collapsible-header">

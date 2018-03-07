@@ -16,10 +16,6 @@
         'icon':'',
         'title':''
 -->
-{% macro nav_link(name, class, type='text', size=20) -%}
-
-{%- endmacro %}
-
 <!DOCTYPE html>
 <html lang="zh">
 
@@ -61,6 +57,10 @@
         @media screen and (max-width: 992px) {
             #global-nav {
                 height: 104px;
+            }
+
+            .page-content {
+                margin-top:104px;
             }
 
             main, nav, footer {
@@ -120,19 +120,21 @@
     </nav>
 </header>
 <main>
+    <div class="page-content">
     {% block content %}
     {% endblock %}
+    </div>
     <footer>
         <div class="container">© 2017-2018 ShareH, All rights reserved.
-            <a class="grey-text text-lighten-4 right" href="">NJUST License</a></div>
+            <a class="grey-text text-lighten-4 right" href="">NJUST</a></div>
     </footer>
 </main>
-<script type="text/javascript" src="../static/js/jquery-3.2.1.min.js"></script>
-<script type="text/javascript" src="../static/js/materialize.min.js"></script>
-<script type="text/javascript" src="../static/js/mobiscroll.custom-2.17.1.min.js"></script>
-<script type="text/javascript" src="../static/js/common.min.js"></script>
-<script type="text/javascript" src="../static/js/form.min.js"></script>
-<script type="text/javascript">
+<script type="text/javascript" src="../static/js/jquery-3.2.1.min.js" async></script>
+<script type="text/javascript" src="../static/js/materialize.min.js" async></script>
+<script type="text/javascript" src="../static/js/mobiscroll.custom-2.17.1.min.js" async></script>
+<script type="text/javascript" src="../static/js/common.min.js" async></script>
+<script type="text/javascript" src="../static/js/form.min.js" async></script>
+<script type="text/javascript" async>
     $(document).ready(function () {
         $(".button-collapse").sideNav();
     });
