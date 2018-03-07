@@ -1,58 +1,79 @@
 {% extends "layouts/backLayout.html" %}
 {% block content %}
-<div class="container">
-  <blockquote>
-    手机绑定
-  </blockquote>
-  <div class="card-panel">
-    <form id="phoneForm">
-      <div id="section1" class="row">
-        <div class="input-field col s8">
-          <i class="material-icons prefix">phone</i>
-          <input id="phoneNumber" name="phoneNumber" type="tel" value="">
-          <label for="phoneNumber">手机号</label>
+    <div class="container">
+        <blockquote>
+            手机绑定
+        </blockquote>
+        <div class="card-panel">
+            <form id="phoneForm">
+                <div id="section1" class="row">
+                    <div class="input-field col s8">
+                        <i class="material-icons prefix">phone</i>
+                        <input id="phoneNumber" name="phoneNumber" type="tel" value="">
+                        <label for="phoneNumber">手机号</label>
+                    </div>
+                    <div class="col s2">
+                        <a id="sendSms" class="btn waves-effect waves-teal btn-flat" onclick="sendSms()">获取验证码</a>
+                    </div>
+                </div>
+                <div id="section2" class="row">
+                    <div class="input-field col s10 m8 l8">
+                        <i class="material-icons prefix"><i class="material-icons ">confirmation_number</i></i>
+                        <input type="text" id="code" name="code">
+                        <label for="code">验证码</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <button class="btn waves-effect waves-light" type="submit">提交
+                        <i class="material-icons right">send</i>
+                    </button>
+                </div>
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    <div class="row">
+                        {% if messages %}
+                            <ul id="flashes">
+                                {% for message in messages %}
+                                    {% if message[0] == 'message' %}
+                                        <li class="blue-grey-text" style="opacity: 0">
+                                            <i class="material-icons left">warning</i>
+                                            <span class="flow-text">{{ message[1] }}</span>
+                                        </li>
+                                    {% elif message[0] == '错误' %}
+                                        <li class="red-text" style="opacity: 0">
+                                            <i class="material-icons left">clear</i>
+                                            <span class="flow-text">{{ message[1] }}</span>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                {% endwith %}
+            </form>
         </div>
-        <div class="col s2">
-          <a id="sendSms" class="btn waves-effect waves-teal btn-flat" onclick="sendSms()">获取验证码</a>
-        </div>
-      </div>
-      <div id="section2" class="row">
-        <div class="input-field col s10 m8 l8">
-          <i class="material-icons prefix"><i class="material-icons ">confirmation_number</i></i>
-          <input type="text" id="code" name="code">
-          <label for="code">验证码</label>
-        </div>
-      </div>
-      <div class="row">
-        <button class="btn waves-effect waves-light" type="submit">提交
-          <i class="material-icons right">send</i>
-        </button>
-      </div>
-      {% with messages = get_flashed_messages(with_categories=true) %}
-      <div class="row">
-        {% if messages %}
-        <ul id="flashes">
-          {% for message in messages %}
-          {% if message[0] == 'message' %}
-          <li class="blue-grey-text" style="opacity: 0">
-            <i class="material-icons left">warning</i>
-            <span class="flow-text">{{ message[1] }}</span>
-          </li>
-          {% elif message[0] == '错误' %}
-          <li class="red-text" style="opacity: 0">
-            <i class="material-icons left">clear</i>
-            <span class="flow-text">{{ message[1] }}</span>
-          </li>
-          {% endif %}
-          {% endfor %}
-        </ul>
-        {% endif %}
-      </div>
-      {% endwith %}
-    </form>
-  </div>
-</div>
+    </div>
 {% endblock %}
 {% block script_content %}
+    <script type="text/javascript">
+        var remindTime = 0;
+        var timerHandler;
+        $(document).ready(function () {
+                $('#sendSms').bind('click', function () {
+                    remindTime = 60;
+                    $('#sendSms').addClass('disabled').text(remindTime.toString() + '秒后再次获取');
+                    timerHandler = setInterval(UpdateTimer, 1000);
+                });
+            }
+        );
 
+        function UpdateTimer() {
+            if (remindTime <= 0) {
+                $('#sendSms').removeClass('disabled').text('获取验证码');
+                clearInterval(timerHandler);
+            } else {
+                remindTime -= 1;
+                $('#sendSms').text(remindTime.toString() + '秒后再次获取');
+            }
+        }
+    </script>
 {% endblock %}
