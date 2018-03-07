@@ -13,8 +13,12 @@
 </head>
 <body>
 <!--Import jQuery before materialize.js-->
+<script type="text/javascript" src="../../static/js/common.min.js" ></script>
 <script type="text/javascript" src="../../static/js/jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="../../static/js/materialize.min.js"></script>
+<script type="text/javascript" src="../../static/js/jquery.validate.min.js"></script>
+<script type="text/javascript" src="../../static/js/messages_zh.min.js"></script>
+<script type="text/javascript" src="../../static/js/form.min.js"></script>
 <!--背景-->
 <div id="background" style="
         position:absolute;
@@ -32,7 +36,7 @@
         <div class="container login">
             <a class="waves-effect waves-orange btn-flat" onclick="window.history.go(-1);"
                style="position: absolute; top:10px; left:10px; padding: 0 1rem"><i class="material-icons large">arrow_back</i></a>
-            <form id="loginForm">
+            <form id="loginForm" method="post">
                 <div class="photo"></div>
                 <div class="row">
                     <a class="waves-effect waves-light btn col s6 orange disabled"
