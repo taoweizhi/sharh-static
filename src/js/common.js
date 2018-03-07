@@ -23,48 +23,12 @@ $(document).ready(function () {
 
 });
 
-const signinFormHandler = (result) =
->
-{
-}
-;
-const loginFormHandler = (result) =
->
-{
-}
-;
-const phoneFormHandler = (result) =
->
-{
-}
-;
-const profileFormHandler = (result) =
->
-{
-}
-;
-const attendanceFormHandler = (result) =
->
-{
-}
-;
-const reAttendanceFormHandler = (result) =
->
-{
-}
-;
-const infoFormHandler = (result) =
->
-{
-}
-;
-const codeSubmitFormHandler = (result) =
->
-{
-}
-;
-const groupFormHandler = (result) =
->
-{
-}
-;
+const signinFormHandler = (result) => {};
+const loginFormHandler = (result) =>{};
+const phoneFormHandler = (result) => {};
+const profileFormHandler = (result) =>{};
+const attendanceFormHandler = (result) => {};
+const reAttendanceFormHandler = (result) =>{};
+const infoFormHandler = (result) =>{};
+const codeSubmitFormHandler = (result) => {};
+const groupFormHandler = (result) =>{};
