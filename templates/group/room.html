@@ -1,0 +1,160 @@
+{% extends "layouts/defaultLayout.html" %}
+{% block navbar_contents %}
+    <li><a href=""><i class="material-icons right">add</i></a></li>
+    <li><a href="#manage" class="modal-trigger"><i class="material-icons right">settings</i>管理群</a></li>
+    <div id="manage" class="modal modal-fixed-footer">
+        <div class="modal-content">
+            <h4>管理群</h4>
+
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">关闭</a>
+        </div>
+    </div>
+{% endblock %}
+{% block content %}
+    <div class="container" id="chat-body"></div>
+    <div class="row">
+        <form class="col s10 l11">
+            <div class="row">
+                <div class="input-field col s6">
+                    <i class="material-icons prefix">mode_edit</i>
+                    <textarea id="icon_prefix2" class="materialize-textarea"></textarea>
+                    <label for="icon_prefix2">First Name</label>
+                </div>
+            </div>
+        </form>
+        <div class="col s2 l1">
+            <a class="btn-floating btn-large waves-effect waves-light orange"><i class="material-icons">send</i></a>
+        </div>
+    </div>
+{% endblock %}
+{% block script_content %}
+    <style>
+        @import url(https://fonts.googleapis.com/css?family=Roboto);
+
+        .msg {
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            opacity: 0.9;
+        }
+
+        .msg blockquote {
+            color: #0a0a0a;
+            background-color: #ffebee;
+            border-left: 4px solid #ac2925;
+            padding: 1em 1.5em 1em 1.5em;
+            position: relative;
+            font-family: 'Roboto', sans-serif;
+            line-height: 150%;
+            text-indent: 35px;
+            opacity: 0.8;
+        }
+
+        .msg blockquote:before {
+            color: #8b1014;
+            content: "\201C";
+            font-size: 5em;
+            position: absolute;
+            left: -15px;
+            top: 40px;
+            line-height: 0.1em;
+        }
+
+        .msg blockquote:after {
+            color: #8b1014;
+            content: "\201D";
+            font-size: 5em;
+            position: absolute;
+            right: 15px;
+            bottom: 0em;
+            line-height: 0.1em;
+        }
+
+        .card .btn-floating.btn-large.halfway-fab {
+            right: 0px;
+            left: 24px;
+            bottom: -67px;
+        }
+
+        .btn-floating.halfway-fab.left {
+            top: 24px;
+        }
+
+    </style>
+    <script type="text/javascript">
+
+        var lastUpdateTime = 0;
+        var cursor = 0;
+        $(document).ready(function () {
+            $('.modal').modal();
+            lastUpdateTime = Date.now();
+        });
+
+        setInterval(function () {
+            getMsg();
+        }, 3000);
+
+        function UpdateMe(data) {
+            if (data) {
+                if (lastUpdateTime - Date.now() >= 3600)
+                    $("#chat_body").append("<br><ul class=\"devider\"></ul><br>");
+                $("#chat_body").append("<ul id=\"msg_" + cursor.toString() + "\"></ul>");
+                for (var index = 0; index < data.msg.length; ++index) {
+                    if (data.msg[index].t === 0) {
+                        $("#msg_" + cursor.toString()).append("<li style=\"opacity: 0\">\n" +
+                            "                <div class=\"col s12 m7\">\n" +
+                            "                    <div class=\"card\">\n" +
+                            "                        <div class=\"card-image\">\n" +
+                            "                            <a class=\"btn-floating btn-large halfway-fab waves-effect waves-light pulse orange accent-2\">\n" +
+                            "                                <img class=\"circle responsive-img\" style=\"border-radius:32px\"\n" +
+                            "                                     src=\"\"></a>\n" +
+                            "                        </div>\n" +
+                            "                        <div class=\"card-content msg\" style=\"background-image: url()\">\n" +
+                            "                        <span class=\"card-title right\" style=\"text-shadow: 0px 0px 7px #ffffff\"><font size=\"4\">来自</font> " + msg[index].name + " <font\n" +
+                            "                                size=\"5.2\">\n" +
+                            "                        </font><font size=\"4\">的公告:</font></span>\n" +
+                            "                            <br><br>\n" +
+                            "                            <blockquote>\n" +
+                            "                                <span class=\"flow-text\">" + msg[index].info + "</span>\n" +
+                            "                            </blockquote>\n" +
+                            "                            <span class=\"flow-text grey-text lighten-4 right\"><font size=\"2\">" + msg[index].time + "</font></span>\n" +
+                            "                            <br>\n" +
+                            "                        </div>\n" +
+                            "                    </div>\n" +
+                            "                </div>\n" +
+                            "            </li>");
+                    }
+                    else if (data.msg[index].t === 1) {
+                        $("#msg_" + cursor.toString()).append("<li style=\"opacity: 0\">\n" +
+                            "                <br>\n" +
+                            "                <div class=\"row\">\n" +
+                            "                    <div class=\"col s3 l2\">\n" +
+                            "                        <a class=\"btn-floating left btn-large halfway-fab waves-effect waves-light orange accent-2\">\n" +
+                            "                            <img class=\"circle responsive-img\" style=\"border-radius:32px\"\n" +
+                            "                                 src=\"\"></a>\n" +
+                            "                    </div>\n" +
+                            "                    <div class=\"col s9 l10\">\n" +
+                            "                        <span class=\"flow-text\" style=\"padding-top: 10px; word-break:break-all;\"><font\n" +
+                            "                                size=\"3px\">Name</font>\n" +
+                            "                            <br>Info</span>\n" +
+                            "                    </div>\n" +
+                            "                </div>\n" +
+                            "            </li>");
+                    }
+                }
+                Materialize.showStaggeredList("#msg_" + cursor);
+                cursor += 1;
+            }
+        }
+
+        function getMsg() {
+            $.getJSON(
+                "{{ url_for('group.update_msg') }}",
+                {lst: lastUpdateTime},
+                UpdateMe
+            );
+        }
+    </script>
+{% endblock %}
