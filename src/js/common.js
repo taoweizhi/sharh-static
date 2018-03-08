@@ -1,9 +1,11 @@
 $(document).ready(function () {
   let scrollTop = 0;
   let scrollHeight = 0;
+  let windowHeight = 0;
   $(window).scroll(function () {
     scrollTop = $(window).scrollTop();
     scrollHeight = $(document).height();
+    windowHeight = $(window).height();
     $('.counter').html(scrollTop);
 
     if (scrollTop + windowHeight > scrollHeight - 80) {
