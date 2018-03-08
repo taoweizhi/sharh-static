@@ -29,7 +29,6 @@
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta charset="utf-8">
-    {#    <link type="text/css" rel="stylesheet" href="css/style.css">#}
     <title>{{ title }}</title>
     <style>
 
@@ -117,8 +116,8 @@
                 </div>
                 <!-- TODO:加入头像功能 -->
                 <a href=""><img class="circle" src="{{ side_info['avatar'] }}"></a>
-                <a href=""><span class="white-text name">{{ side_info['name'] }}</span></a>
-                <a href=""><span class="white-text email">{{ side_info['number'] }}</span></a>
+                <span class="origin-text name">{{ side_info['name'] }}</span>
+                <span class="origin-text email">{{ side_info['number'] }}</span>
             </div>
         </li>
         <li></li>
