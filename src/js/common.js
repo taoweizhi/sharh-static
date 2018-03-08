@@ -22,7 +22,6 @@ $(document).ready(function () {
       $('.page-content').addClass('scrolled-content');
     }
   });
-
 });
 
 const signinFormHandler = (result) => {
