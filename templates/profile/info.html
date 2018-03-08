@@ -34,29 +34,33 @@
         <form id="profileForm">
             <div class="input-field s10 m=8 l=6">
                 <i class="material-icons prefix"><i class="material-icons ">person</i></i>
-                <input type="text" id=" nickname" name=" nickname">
-                <label for=" nickname"></label>
+                <input type="text" id="nickname" name="nickname">
+                <label for="nickname">昵称</label>
             </div>
             <div class="input-field s10 m=8 l=6">
                 <i class="material-icons prefix"><i class="material-icons ">cake</i></i>
                <input type="text" id="birthday" name="birthday">
-                <label for="birthday"></label>
+                <label for="birthday">生日</label>
             </div>
             <div class="input-field s10 m=8 l=6">
                 <i class="material-icons prefix"><i class="material-icons ">mail</i></i>
                <input type="text" id="email" name="email">
-                <label for="email"></label>
+                <label for="email">邮箱</label>
             </div>
             <div class="input-field s10 m=8 l=6">
                 <i class="material-icons prefix"><i class="material-icons ">mode_edit</i></i>
                 <input type="password" id="password" name="password">
-                <label for="password"></label>
+                <label for="password">密码</label>
             </div>
             <div class="row">
-                {% for s in form.sex %}
-                {{ s }}
-                {{ s.label }}
-                {% endfor %}
+                <p>
+                    <input name="sex" type="radio" id="man" />
+                    <label for="man">男</label>
+                </p>
+                <p>
+                    <input name="sex" type="radio" id="woman" />
+                    <label for="woman">女</label>
+                </p>
             </div>
 
             <div class="button col s6 m6 l6">
@@ -70,10 +74,10 @@
 </body>
 </html>
 <script type="text/javascript">
-    document.getElementById("nickname").value="{{ user.nickname }}";
-    document.getElementById("email").value="{{ user.email }}";
-    document.getElementById("birthday").value="{{ user.birthday }}";
-    document.getElementById("password").value="{{ user.password }}";
+    $('#nickname').value="{{ user.nickname }}";
+    $("#email").value="{{ user.email }}";
+    $("#birthday").value="{{ user.birthday }}";
+    $("#password").value="{{ user.password }}";
     if(document.getElementById("sex-0").value=="{{ user.sex.value }}")
     {
     document.getElementsByName("sex")[0].checked="checked";
