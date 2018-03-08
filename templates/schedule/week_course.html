@@ -7,7 +7,7 @@
     </ul>
     <ul id="dropdown1" class="dropdown-content">
         {% for w in total_weeks %}
-            <li><a href="{{ url_for('schedule.toweek_course',week=w) }}" class="orange-text darken-2">第{{ w }}周</a></li>
+            <li><a href="{{ url_for('schedule.toweek_course',week_num=w) }}" class="orange-text darken-2">第{{ w }}周</a></li>
         {% endfor %}
     </ul>
 {% endblock %}

@@ -12,7 +12,7 @@ conf_spec = dict(
             '1196494388@qq.com',  # 李高正
             '591486669@qq.com',  # 骆云鹏
             'xiaoqi990112@hotmail.com'],  # 安啸琪
-    term_start_date=parse('2017/8/28'),
+    term_start_date=parse('2018/2/26'),
     database_connect_options={},
     secret_key=r'7\xe6\xad%\x9e3\xe6\x93#\x1cD}\xf3\xef\xb6\x83s\x86b\x81rX\xf2\x1f\xd4',
     logging_path='sharh.log',
