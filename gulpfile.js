@@ -3,6 +3,7 @@ const uglify = require('gulp-uglify');
 const cleanCSS = require('gulp-clean-css');
 const rename = require('gulp-rename');
 const gutil = require('gulp-util');
+const babel = require('gulp-babel');
 
 const defaultLog = (err) => {
   gutil.log(gutil.colors.red('[Error]'), err.toString());
@@ -27,4 +28,11 @@ gulp.task('CompressCSS', () => {
     .on('error', defaultLog)
     .pipe(rename(addMinToFileName))
     .pipe(gulp.dest('static/css/'))
+});
+
+gulp.task('ToES5', () => {
+  gulp.src('src/js/*.js')
+    .pipe(babel())
+    .on('error', defaultLog)
+    .pipe(gulp.dest('dist/src/js/'))
 });
