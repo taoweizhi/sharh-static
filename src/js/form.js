@@ -113,7 +113,7 @@ const Form = {
       groupInfo: field.text,
       groupClass: field.require,
     },
-    url: '/group/regidter'
+    url: '/group/register'
   },
 };
 

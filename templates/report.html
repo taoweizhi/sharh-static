@@ -1,0 +1,12 @@
+{% extends "layouts/backLayout.html" %}
+{% block content %}
+
+{% endblock %}
+
+{% block script_content %}
+    <script type="text/javascript">
+        $('#back_button').attr('onclick', 'back_to("{{ url_for('attendance.center') }}")');
+
+
+    </script>
+{% endblock %}

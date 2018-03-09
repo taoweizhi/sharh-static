@@ -4,7 +4,7 @@
 
 {% extends "layouts/defaultLayout.html" %}
 {% block navbar_content %}
-    <a class='dropdown-button green click-to-toggle' href='#' data-activates='dropdown1'><i
+    <a class='dropdown-button click-to-toggle' href='#' data-activates='dropdown1'><i
             class=" large material-icons">add</i></a>
     <!-- Dropdown Structure -->
     <ul id='dropdown1' class='dropdown-content'>
@@ -12,57 +12,67 @@
         <li class="divider"></li>
         <li><a href="#add" class="modal-trigger">添加群组</a></li>
     </ul>
-    <div id="create" class="modal modal-fixed-footer">
+{% endblock %}
+{% block content %}
+    <br>
+    <div id="create" class="modal">
         <div class="modal-content">
-            <h3>创建群组</h3>
+            <h5>创建群组</h5>
+            <br>
             <form id="groupForm">
-                <div class="input-field col s12">
-                    <input id="groupName" type="text" class="validate">
-                    <label for="groupName">群名称</label>
-                </div>
                 <div class="row">
-                    <input name="groupOption" type="radio" id="groupOption1"/>
-                    <label for="groupOption1">班级</label>
-                    <input name="groupOption" type="radio" id="groupOption2"/>
-                    <label for="groupOption2">社团</label>
-                    <input name="groupOption" type="radio" id="groupOption3"/>
-                    <label for="groupOption3">其他</label>
+                    <div class="input-field col s12">
+                        <input id="groupName" type="text" class="validate">
+                        <label for="groupName">群名称</label>
+                    </div>
+                    <div class="input-field col s12">
+                        <select>
+                            <option value="" disabled selected>选择群类型</option>
+                            <option value="1">班级</option>
+                            <option value="2">社团</option>
+                            <option value="3">其他</option>
+                        </select>
+                        <label>群类型</label>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="input-field col s12">
-                        <input id="groupInfo" class="materialize-textarea" name="groupInfo"> </input>
+                        <textarea id="groupInfo" class="materialize-textarea" name="groupInfo"></textarea>
                         <label for="groupInfo">简介</label>
                     </div>
                 </div>
-                <button class="btn waves-effect waves-light" type="submit" name="action">创建
+                <button class="btn waves-effect waves-light right" type="submit" name="action">创建
                     <i class="material-icons right">send</i>
                 </button>
+                <br><br>
             </form>
         </div>
     </div>
-    <div id="add" class="modal modal-fixed-footer">
+    <div id="add" class="modal">
         <div class="modal-content">
-            <h3>添加群组</h3>
-            <p>请输入群号</p>
+            <h5>添加群组</h5>
+            <br>
             <form>
                 <div class="input-field col s12">
                     <input id="group_number" type="text" class="validate">
                     <label for="group_number">群号</label>
                 </div>
-                <button class="btn waves-effect waves-light" type="submit" name="action">查找
+                <button class="btn waves-effect waves-light right" type="submit" name="action">查找
                     <i class="material-icons right">send</i>
                 </button>
             </form>
+            <br><br>
         </div>
     </div>
-{% endblock %}
-{% block content %}
     <div class="container">
+        <blockquote>
+            我的群组
+        </blockquote>
         <ul class="collapsible popout" data-collapsible="accordion">
             <li>
                 <div class="collapsible-header">
                     <i class="large material-icons">face</i>
-                    <span class="flow-text">我管理的群组</span>
+                    <span class="">我管理的群组</span>
                 </div>
                 <a href="!#">
                     <div class="collapsible-body">
@@ -70,7 +80,7 @@
                             <div class="card-panel white z-depth-1">
                                 <div class="row valign-wrapper" style="margin-bottom: 0px">
                                     <div class="col s2"><i class="material-icons black-text">event</i></div>
-                                    <div class="col s7"><span class="flow-text black-text">{{ group.name }}</span></div>
+                                    <div class="col s7"><span class=" black-text">{{ group.name }}</span></div>
                                     <div class="col s3"><a href="#{{ group.id }}"
                                                            class="btn btn-floating waves-effect waves-light modal-trigger orange">
                                         ...</a>
@@ -99,7 +109,7 @@
             <li>
                 <div class="collapsible-header">
                     <i class="material-icons medium">people</i>
-                    <span class="flow-text">我加入的群组</span>
+                    <span class="">我加入的群组</span>
                 </div>
                 <a href="#!">
                     <div class="collapsible-body">
@@ -107,7 +117,7 @@
                             <div class="card-panel white z-depth-1">
                                 <div class="row valign-wrapper" style="margin-bottom: 0px">
                                     <div class="col s2"><i class="material-icons black-text">event</i></div>
-                                    <div class="col s7"><span class="flow-text black-text">{{ group.name }}</span></div>
+                                    <div class="col s7"><span class=" black-text">{{ group.name }}</span></div>
                                     <div class="col s3"><a href="#{{ group.id }}"
                                                            class="btn btn-floating waves-effect waves-light modal-trigger orange">
                                         ...</a>
@@ -137,20 +147,21 @@
     </div>
 {% endblock %}
 {% block script_content %}
-<script>
-    $('.dropdown-button').dropdown({
-            inDuration: 300,
-            outDuration: 225,
-            constrain_width: false, // Does not change width of dropdown to that of the activator
-            hover: true, // Activate on hover
-            gutter: 0, // Spacing from edge
-            belowOrigin: false, // Displays dropdown below the button
-            alignment: 'left' // Displays dropdown with edge aligned to the left of button
-        }
-    );
-    $(document).ready(function () {
-        // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
-        $('.modal').modal();
-    });
-</script>
+    <script>
+        $('.dropdown-button').dropdown({
+                inDuration: 300,
+                outDuration: 225,
+                constrain_width: false, // Does not change width of dropdown to that of the activator
+                hover: false, // Activate on hover
+                gutter: 0, // Spacing from edge
+                belowOrigin: false, // Displays dropdown below the button
+                alignment: 'left' // Displays dropdown with edge aligned to the left of button
+            }
+        );
+        $(document).ready(function () {
+            // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+            $('.modal').modal();
+            $('select').material_select();
+        });
+    </script>
 {% endblock %}

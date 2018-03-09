@@ -14,24 +14,30 @@
 {% endblock %}
 {% block content %}
     <div class="container" id="chat-body"></div>
-    <div class="row">
+    <div class="row" id="sending_row">
         <form class="col s10 l11">
             <div class="row">
-                <div class="input-field col s6">
-                    <i class="material-icons prefix">mode_edit</i>
-                    <textarea id="icon_prefix2" class="materialize-textarea"></textarea>
-                    <label for="icon_prefix2">First Name</label>
+                <div class="input-field col s12">
+                    <input id="announce" type="text" class="validate">
+                    <label for="announce">输入内容</label>
                 </div>
             </div>
         </form>
         <div class="col s2 l1">
-            <a class="btn-floating btn-large waves-effect waves-light orange"><i class="material-icons">send</i></a>
+            <a class="btn-floating btn-large waves-effect waves-light orange" onclick="sendMsg()"><i class="material-icons">send</i></a>
         </div>
     </div>
 {% endblock %}
 {% block script_content %}
     <style>
         @import url(https://fonts.googleapis.com/css?family=Roboto);
+
+        #sending_row {
+            position: fixed;
+            right: 0;
+            left: 300px;
+            bottom: 0;
+        }
 
         .msg {
             background-position: center center;
@@ -82,16 +88,22 @@
             top: 24px;
         }
 
+         @media screen and (max-width: 992px) {
+            #sending_row {
+                left: 0px !important;
+            }
+         }
     </style>
     <script type="text/javascript">
 
         var lastUpdateTime = 0;
+        var firstUpdate = true;
         var cursor = 0;
         $(document).ready(function () {
             $('.modal').modal();
             lastUpdateTime = Date.now();
         });
-
+        $('footer').css('display', 'none');
         setInterval(function () {
             getMsg();
         }, 3000);
@@ -150,11 +162,21 @@
         }
 
         function getMsg() {
+            var packJson = {lst: lastUpdateTime};
+            if (firstUpdate){
+                packJson.lst = 0;
+                firstUpdate = false;
+            }
             $.getJSON(
                 "{{ url_for('group.update_msg') }}",
-                {lst: lastUpdateTime},
+                packJson,
                 UpdateMe
             );
+        }
+
+        function sendMsg(){
+            var msg = $('#announce').text();
+            alert(msg)
         }
     </script>
 {% endblock %}
