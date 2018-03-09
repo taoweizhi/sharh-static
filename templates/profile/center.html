@@ -13,35 +13,35 @@
     {#    <img class="bg" src="..\..\static\images\background.jpg"/>#}
     <div class="container">
         <blockquote>个人中心</blockquote>
-        <div class="container">
-            <div class="row">
-                <div class="col s6" style="padding: 0 .2rem">
-                    <div class="card-panel z-depth-1 center" style="height: 192px">
-                        <div class="row">
-                            <img src="../../static/images/avatar.jpg" class="circle avatar" style="height: 64px; width:64px;">
-                        </div>
-                        <span class="flow-text">头像</span>
-                        <div class="row">
-                            <a class="waves-effect waves-orange btn-flat blue-text"
-                               style="width: 80%; padding: 0 1rem">
-                                <i class="material-icons tiny left"
-                                   style="margin-right: 0px">edit</i>修改
-                            </a>
-                        </div>
+        <div class="row">
+            <div class="col s6" style="padding: 0 .2rem">
+                <div class="card-panel z-depth-1 center" style="height: 192px">
+                    <div class="row">
+                        <img src="../../static/images/avatar.jpg" class="circle avatar"
+                             style="height: 64px; width:64px;">
+                    </div>
+                    <span class="">头像</span>
+                    <div class="row">
+                        <a class="waves-effect waves-orange btn-flat blue-text"
+                           style="width: 80%; padding: 0 1rem">
+                            <i class="material-icons tiny left"
+                               style="margin-right: 0px">edit</i>修改
+                        </a>
                     </div>
                 </div>
-                <div class="col s6" style="padding: 0 .2rem">
-                    <div class="card-panel z-depth-1" style="padding-top: 0px; height: 192px">
-                        <div class="row">
-                            <div class="col s12">
-                                <blockquote>
-                                    姓名
-                                </blockquote>
-                                <span class="flow-text">
+            </div>
+            <div class="col s6" style="padding: 0 .2rem">
+                <div class="card-panel z-depth-1" style="padding-top: 0px; height: 192px">
+                    <div class="row">
+                        <div class="col s12">
+                            <blockquote>
+                                姓名
+                            </blockquote>
+                            <span class="">
                                     {% if user.permission.name == "student" %}
                                         {% set
                                             profile_dict={"性别":user.sex.value,
-                                                  "生日":user.birthday,
+                                                  "生日":user.birthday.date(),
                                                   "学号":user.ref_students.first().student.number,
                                                   "学院":user.ref_students.first().student.faculty,
                                                   "专业":user.ref_students.first().student.department,
@@ -50,51 +50,51 @@
                                     {% elif user.permission.name == "teacher" %}
                                         {% set
                                             profile_dict={"性别":user.sex.value,
-                                                  "生日":user.birthday,
+                                                  "生日":user.birthday.date(),
                                                   "工号":user.ref_teachers.first().teacher.number,
                                                   "隶属部门":user.ref_teachers.first().teacher.faculty,
                                                   "直属部门":user.ref_teachers.first().teacher.department} %}
                                         {{ user.ref_teachers.first().teacher.name }}
                                     {% endif %}
-                                    </span>
-                            </div>
+                                </span>
+                        </div>
+                        <div class="col s12">
+                            <blockquote>
+                                昵称
+                            </blockquote>
+                            <span class="">{{ user.nickname }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% for name, info in profile_dict.items() %}
+                <div class="col s6 m4 l3" style="padding: 0 .2rem">
+                    <div class="card-panel z-depth-1" style="padding-top: 0px; height: 100px">
+                        <div class="row">
                             <div class="col s12">
                                 <blockquote>
-                                    昵称
+                                    {{ name }}
                                 </blockquote>
-                                <span class="flow-text">{{ user.nickname }}</span>
+                                <span class="">{% if info %}{{ info }}{% else %}{{ "tan90°" }}{% endif %}</span>
                             </div>
                         </div>
                     </div>
                 </div>
-                {% for name, info in profile_dict.items() %}
-                    <div class="col s6" style="padding: 0 .2rem">
-                        <div class="card-panel z-depth-1" style="padding-top: 0px; height: 100px">
-                            <div class="row">
-                                <div class="col s12">
-                                    <blockquote>
-                                        {{ name }}
-                                    </blockquote>
-                                    <span class="flow-text">{% if info %}{{ info }}{% else %}{{ "tan90" }}{% endif %}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-            <div class="row">
-                <form id="infoForm">
-                    <div class="col s12 m12 l12 textarea ">
-                       <input type="text" id="info" name="info">
-                        <label for="info">简介</label>
-                    </div>
-                    <div class="button col s6 m6 l6">
-                        <button class="btn waves-effect waves-light #ef5350 orange" type="submit" id="btn">确定
-                        </button>
-                    </div>
-                </form>
-            </div>
+            {% endfor %}
         </div>
+        <div class="row">
+            <form id="infoForm">
+                <div class="col s12 m12 l12 textarea">
+                    <input type="text" id="info" name="info">
+                    <label for="info">简介</label>
+                </div>
+                <div class="button col s6 m6 l6">
+                    <button class="btn waves-effect waves-light #ef5350 orange" type="submit" id="btn">确定
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     </div>
 {% endblock %}

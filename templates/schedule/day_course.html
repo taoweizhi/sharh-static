@@ -25,15 +25,12 @@ current_day: time -> 当前所在日期的时间
 
 
 {% block content %}
+    <br>
     <div id="pick" class="container">
         <div id="course_offline" class="col s12">
-            <div class="row">
-                <div class="col input-field">
-                    <blockquote id="day_text">
-                        <input id="datepicker" class="datepicker" type="date">
-                    </blockquote>
-                </div>
-            </div>
+            <blockquote>
+                线下课程
+            </blockquote>
             <ul class="collapsible popout" data-collapsible="accordion" id="collapsible_offline">
                 {% for _i, sec in enumerate([Section(1),Section(4),Section(6),Section(8),Section(11)]) %}
                     {% if day_courses[sec.name] %}
@@ -68,8 +65,7 @@ current_day: time -> 当前所在日期的时间
             <blockquote>
                 线上课程
             </blockquote>
-            <div class="container">
-                <ul class="collapsible popout" data-collapsible="accordion" id="collapsible_online">
+            <ul class="collapsible popout" data-collapsible="accordion" id="collapsible_online">
                     <li>
                         <div class="collapsible-header">
                             <i class="material-icons">event</i>
@@ -84,7 +80,6 @@ current_day: time -> 当前所在日期的时间
                         </div>
                     </li>
                 </ul>
-            </div>
         </div>
     </div>
 {% endblock %}

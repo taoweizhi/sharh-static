@@ -59,33 +59,35 @@
             </ul>
         </div>
     </div>
-    <div class="row">
-        <blockquote>常用功能</blockquote>
-        {% for func in funclist_ess %}
-            <div class="col s3 m4 l3 center">
-                <a class="btn-floating btn-large waves-effect waves-light orange lighten-4
-                  {% if func[3] %}pulse{% endif %}" href="{{ func[2] }}">
-                    <img src="{{ func[1] }}" alt=""
-                         class="circle responsive-img"></a>
-                <br>
-                <br>
-                <span class="flow-text" style="white-space: nowrap">{{ func[0] }}</span>
-            </div>
-        {% endfor %}
-    </div>
-    <div class="row">
-        <blockquote>其他功能</blockquote>
-        {% for func in funclist %}
-            <div class="col s3 m4 l3 center">
-                <a class="btn-floating btn-large waves-effect waves-light orange lighten-4
-                  {% if func[3] %}pulse{% endif %}" href="{{ func[2] }}">
-                    <img src="{{ func[1] }}" alt=""
-                         class="circle responsive-img"></a>
-                <br>
-                <br>
-                <span class="flow-text">{{ func[0] }}</span>
-            </div>
-        {% endfor %}
+    <div class="container">
+        <div class="row">
+            <blockquote>常用功能</blockquote>
+            {% for func in funclist_ess %}
+                <div class="col s3 m2 l2 center">
+                    <a class="btn-floating btn-large waves-effect waves-light orange lighten-4
+                      {% if func[3] %}pulse{% endif %}" href="{{ func[2] }}">
+                        <img src="{{ func[1] }}" alt=""
+                             class="circle responsive-img"></a>
+                    <br>
+                    <br>
+                    <span class="" style="white-space: nowrap">{{ func[0] }}</span>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="row">
+            <blockquote>其他功能</blockquote>
+            {% for func in funclist %}
+                <div class="col s3 m2 l2 center">
+                    <a class="btn-floating btn-large waves-effect waves-light orange lighten-4
+                      {% if func[3] %}pulse{% endif %}" href="{{ func[2] }}">
+                        <img src="{{ func[1] }}" alt=""
+                             class="circle responsive-img"></a>
+                    <br>
+                    <br>
+                    <span class="">{{ func[0] }}</span>
+                </div>
+            {% endfor %}
+        </div>
     </div>
 {% endblock %}
 {% block script_content %}
@@ -119,7 +121,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
             var sw = document.body.clientWidth;
-            var sh = document.body.clientHeight-60;
+            var sh = document.body.clientHeight - 60;
             if (sw <= 992)
                 sh = sw * 0.618;
 
@@ -131,7 +133,7 @@
 
             $(window).resize(function () {
                 sw = document.body.clientWidth;
-                sh = document.body.clientHeight -60;
+                sh = document.body.clientHeight - 60;
                 if (sw <= 992)
                     sh = sw * 0.618;
 
