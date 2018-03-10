@@ -56,7 +56,7 @@
     <div class="container">
         <div class="col s12 m10 l9" id="public-body">
             <ul>
-                {% for msg in msg_dict_public.items() %}
+                {% for idx, msg in msg_dict_public.items() %}
                     <li>
                         <div class="col s12 m7">
                             <div class="card">
@@ -356,7 +356,5 @@
         function sendMsg() {
             var msg = $('#announce').val();
         }
-
-
     </script>
 {% endblock %}
