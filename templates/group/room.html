@@ -1,26 +1,206 @@
 {% extends "layouts/defaultLayout.html" %}
-{% block navbar_contents %}
-    <li><a href=""><i class="material-icons right">add</i></a></li>
-    <li><a href="#manage" class="modal-trigger"><i class="material-icons right">settings</i>管理群</a></li>
-    <div id="manage" class="modal modal-fixed-footer">
-        <div class="modal-content">
-            <h4>管理群</h4>
-
-        </div>
-        <div class="modal-footer">
-            <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">关闭</a>
-        </div>
-    </div>
+{% block navbar_content %}
 {% endblock %}
 {% block navbar_tabs %}
-    <li class="tab"><a href="#bc-body"><i class="material-icons left">announcement</i>公告</a></li>
+    <li class="tab"><a href="#public-body"><i class="material-icons left">announcement</i>公告</a></li>
     <li class="tab"><a href="#chat-body"><i class="material-icons left"></i>全部消息</a></li>
+    <li class="tab"><a href="#manage-body"><i class="material-icons left"></i>管理</a></li>
 {% endblock %}
 {% block content %}
+    <div id="manage_msg" class="modal">
+        <div class="modal-content">
+            <h5>消息管理</h5>
+            <form class="col s12" method="POST">
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input disabled value="" id="managemsgID" type="text" class="validate">
+                        <label for="managemsgID">消息ID</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input value="" id="managemsgTitle" type="text" class="validate">
+                        <label class="active" for="managemsgTitle">消息标题</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <textarea id="managemsgContent" class="materialize-textarea"></textarea>
+                        <label for="managemsgContent">消息内容</label>
+                    </div>
+                </div>
+                <button class="btn waves-effect waves-light right" type="submit" name="action">修改
+                    <i class="material-icons right">send</i>
+                </button>
+                <br><br>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">确认</a>
+        </div>
+    </div>
     <br>
     <div class="container">
-        <div class="col s12 m10 l9" id="bc-body"></div>
-        <div class="col s12 m10 l9" id="chat-body"></div>
+        <div class="col s12 m10 l9" id="public-body">
+            <ul>
+                {% for msg in msg_dict_public.items() %}
+                    <li>
+                        <div class="col s12 m7">
+                            <div class="card">
+                                <div class="card-content msg">
+                                <span class="card-title right" style="text-shadow: 0px 0px 7px #ffffff">
+                                    <font size="4">来自</font>{{ msg.name }}<font size="5.2"></font>
+                                    <font size="4">的公告:</font></span>
+                                    <br><br>
+                                    <blockquote>
+                                        <span class="flow-text">{{ msg.title }}</span>
+                                        <span>{{ msg.content }}</span>
+                                    </blockquote>
+                                    <span class="flow-text grey-text lighten-4 right"><font
+                                            size="2">{{ msg.time }}</font></span>
+                                    <a onclick="manageMsg({{ msg.id }},'{{ msg.title }}','{{ msg.content }}')"
+                                       class="manage_msg btn-floating right"><i
+                                            class="material-icons">edit</i></a>
+                                    <br>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col s12 m10 l9" id="chat-body">
+            <ul>
+                {% for _i, msg in msg_dict_chat.items() %}
+                    <li>
+                        <div class="col s12 m7">
+                            <div class="card">
+                                <div class="card-content msg">
+                                <span class="card-title right" style="text-shadow: 0 0 7px #ffffff">
+                                    <font size="3">{{ msg.name }}</font></span>
+                                    <br><br>
+                                    <span class="flow-text">{{ msg.title }}</span>
+                                    <span>{{ msg.content }}</span>
+                                    <span class="flow-text grey-text lighten-4 right"><font
+                                            size="2">{{ msg.time }}</font></span>
+                                    <a onclick="manageMsg({{ msg.id }},'{{ msg.title }}','{{ msg.content }}')"
+                                       class="manage btn-floating right"><i
+                                            class="material-icons">edit</i></a>
+                                    <br>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col s12 m10 l9" id="manage-body">
+            <div class="row">
+                <div class="col s12 l6">
+                    <blockquote>
+                        加群请求
+                    </blockquote>
+                    <ul class="collection with-header">
+                        <li class="collection-item">
+                            {% for req in msg_dict_req.items() %}
+                                <div>{{ req.name }}: {{ req.content }}
+                                    <a href="" class="secondary-content"><i class="material-icons">check</i></a>
+                                    <a href="" class="secondary-content"><i
+                                            class="material-icons">close</i></a>
+                                </div>
+                            {% endfor %}
+                        </li>
+                    </ul>
+                </div>
+                <div class="col s12 l6">
+                    <blockquote>
+                        群设置
+                    </blockquote>
+                    <div class="row">
+                        <div class="col s12 l6">
+                            <blockquote>
+                                管理成员
+                            </blockquote>
+                            <ul class="collection with-header">
+                                <li class="collection-item">
+                                    {% for member_ref in group.ref_users %}
+                                        {% if member_ref.user.user_cls == Role.leader %}
+                                            <div><i class="material-icons">account_circle</i>{{ member_ref.user.name }}
+                                            </div>
+                                        {% elif member_ref.user.user_cls == Role.admin %}
+                                            <div><i class="material-icons">book</i>{{ member_ref.user.name }}
+                                                <a href="" class="secondary-content">
+                                                    <i class="material-icons">not_interested</i>删除成员</a>
+                                                <a href="" class="secondary-content">
+                                                    <i class="material-icons">assignment_turned_in</i>撤销管理员</a>
+                                            </div>
+                                        {% elif member_ref.user.user_cls == Role.user %}
+                                            <div><i class="material-icons">person</i>{{ member_ref.user.name }}
+                                                <a href="" class="secondary-content">
+                                                    <i class="material-icons">not_interested</i>删除成员</a>
+                                                <a href="" class="secondary-content">
+                                                    <i class="material-icons">assignment_turned_in</i>设置为管理员</a>
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col s12 l6">
+                            <blockquote>
+                                群设置
+                            </blockquote>
+                            <form id="groupForm">
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <input value="{{ group.name }}" id="groupName" type="text" class="validate">
+                                        <label for="groupName">群名称</label>
+                                    </div>
+                                    <div class="input-field col s12">
+                                        <select>
+                                            <option value="" disabled>选择群类型</option>
+                                            <option value="academic">学术类</option>
+                                            <option value="sport">体育类</option>
+                                            <option value="art">艺术类</option>
+                                            <option value="practice">实践类</option>
+                                            <option value="lecture">讲座</option>
+                                            <option value="daily">生活类</option>
+                                            <option value="other">其他</option>
+                                        </select>
+                                        <label>群类型</label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <textarea id="groupInfo" class="materialize-textarea"
+                                                  name="groupInfo" value="{{ group.info }}"></textarea>
+                                        <label for="groupInfo">简介</label>
+                                    </div>
+                                </div>
+                                <button class="btn waves-effect waves-light right" type="submit" name="action">提交修改
+                                    <i class="material-icons right">send</i>
+                                </button>
+                                <br><br>
+                            </form>
+                            <blockquote style="border: red;">
+                                关键操作
+                            </blockquote>
+                            <a class="waves-effect waves-light btn red modal-trigger" href="">删除群</a>
+                            <div id="modal1" class="modal">
+                                <div class="modal-content">
+                                    <h5>Warning</h5>
+                                    <p>正在删除群，所有成员将会被解散，确认？</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <a href="" class="modal-action modal-close waves-effect red btn-flat">确认</a>
+                                    <a href="#!" class="modal-action modal-close waves-effect green btn-flat">取消</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="row" id="sending_row">
         <br>
@@ -48,7 +228,7 @@
             left: 300px;
             bottom: 0;
             background: white;
-            margin-bottom: 0px;
+            margin-bottom: 0;
         }
 
         .msg {
@@ -105,91 +285,38 @@
                 left: 0 !important;
             }
         }
+
+        #global-nav {
+            height: 104px;
+        }
     </style>
     <script type="text/javascript">
 
-        var lastUpdateTime = 0;
-        var firstUpdate = true;
-        var cursor = 0;
-        $(document).ready(function () {
-            $('.modal').modal();
-            lastUpdateTime = Date.now();
-        });
-        $('footer').css('display', 'none');
-        setInterval(function () {
-            {#getMsg();#}
-        }, 3000);
+        var current_msg = {id: "", title: "", content: ""};
 
-        function UpdateMe(data) {
-            if (data) {
-                if (lastUpdateTime - Date.now() >= 3600)
-                    $("#chat-body").append("<br><ul class=\"devider\"></ul><br>");
-                $("#chat-body").append("<ul id=\"msg_" + cursor.toString() + "\"></ul>");
-                for (var index = 0; index < data.msg.length; ++index) {
-                    if (data.msg[index].t === 0) {
-                        $("#msg_" + cursor.toString()).append("<li style=\"opacity: 0\">\n" +
-                            "                <div class=\"col s12 m7\">\n" +
-                            "                    <div class=\"card\">\n" +
-                            "                        <div class=\"card-image\">\n" +
-                            "                            <a class=\"btn-floating btn-large halfway-fab waves-effect waves-light pulse orange accent-2\">\n" +
-                            "                                <img class=\"circle responsive-img\" style=\"border-radius:32px\"\n" +
-                            "                                     src=\"\"></a>\n" +
-                            "                        </div>\n" +
-                            "                        <div class=\"card-content msg\" style=\"background-image: url()\">\n" +
-                            "                        <span class=\"card-title right\" style=\"text-shadow: 0px 0px 7px #ffffff\"><font size=\"4\">来自</font> " + data.msg[index].name + " <font\n" +
-                            "                                size=\"5.2\">\n" +
-                            "                        </font><font size=\"4\">的公告:</font></span>\n" +
-                            "                            <br><br>\n" +
-                            "                            <blockquote>\n" +
-                            "                                <span class=\"flow-text\">" + data.msg[index].info + "</span>\n" +
-                            "                            </blockquote>\n" +
-                            "                            <span class=\"flow-text grey-text lighten-4 right\"><font size=\"2\">" + data.msg[index].time + "</font></span>\n" +
-                            "                            <br>\n" +
-                            "                        </div>\n" +
-                            "                    </div>\n" +
-                            "                </div>\n" +
-                            "            </li>");
-                    }
-                    else if (data.msg[index].t === 1) {
-                        $("#msg_" + cursor.toString()).append("<li style=\"opacity: 0\">\n" +
-                            "                <br>\n" +
-                            "                <div class=\"row\">\n" +
-                            "                    <div class=\"col s3 l2\">\n" +
-                            "                        <a class=\"btn-floating left btn-large halfway-fab waves-effect waves-light orange accent-2\">\n" +
-                            "                            <img class=\"circle responsive-img\" style=\"border-radius:32px\"\n" +
-                            "                                 src=\"\"></a>\n" +
-                            "                    </div>\n" +
-                            "                    <div class=\"col s9 l10\">\n" +
-                            "                        <span class=\"\" style=\"padding-top: 10px; word-break:break-all;\"><font\n" +
-                            "                                size=\"3px\">" + data.msg[index].name + "</font>\n" +
-                            "                            <br>" + data.msg[index].info + "</span>\n" +
-                            "                    </div>\n" +
-                            "                </div>\n" +
-                            "            </li>");
-                    }
-                }
-                Materialize.showStaggeredList("#msg_" + cursor);
-                cursor += 1;
+        $('footer').css('display', 'none');
+        $(document).ready(function () {
+            $
+            $('.modal').modal();
+            if ("{{ permission }}" !== "admin") {
+                hideItem('.manage');
             }
+        });
+
+        function hideItem(object_id) {
+            $(object_id).css('display', 'none');
         }
 
-        function getMsg() {
-            var packJson = {lst: lastUpdateTime};
-            if (firstUpdate) {
-                packJson.lst = 0;
-                firstUpdate = false;
-            }
-            $.getJSON(
-                "{{ url_for('group.update_msg') }}",
-                packJson,
-                UpdateMe
-            );
+        function manageMsg(msg_id, msg_title, msg_content) {
+            $("#managemsgID").val(msg_id);
+            $("#managemsgTitle").val(msg_title);
+            $("#managemsgContent").val(msg_content);
+            Materialize.updateTextFields();
+            $('#manage_msg').modal('open');
         }
 
         function sendMsg() {
             var msg = $('#announce').val();
-            var test = {"msg": [{"t": 0, "name": "AnxQ", "info": msg, "time": Date.now()}]};
-            UpdateMe(test);
         }
     </script>
 {% endblock %}
