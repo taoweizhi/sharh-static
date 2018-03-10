@@ -20,7 +20,7 @@ const field = {
   },
   date: {
     required: true,
-    dateISO:true
+    dateISO: true
   },
   text: {
     required: false,
@@ -80,7 +80,7 @@ const Form = {
       password: field.password,
       confimPassword: field.confimPassword,
     },
-    url: '/post_test',
+    url: '/profile/change_info',
   },
   infoForm: {
     content: {
@@ -90,13 +90,13 @@ const Form = {
   },
   codeSubmitForm: {
     content: {
-      codeSubmit: field.number,
+      sign_code: field.number,
     },
     url: '/attendance/register'
   },
   attendanceForm: {
     content: {
-      code: field.number,
+      sign_code: field.number,
     },
     url: '/attendance/validate',
   },
@@ -115,11 +115,6 @@ const Form = {
     },
     url: '/group/register'
   },
-};
-
-
-const Input = (id, name, type, value) => {
-  return `<label for="${id}">${value}</label><input id="${id}" type="${type}" name="${name}"/>`
 };
 
 const defaultErrorPlacement = (error, elem) => {
@@ -164,7 +159,7 @@ $(document).ready(
     $('#signinForm').validate({
       rules: Form.signinForm.content,
       errorPlacement: defaultErrorPlacement,
-      submitHandler:$.afterPOST(signinFormHandler)(Form.signinForm.url),
+      submitHandler: $.afterPOST(signinFormHandler)(Form.signinForm.url),
     });
     $('#loginForm').validate({
       rules: Form.loginForm.content,
@@ -184,7 +179,11 @@ $(document).ready(
     $('#attendanceForm').validate({
       rules: Form.attendanceForm.content,
       errorPlacement: defaultErrorPlacement,
-      submitHandler: $.afterPOST(attendanceFormHandler)(Form.attendanceForm.url)
+      submitHandler: (form) => {
+        const signName = $('#signName').text();
+        $.post(`/attendance/validate%3Fsign_name%3D${signName}`, $(form).serializeArray(),
+          defaultAction(attendanceFormHandler))
+      },
     });
     $('#reAttendanceForm').validate({
       rules: Form.reAttendanceForm.content,
@@ -199,7 +198,13 @@ $(document).ready(
     $('#codeSubmitForm').validate({
       rules: Form.codeSubmitForm.content,
       errorPlacement: defaultErrorPlacement,
-      submitHandler: $.afterPOST(codeSubmitFormHandler)(Form.codeSubmitForm.url)
+      submitHandler: (form) => {
+        const instance = $(form).closest('.modal').attr('id');
+        const id = instance.slice(10);
+        const cls = instance.substring(6, 7);
+        $.post(`/attendance/register%3Fclass%3D${cls}%3Fid%3D${id}`, $(form).serializeArray(),
+          defaultAction(codeSubmitFormHandler))
+      }
     });
     $('#groupForm').validate({
       rules: Form.groupForm.content,
