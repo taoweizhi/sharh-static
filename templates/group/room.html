@@ -56,7 +56,7 @@
     <div class="container">
         <div class="col s12 m10 l9" id="public-body">
             <ul>
-                {% for idx, msg in msg_dict_public.items() %}
+                {% for idx, msg in msg_list_public.items() %}
                     <li>
                         <div class="col s12 m7">
                             <div class="card">
@@ -81,10 +81,43 @@
                     </li>
                 {% endfor %}
             </ul>
+            <div class="fixed-action-btn click-to-toggle">
+                <a class="btn-floating btn-large waves-effect red" href="#send-public">
+                    <i class="large material-icons">mode_edit</i>
+                </a>
+            </div>
+            <div id="send-public" class="modal">
+                <form class="col s12" method="POST">
+                    <div class="modal-content">
+                        <h5>发送公告</h5>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input value="" id="msgTitle" type="text" class="validate">
+                                <label class="active" for="msgTitle">消息标题</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <textarea id="msgContent" class="materialize-textarea"></textarea>
+                                <label for="msgContent">消息内容</label>
+                            </div>
+                        </div>
+                        <button class="btn waves-effect waves-light right" type="submit" name="action">发送
+                            <i class="material-icons right">send</i>
+                        </button>
+                        <br><br>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="modal-action modal-close waves-effect waves-green btn-flat"
+                                type="submit" name="action">确认
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
         <div class="col s12 m10 l9" id="chat-body">
             <ul>
-                {% for _i, msg in msg_dict_chat.items() %}
+                {% for idx, msg in msg_list_chat.items() %}
                     <li>
                         <div class="col s12 m7">
                             <div class="card">
@@ -96,9 +129,6 @@
                                     <span>{{ msg.content }}</span>
                                     <span class="flow-text grey-text lighten-4 right"><font
                                             size="2">{{ msg.time }}</font></span>
-                                    <a onclick="manageMsg({{ msg.id }},'{{ msg.title }}','{{ msg.content }}')"
-                                       class="manage btn-floating right"><i
-                                            class="material-icons">edit</i></a>
                                     <br>
                                 </div>
                             </div>
@@ -106,6 +136,39 @@
                     </li>
                 {% endfor %}
             </ul>
+            <div class="fixed-action-btn click-to-toggle">
+                <a class="btn-floating btn-large waves-effect red" href="#send-chat">
+                    <i class="large material-icons">mode_edit</i>
+                </a>
+            </div>
+            <div id="send-chat" class="modal">
+                <form class="col s12" method="POST">
+                    <div class="modal-content">
+                        <h5>发送公告</h5>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input value="" id="msgTitle" type="text" class="validate">
+                                <label class="active" for="msgTitle">消息标题</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <textarea id="msgContent" class="materialize-textarea"></textarea>
+                                <label for="msgContent">消息内容</label>
+                            </div>
+                        </div>
+                        <button class="btn waves-effect waves-light right" type="submit" name="action">发送
+                            <i class="material-icons right">send</i>
+                        </button>
+                        <br><br>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="modal-action modal-close waves-effect waves-green btn-flat"
+                                type="submit" name="action">确认
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
         {% if AdminPermotion %}
             <div class="col s12 m10 l9" id="manage-body">
@@ -116,11 +179,10 @@
                         </blockquote>
                         <ul class="collection with-header">
                             <li class="collection-item">
-                                {% for req in msg_dict_req.items() %}
+                                {% for req in msg_list_req %}
                                     <div>{{ req.name }}: {{ req.content }}
                                         <a href="" class="secondary-content"><i class="material-icons">check</i></a>
-                                        <a href="" class="secondary-content"><i
-                                                class="material-icons">close</i></a>
+                                        <a href="" class="secondary-content"><i class="material-icons">close</i></a>
                                     </div>
                                 {% endfor %}
                             </li>
@@ -218,21 +280,6 @@
             </div>
         {% endif %}
     </div>
-    <div class="row" id="sending_row">
-        <br>
-        <form class="col s10 l11">
-            <div class="row">
-                <div class="input-field col s12">
-                    <input id="announce" type="text" class="validate">
-                    <label for="announce">输入内容</label>
-                </div>
-            </div>
-        </form>
-        <div class="col s2 l1">
-            <a class="btn-floating btn-large waves-effect waves-light orange" onclick="sendMsg()"><i
-                    class="material-icons">send</i></a>
-        </div>
-    </div>
 {% endblock %}
 {% block script_content %}
     <style>
@@ -313,7 +360,7 @@
 
             $('#groupName').val('{{ group.name }}');
             $('#groupInfo').val('{{ group.info }}').trigger('autoresize');
-            {#$('#groupClass>option:{{ group.class }}').attr('class', '');#}
+            $('#groupClass>option:{{ group.class }}').attr('class', '');
             $('.modal').modal();
             $('select').material_select();
             Materialize.updateTextFields();
