@@ -12,11 +12,13 @@
 {% extends "layouts/defaultLayout.html" %}
 {% block navbar_content %}
 {% endblock %}
-{% set Admin = db.UserGroup.filter(db.UserGroup.user_id == user.id).first().user_cls.name %}
+{% set AdminPermotion = not (db.UserGroup.filter(db.UserGroup.user_id == user.id).first().user_cls == db.Role.normal) %}
 {% block navbar_tabs %}
     <li class="tab"><a href="#public-body"><i class="material-icons left">announcement</i>公告</a></li>
     <li class="tab"><a href="#chat-body"><i class="material-icons left"></i>全部消息</a></li>
+    {% if AdminPermotion %}
     <li class="tab manage"><a href="#manage-body"><i class="material-icons left"></i>管理</a></li>
+    {% endif %}
 {% endblock %}
 {% block content %}
     <div id="manage_msg" class="modal manage">
@@ -106,6 +108,7 @@
                 {% endfor %}
             </ul>
         </div>
+        {% if AdminPermotion %}
         <div class="col s12 m10 l9" id="manage-body">
             <div class="row">
                 <div class="col s12 l6">
@@ -213,6 +216,7 @@
                 </div>
             </div>
         </div>
+        {% endif %}
     </div>
     <div class="row" id="sending_row">
         <br>
