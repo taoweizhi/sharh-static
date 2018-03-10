@@ -18,7 +18,7 @@
                     </div>
                     <div class="input-field s10 m=8 l=6">
                         <i class="material-icons prefix"><i class="material-icons ">cake</i></i>
-                        <input value="{{ user.birthday.date() }}" type="text" class="datepicker" id="birthday" name="birthday">
+                        <input value="{{ str(user.birthday)[:10] }}" type="text" class="datepicker" id="birthday" name="birthday">
                         <label for="birthday">生日</label>
                     </div>
                     <div class="input-field s10 m=8 l=6">
@@ -31,18 +31,14 @@
                         <input value="{{ user.password }}" type="password" id="password" name="password">
                         <label for="password">密码</label>
                     </div>
-                    <div class="row">
+                    <div class="input-field row">
                         <div class="col s3 l2 m2">
-                            <p>
-                                <input name="sex" type="radio" id="man"/>
-                                <label for="man">男</label>
-                            </p>
+                            <input name="sex" type="radio" value="男" id="man"/>
+                            <label for="man">男</label>
                         </div>
                         <div class="col s3 l2 m2">
-                            <p>
-                                <input name="sex" type="radio" id="woman"/>
-                                <label for="woman">女</label>
-                            </p>
+                            <input name="sex" type="radio" value="女" id="female"/>
+                            <label for="female">女</label>
                         </div>
                     </div>
 
@@ -79,3 +75,4 @@
         });
     </script>
 {% endblock %}
+

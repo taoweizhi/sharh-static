@@ -31,7 +31,7 @@
                         <div class="card-panel white z-depth-1">
                             <div class="row valign-wrapper" style="margin-bottom: 0px">
                                 <div class="col s2"><i class="material-icons">event</i></div>
-                                <div class="col s7"><span class="flow-text">{{ sign.name }}</span></div>
+                                <div class="col s7"><span id="signName" class="flow-text">{{ sign.name }}</span></div>
                                 <div class="col s3"><a href="#modal_{{ sign.id }}"
                                                        class="btn btn-floating waves-effect waves-light modal-trigger orange">
                                     <i class="material-icons">border_color</i></a></div>
@@ -43,8 +43,8 @@
                                 <form id="attendanceForm">
                                     <div class="input-field col s6">
                                         <i class="material-icons prefix">chevron_right</i>
-                                        <input type="text" id="code" name="code">
-                                        <label for="code">签到码</label>
+                                        <input type="text" id="sign_code" name="sign_code">
+                                        <label for="sign_code">签到码</label>
                                     </div>
                                     <div class="modal-footer">
                                         <div class="button col">
@@ -65,76 +65,77 @@
                     <span class="flow-text">我管理的</span>
                 </div>
                 <div class="collapsible-body">
-                    {% if not (activity_ready or course_ready) %}
+                    {% if not (activity_ready and course_ready) %}
                         <span class="flow-text">当前没有管理签到课程</span>
-                    {% endif %}
-                    {% for activity in activity_ready %}
-                        <div class="card-panel white z-depth-1">
-                            <div class="row valign-wrapper" style="margin-bottom: 0px">
-                                <div class="col s2"><i class="material-icons">event</i></div>
-                                <div class="col s7"><span class="flow-text">{{ activity.name }}</span></div>
-                                <div class="col s3"><a href="#modal_act_{{ activity.id }}"
-                                                       class="btn btn-floating waves-effect waves-light modal-trigger orange">
-                                    <i class="material-icons">border_color</i></a></div>
+                    {% else %}
+                        {% for activity in activity_ready %}
+                            <div class="card-panel white z-depth-1">
+                                <div class="row valign-wrapper" style="margin-bottom: 0px">
+                                    <div class="col s2"><i class="material-icons">event</i></div>
+                                    <div class="col s7"><span class="flow-text">{{ activity.name }}</span></div>
+                                    <div class="col s3"><a href="#modal_act_{{ activity.id }}"
+                                                           class="btn btn-floating waves-effect waves-light modal-trigger orange">
+                                        <i class="material-icons">border_color</i></a></div>
+                                </div>
                             </div>
-                        </div>
-                        <div id="modal_act_{{ activity.id }}" class="modal">
-                            <div class="modal-content">
-                                <h5>请设置签到码</h5>
-                                <form id="codeSubmitForm">
-                                    <div class="input-field col s6">
-                                        <i class="material-icons prefix">chevron_right</i>
-                                        <input type="text" name="codeSubmit" id="codeSubmit">
-                                        <label for="codeSubmit">设置签到码</label>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <div class="button col">
-                                            <a class="btn waves-effect waves-orange orange"
-                                               onclick="random_code('modal_act_{{ course.id }}')">随机
-                                            </a>
-                                            <button class="btn modal-action modal-close waves-effect waves-orange orange"
-                                                    type="submit">开始签到
-                                            </button>
+                            <div id="modal_act_{{ activity.id }}" class="modal">
+                             <div class="modal-content">
+                                    <h5>请设置签到码</h5>
+                                    <form id="codeSubmitForm">
+                                        <div class="input-field col s6">
+                                            <i class="material-icons prefix">chevron_right</i>
+                                            <input type="text" name="sign_code" id="sign_code">
+                                            <label for="sign_code"></label>
                                         </div>
-                                    </div>
-                                </form>
+                                        <div class="modal-footer">
+                                            <div class="button col">
+                                                <a class="btn waves-effect waves-orange orange"
+                                                   onclick="random_code('modal_act_{{ activity.id }}')">随机
+                                                </a>
+                                                <button class="btn modal-action modal-close waves-effect waves-orange orange"
+                                                        type="submit">开始签到
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
-                        </div>
-                    {% endfor %}
-                    {% for course in course_ready %}
-                        <div class="card-panel white z-depth-1">
-                            <div class="row valign-wrapper" style="margin-bottom: 0px">
-                                <div class="col s2"><i class="material-icons">event</i></div>
-                                <div class="col s7"><span class="flow-text">{{ course.name }}</span></div>
-                                <div class="col s3"><a href="#modal_cou_{{ course.id }}"
-                                                       class="btn btn-floating waves-effect waves-light modal-trigger orange">
-                                    <i class="material-icons">border_color</i></a></div>
+                        {% endfor %}
+                        {% for course in course_ready %}
+                            <div class="card-panel white z-depth-1">
+                                <div class="row valign-wrapper" style="margin-bottom: 0px">
+                                    <div class="col s2"><i class="material-icons">event</i></div>
+                                    <div class="col s7"><span class="flow-text">{{ course.name }}</span></div>
+                                    <div class="col s3"><a href="#modal_cou_{{ course.id }}"
+                                                           class="btn btn-floating waves-effect waves-light modal-trigger orange">
+                                        <i class="material-icons">border_color</i></a></div>
+                                </div>
                             </div>
-                        </div>
-                        <div id="modal_cou_{{ course.id }}" class="modal">
-                            <div class="modal-content">
-                                <h5>设置签到码</h5>
-                                <form id="codeSubmitForm">
+                            <div id="modal_cou_{{ course.id }}" class="modal">
+                                <div class="modal-content">
+                                    <h5>设置签到码</h5>
+                                    <form id="codeSubmitForm">
 
-                                    <div class="input-field col s6">
-                                        <i class="material-icons prefix">chevron_right</i>
-                                        <input type="text" name="codeSubmit" id="codeSubmit">
-                                        <label for="codeSubmit">设置验证码</label>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <div class="button col">
-                                            <a class="btn waves-effect waves-orange orange"
-                                               onclick="random_code('modal_cou_{{ course.id }}')">随机
-                                            </a>
-                                            <button class="btn modal-action modal-close waves-effect waves-orange orange"
-                                                    type="submit">开始签到
-                                            </button>
+                                        <div class="input-field col s6">
+                                            <i class="material-icons prefix">chevron_right</i>
+                                            <input type="text" name="sign_code" id="sign_code">
+                                            <label for="sign_code"></label>
                                         </div>
-                                    </div>
-                                </form>
+                                        <div class="modal-footer">
+                                            <div class="button col">
+                                                <a class="btn waves-effect waves-orange orange"
+                                                   onclick="random_code('modal_cou_{{ course.id }}')">随机
+                                                </a>
+                                                <button class="btn modal-action modal-close waves-effect waves-orange orange"
+                                                        type="submit">开始签到
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
-                        </div>
-                    {% endfor %}
+                        {% endfor %}
+                    {% endif %}
                 </div>
             </li>
             <li>
@@ -217,11 +218,9 @@
             margin-top: 60px !important;
         }
     </style>
-    <script type="text/javascript" src="../../static/js/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../../static/js/jquery.cookie.min.js"></script>
     <script type="text/javascript">
-        var chars = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-            'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
-            'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+        var chars = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
         $(document).ready(function () {
             $('.collapsible').collapsible();
         });
@@ -233,7 +232,7 @@
         function random_code(input_id) {
             var res = "";
             for (var i = 0; i < 6; i++) {
-                var id = Math.ceil(Math.random() * 35);
+                var id = Math.ceil(Math.random() * 9);
                 res += chars[id];
             }
             $('#' + input_id).find("#sign_code").val(res);
