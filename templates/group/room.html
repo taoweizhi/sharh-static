@@ -313,7 +313,7 @@
 
             $('#groupName').val('{{ group.name }}');
             $('#groupInfo').val('{{ group.info }}').trigger('autoresize');
-            $('#groupClass>option:{{ group.class }}').attr('class','');
+            {#$('#groupClass>option:{{ group.class }}').attr('class', '');#}
             $('.modal').modal();
             $('select').material_select();
             Materialize.updateTextFields();
@@ -329,6 +329,16 @@
             if ("{{ db.UserGroup.query.filter(db.UserGroup.user_id == user.id).first().user_cls.name }}" === "normal") {
                 hideItem('.manage');
             }
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        if ($.cookie('toast_ctrl_index') !== '{{ message }}') {
+                            Materialize.toast('{{ message }}', 3000);
+                            $.cookie('toast_ctrl_index', '{{ message }}');
+                        }
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
         });
 
         function hideItem(object_id) {
@@ -346,5 +356,7 @@
         function sendMsg() {
             var msg = $('#announce').val();
         }
+
+
     </script>
 {% endblock %}

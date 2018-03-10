@@ -78,74 +78,78 @@
                     <i class="large material-icons">face</i>
                     <span class="">我管理的群组</span>
                 </div>
-                <a href="!#">
-                    <div class="collapsible-body">
-                        {% for group in groups %}
-                            <div class="card-panel white z-depth-1">
-                                <div class="row valign-wrapper" style="margin-bottom: 0px">
-                                    <div class="col s2"><i class="material-icons black-text">event</i></div>
-                                    <div class="col s7"><span class=" black-text">{{ group.name }}</span></div>
-                                    <div class="col s3"><a href="#{{ group.id }}"
-                                                           class="btn btn-floating waves-effect waves-light modal-trigger orange">
-                                        ...</a>
+                <div class="collapsible-body">
+                    {% for group in my_groups %}
+                        <div class="card-panel white z-depth-1">
+                            <div class="row valign-wrapper" style="margin-bottom: 0px">
+                                <div class="col s2"><i class="material-icons black-text">event</i></div>
+                                <div class="col s6"><span>{{ group.name }}</span></div>
+                                <div class="col s2"><a href="#my_{{ group.id }}"
+                                                       class="waves-effect btn-floating modal-trigger">
+                                    <i class="material-icons right">more_horiz</i></a>
+                                </div>
+                                <div class="col s2"><a href="{{ url_for('group.room', group=group.id) }}"
+                                                       class="waves-effect btn-floating modal-trigger">
+                                    <i class="material-icons right">chevron_right</i></a>
+                                </div>
+                                <div id="my_{{ group.id }}" class="modal modal-fixed-footer">
+                                    <div class="modal-content">
+                                        <h3>{{ group.name }}</h3>
+                                        <h5>群号</h5>
+                                        <p>{{ group.number }}</p>
+                                        <h5>类型</h5>
+                                        <p>{{ group.cls }}</p>
+                                        <h5>简介</h5>
+                                        <p>{{ group.info }}</p>
                                     </div>
-                                    <div id="{{ group.id }}" class="modal modal-fixed-footer">
-                                        <div class="modal-content">
-                                            <h3>{{ group.name }}</h3>
-                                            <h5>群号</h5>
-                                            <p>{{ group.number }}</p>
-                                            <h5>类型</h5>
-                                            <p>{{ group.cls }}</p>
-                                            <h5>简介</h5>
-                                            <p>{{ group.info }}</p>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <a href="#!"
-                                               class="modal-action modal-close waves-effect waves-green btn-flat ">关闭</a>
-                                        </div>
+                                    <div class="modal-footer">
+                                        <a href="#!"
+                                           class="modal-action modal-close waves-effect waves-green btn-flat ">关闭</a>
                                     </div>
                                 </div>
                             </div>
-                        {% endfor %}
-                    </div>
-                </a>
+                        </div>
+                    {% endfor %}
+                </div>
             </li>
             <li>
                 <div class="collapsible-header">
                     <i class="material-icons medium">people</i>
                     <span class="">我加入的群组</span>
                 </div>
-                <a href="#!">
-                    <div class="collapsible-body">
-                        {% for group in groups %}
-                            <div class="card-panel white z-depth-1">
-                                <div class="row valign-wrapper" style="margin-bottom: 0px">
-                                    <div class="col s2"><i class="material-icons black-text">event</i></div>
-                                    <div class="col s7"><span class=" black-text">{{ group.name }}</span></div>
-                                    <div class="col s3"><a href="#{{ group.id }}"
-                                                           class="btn btn-floating waves-effect waves-light modal-trigger orange">
-                                        ...</a>
+                <div class="collapsible-body">
+                    {% for group in manage_groups %}
+                        <div class="card-panel white z-depth-1">
+                            <div class="row valign-wrapper" style="margin-bottom: 0px">
+                                <div class="col s2"><i class="material-icons black-text">event</i></div>
+                                <div class="col s6"><span class=" black-text">{{ group.name }}</span></div>
+                                <div class="col s2"><a href="#manage_{{ group.id }}"
+                                                       class="waves-effect btn-floating modal-trigger">
+                                    <i class="material-icons right">more_horiz</i></a>
+                                </div>
+                                <div class="col s2"><a href="{{ url_for('group.room', group=group.id) }}"
+                                                       class="waves-effect btn-floating modal-trigger">
+                                    <i class="material-icons right">chevron_right</i></a>
+                                </div>
+                                <div id="manage_{{ group.id }}" class="modal modal-fixed-footer">
+                                    <div class="modal-content">
+                                        <h3>{{ group.name }}</h3>
+                                        <h5>群号</h5>
+                                        <p>{{ group.number }}</p>
+                                        <h5>类型</h5>
+                                        <p>{{ group.cls }}</p>
+                                        <h5>简介</h5>
+                                        <p>{{ group.info }}</p>
                                     </div>
-                                    <div id="{{ group.id }}" class="modal modal-fixed-footer">
-                                        <div class="modal-content">
-                                            <h3>{{ group.name }}</h3>
-                                            <h5>群号</h5>
-                                            <p>{{ group.number }}</p>
-                                            <h5>类型</h5>
-                                            <p>{{ group.cls }}</p>
-                                            <h5>简介</h5>
-                                            <p>{{ group.info }}</p>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <a href="#!"
-                                               class="modal-action modal-close waves-effect waves-green btn-flat ">关闭</a>
-                                        </div>
+                                    <div class="modal-footer">
+                                        <a href="#!"
+                                           class="modal-action modal-close waves-effect waves-green btn-flat ">关闭</a>
                                     </div>
                                 </div>
                             </div>
-                        {% endfor %}
-                    </div>
-                </a>
+                        </div>
+                    {% endfor %}
+                </div>
             </li>
         </ul>
     </div>
@@ -166,6 +170,16 @@
             // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
             $('.modal').modal();
             $('select').material_select();
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        if ($.cookie('toast_ctrl_index') !== '{{ message }}') {
+                            Materialize.toast('{{ message }}', 3000);
+                            $.cookie('toast_ctrl_index', '{{ message }}');
+                        }
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
         });
     </script>
 {% endblock %}
