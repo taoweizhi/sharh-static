@@ -1,6 +1,7 @@
 <!--
     msg_dict_public
     msg_dict_chat
+    msg_dict_req
     group
     user
     db
@@ -307,12 +308,21 @@
         }
     </style>
     <script type="text/javascript">
-
-        var current_msg = {id: "", title: "", content: ""};
-
         $('footer').css('display', 'none');
+
         $(document).ready(function () {
             $('.modal').modal();
+            $('select').material_select();
+            Materialize.updateTextFields();
+            $('#manage-body').click(function () {
+                $("#sending_row").hide();
+            });
+            $('#chat-body').click(function (){
+                $("#sending_row").show();
+            });
+            $('#public-body').click(function (){
+                $("#sending_row").show();
+            });
             if ("{{ db.UserGroup.filter(db.UserGroup.user_id == user.id).first().user_cls.name }}" === "normal") {
                 hideItem('.manage');
             }
