@@ -1,13 +1,25 @@
+<!--
+    msg_dict_public
+    msg_dict_chat
+    group
+    user
+    db
+
+-->
+
+
+
 {% extends "layouts/defaultLayout.html" %}
 {% block navbar_content %}
 {% endblock %}
+{% set Admin = db.UserGroup.filter(db.UserGroup.user_id == user.id).first().user_cls.name %}
 {% block navbar_tabs %}
     <li class="tab"><a href="#public-body"><i class="material-icons left">announcement</i>公告</a></li>
     <li class="tab"><a href="#chat-body"><i class="material-icons left"></i>全部消息</a></li>
-    <li class="tab"><a href="#manage-body"><i class="material-icons left"></i>管理</a></li>
+    <li class="tab manage"><a href="#manage-body"><i class="material-icons left"></i>管理</a></li>
 {% endblock %}
 {% block content %}
-    <div id="manage_msg" class="modal">
+    <div id="manage_msg" class="modal manage">
         <div class="modal-content">
             <h5>消息管理</h5>
             <form class="col s12" method="POST">
@@ -124,17 +136,17 @@
                             <ul class="collection with-header">
                                 <li class="collection-item">
                                     {% for member_ref in group.ref_users %}
-                                        {% if member_ref.user.user_cls == Role.leader %}
+                                        {% if member_ref.user.user_cls == db.Role.leader %}
                                             <div><i class="material-icons">account_circle</i>{{ member_ref.user.name }}
                                             </div>
-                                        {% elif member_ref.user.user_cls == Role.admin %}
+                                        {% elif member_ref.user.user_cls == db.Role.admin %}
                                             <div><i class="material-icons">book</i>{{ member_ref.user.name }}
                                                 <a href="" class="secondary-content">
                                                     <i class="material-icons">not_interested</i>删除成员</a>
                                                 <a href="" class="secondary-content">
                                                     <i class="material-icons">assignment_turned_in</i>撤销管理员</a>
                                             </div>
-                                        {% elif member_ref.user.user_cls == Role.user %}
+                                        {% elif member_ref.user.user_cls == db.Role.user %}
                                             <div><i class="material-icons">person</i>{{ member_ref.user.name }}
                                                 <a href="" class="secondary-content">
                                                     <i class="material-icons">not_interested</i>删除成员</a>
@@ -296,9 +308,8 @@
 
         $('footer').css('display', 'none');
         $(document).ready(function () {
-            $
             $('.modal').modal();
-            if ("{{ permission }}" !== "admin") {
+            if ("{{ db.UserGroup.filter(db.UserGroup.user_id == user.id).first().user_cls.name }}" === "normal") {
                 hideItem('.manage');
             }
         });
