@@ -114,6 +114,14 @@ const Form = {
     },
     url: '/group/register'
   },
+  changeGroupForm: {
+    content: {
+      groupName: field.username,
+      groupClass: field.require,
+      groupInfo: field.text,
+    },
+    url: '/group/change_group',
+  },
 };
 
 const defaultErrorPlacement = (error, elem) => {
@@ -209,6 +217,15 @@ $(document).ready(
       rules: Form.groupForm.content,
       errorPlacement: defaultErrorPlacement,
       submitHandler: $.afterPOST(groupFormHandler)(Form.groupForm.url)
+    });
+    $('#changeGroupForm').validate({
+      rules: Form.changeGroupForm.content,
+      errorPlacement: defaultErrorPlacement,
+      submitHandler: (form) => {
+        const groupId = $('.groupId').attr('id');
+        $.post(`/group/change_group%3Fgroup%3d${groupId}`, $(form).serializeArray(),
+          defaultAction(changeGroupFormHandler))
+      }
     });
     $("title").append(style);
   }

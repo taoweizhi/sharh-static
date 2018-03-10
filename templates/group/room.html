@@ -129,7 +129,7 @@
                     </ul>
                 </div>
                 <div class="col s12 l6">
-                    <blockquote>
+                    <blockquote class="groupId" id="{{group.id}}">
                         群设置
                     </blockquote>
                     <div class="row">
@@ -166,14 +166,14 @@
                             <blockquote>
                                 群设置
                             </blockquote>
-                            <form id="groupForm">
+                            <form id="changeGroupForm">
                                 <div class="row">
                                     <div class="input-field col s12">
-                                        <input value="{{ group.name }}" id="groupName" type="text" class="validate">
+                                        <input value="{{ group.name }}" id="groupName" name="groupName" type="text">
                                         <label for="groupName">群名称</label>
                                     </div>
                                     <div class="input-field col s12">
-                                        <select>
+                                        <select id="groupClass" name="groupClass">
                                             <option value="" disabled>选择群类型</option>
                                             <option value="academic">学术类</option>
                                             <option value="sport">体育类</option>
@@ -183,7 +183,7 @@
                                             <option value="daily">生活类</option>
                                             <option value="other">其他</option>
                                         </select>
-                                        <label>群类型</label>
+                                        <label for="groupClass">群类型</label>
                                     </div>
                                 </div>
                                 <div class="row">
