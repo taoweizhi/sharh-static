@@ -1,7 +1,6 @@
 <!--
     msg_dict_public
     msg_dict_chat
-    msg_dict_req
     group
     user
     db
@@ -13,7 +12,7 @@
 {% extends "layouts/defaultLayout.html" %}
 {% block navbar_content %}
 {% endblock %}
-{% set AdminPermotion = not (db.UserGroup.filter(db.UserGroup.user_id == user.id).first().user_cls == db.Role.normal) %}
+{% set AdminPermotion = not (db.UserGroup.query.filter(db.UserGroup.user_id == user.id).first().user_cls == db.Role.normal) %}
 {% block navbar_tabs %}
     <li class="tab"><a href="#public-body"><i class="material-icons left">announcement</i>公告</a></li>
     <li class="tab"><a href="#chat-body"><i class="material-icons left"></i>全部消息</a></li>
@@ -129,7 +128,7 @@
                     </ul>
                 </div>
                 <div class="col s12 l6">
-                    <blockquote>
+                    <blockquote class="groupId" id="{{group.id}}">
                         群设置
                     </blockquote>
                     <div class="row">
@@ -166,14 +165,14 @@
                             <blockquote>
                                 群设置
                             </blockquote>
-                            <form id="groupForm">
+                            <form id="changeGroupForm">
                                 <div class="row">
                                     <div class="input-field col s12">
-                                        <input value="{{ group.name }}" id="groupName" type="text" class="validate">
+                                        <input value="{{ group.name }}" id="groupName" name="groupName" type="text">
                                         <label for="groupName">群名称</label>
                                     </div>
                                     <div class="input-field col s12">
-                                        <select>
+                                        <select id="groupClass" name="groupClass">
                                             <option value="" disabled>选择群类型</option>
                                             <option value="academic">学术类</option>
                                             <option value="sport">体育类</option>
@@ -183,7 +182,7 @@
                                             <option value="daily">生活类</option>
                                             <option value="other">其他</option>
                                         </select>
-                                        <label>群类型</label>
+                                        <label for="groupClass">群类型</label>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -323,7 +322,7 @@
             $('#public-body').click(function (){
                 $("#sending_row").show();
             });
-            if ("{{ db.UserGroup.filter(db.UserGroup.user_id == user.id).first().user_cls.name }}" === "normal") {
+            if ("{{ db.UserGroup.query.filter(db.UserGroup.user_id == user.id).first().user_cls.name }}" === "normal") {
                 hideItem('.manage');
             }
         });

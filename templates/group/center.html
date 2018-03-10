@@ -22,11 +22,11 @@
             <form id="groupForm">
                 <div class="row">
                     <div class="input-field col s12">
-                        <input id="groupName" type="text" class="validate">
+                        <input id="groupName" type="text" name="groupName" class="validate">
                         <label for="groupName">群名称</label>
                     </div>
                     <div class="input-field col s12">
-                        <select>
+                        <select id="groupClass" name="groupClass">
                             <option value="" disabled>选择群类型</option>
                             <option value="academic">学术类</option>
                             <option value="sport">体育类</option>
@@ -36,7 +36,7 @@
                             <option value="daily">生活类</option>
                             <option value="other">其他</option>
                         </select>
-                        <label>群类型</label>
+                        <label for="groupClass">群类型</label>
                     </div>
                 </div>
                 <div class="row">
@@ -45,7 +45,7 @@
                         <label for="groupInfo">简介</label>
                     </div>
                 </div>
-                <button class="btn waves-effect waves-light right" type="submit" name="action">创建
+                <button class="btn waves-effect waves-light right" type="submit">创建
                     <i class="material-icons right">send</i>
                 </button>
                 <br><br>
