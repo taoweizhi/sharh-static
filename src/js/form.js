@@ -109,9 +109,8 @@ const Form = {
   groupForm: {
     content: {
       groupName: field.username,
-      groupOption: field.require,
-      groupInfo: field.text,
       groupClass: field.require,
+      groupInfo: field.text,
     },
     url: '/group/register'
   },

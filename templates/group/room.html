@@ -1,6 +1,7 @@
 <!--
     msg_dict_public
     msg_dict_chat
+    msg_dict_req
     group
     user
     db
@@ -12,7 +13,7 @@
 {% extends "layouts/defaultLayout.html" %}
 {% block navbar_content %}
 {% endblock %}
-{% set AdminPermotion = not (db.UserGroup.filter(db.UserGroup.user_id == user.id).first().user_cls == db.Role.normal) %}
+{% set AdminPermotion = not (db.UserGroup.query.filter(db.UserGroup.user_id == user.id).first().user_cls == db.Role.normal) %}
 {% block navbar_tabs %}
     <li class="tab"><a href="#public-body"><i class="material-icons left">announcement</i>公告</a></li>
     <li class="tab"><a href="#chat-body"><i class="material-icons left"></i>全部消息</a></li>
@@ -313,7 +314,7 @@
         $('footer').css('display', 'none');
         $(document).ready(function () {
             $('.modal').modal();
-            if ("{{ db.UserGroup.filter(db.UserGroup.user_id == user.id).first().user_cls.name }}" === "normal") {
+            if ("{{ db.UserGroup.query.filter(db.UserGroup.user_id == user.id).first().user_cls.name }}" === "normal") {
                 hideItem('.manage');
             }
         });
