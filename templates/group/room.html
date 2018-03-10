@@ -8,7 +8,6 @@
 -->
 
 
-
 {% extends "layouts/defaultLayout.html" %}
 {% block navbar_content %}
 {% endblock %}
@@ -17,7 +16,7 @@
     <li class="tab"><a href="#public-body"><i class="material-icons left">announcement</i>公告</a></li>
     <li class="tab"><a href="#chat-body"><i class="material-icons left"></i>全部消息</a></li>
     {% if AdminPermotion %}
-    <li class="tab manage"><a href="#manage-body"><i class="material-icons left"></i>管理</a></li>
+        <li class="tab manage"><a href="#manage-body"><i class="material-icons left"></i>管理</a></li>
     {% endif %}
 {% endblock %}
 {% block content %}
@@ -109,113 +108,114 @@
             </ul>
         </div>
         {% if AdminPermotion %}
-        <div class="col s12 m10 l9" id="manage-body">
-            <div class="row">
-                <div class="col s12 l6">
-                    <blockquote>
-                        加群请求
-                    </blockquote>
-                    <ul class="collection with-header">
-                        <li class="collection-item">
-                            {% for req in msg_dict_req.items() %}
-                                <div>{{ req.name }}: {{ req.content }}
-                                    <a href="" class="secondary-content"><i class="material-icons">check</i></a>
-                                    <a href="" class="secondary-content"><i
-                                            class="material-icons">close</i></a>
-                                </div>
-                            {% endfor %}
-                        </li>
-                    </ul>
-                </div>
-                <div class="col s12 l6">
-                    <blockquote class="groupId" id="{{group.id}}">
-                        群设置
-                    </blockquote>
-                    <div class="row">
-                        <div class="col s12 l6">
-                            <blockquote>
-                                管理成员
-                            </blockquote>
-                            <ul class="collection with-header">
-                                <li class="collection-item">
-                                    {% for member_ref in group.ref_users %}
-                                        {% if member_ref.user.user_cls == db.Role.leader %}
-                                            <div><i class="material-icons">account_circle</i>{{ member_ref.user.name }}
-                                            </div>
-                                        {% elif member_ref.user.user_cls == db.Role.admin %}
-                                            <div><i class="material-icons">book</i>{{ member_ref.user.name }}
-                                                <a href="" class="secondary-content">
-                                                    <i class="material-icons">not_interested</i>删除成员</a>
-                                                <a href="" class="secondary-content">
-                                                    <i class="material-icons">assignment_turned_in</i>撤销管理员</a>
-                                            </div>
-                                        {% elif member_ref.user.user_cls == db.Role.user %}
-                                            <div><i class="material-icons">person</i>{{ member_ref.user.name }}
-                                                <a href="" class="secondary-content">
-                                                    <i class="material-icons">not_interested</i>删除成员</a>
-                                                <a href="" class="secondary-content">
-                                                    <i class="material-icons">assignment_turned_in</i>设置为管理员</a>
-                                            </div>
-                                        {% endif %}
-                                    {% endfor %}
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="col s12 l6">
-                            <blockquote>
-                                群设置
-                            </blockquote>
-                            <form id="changeGroupForm">
-                                <div class="row">
-                                    <div class="input-field col s12">
-                                        <input value="{{ group.name }}" id="groupName" name="groupName" type="text">
-                                        <label for="groupName">群名称</label>
+            <div class="col s12 m10 l9" id="manage-body">
+                <div class="row">
+                    <div class="col s12 l6">
+                        <blockquote>
+                            加群请求
+                        </blockquote>
+                        <ul class="collection with-header">
+                            <li class="collection-item">
+                                {% for req in msg_dict_req.items() %}
+                                    <div>{{ req.name }}: {{ req.content }}
+                                        <a href="" class="secondary-content"><i class="material-icons">check</i></a>
+                                        <a href="" class="secondary-content"><i
+                                                class="material-icons">close</i></a>
                                     </div>
-                                    <div class="input-field col s12">
-                                        <select id="groupClass" name="groupClass">
-                                            <option value="" disabled>选择群类型</option>
-                                            <option value="academic">学术类</option>
-                                            <option value="sport">体育类</option>
-                                            <option value="art">艺术类</option>
-                                            <option value="practice">实践类</option>
-                                            <option value="lecture">讲座</option>
-                                            <option value="daily">生活类</option>
-                                            <option value="other">其他</option>
-                                        </select>
-                                        <label for="groupClass">群类型</label>
+                                {% endfor %}
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col s12 l6">
+                        <blockquote class="groupId" id="{{ group.id }}">
+                            群设置
+                        </blockquote>
+                        <div class="row">
+                            <div class="col s12 l6">
+                                <blockquote>
+                                    管理成员
+                                </blockquote>
+                                <ul class="collection with-header">
+                                    <li class="collection-item">
+                                        {% for member_ref in group.ref_users %}
+                                            {% if member_ref.user.user_cls == db.Role.leader %}
+                                                <div>
+                                                    <i class="material-icons">account_circle</i>{{ member_ref.user.name }}
+                                                </div>
+                                            {% elif member_ref.user.user_cls == db.Role.admin %}
+                                                <div><i class="material-icons">book</i>{{ member_ref.user.name }}
+                                                    <a href="" class="secondary-content">
+                                                        <i class="material-icons">not_interested</i>删除成员</a>
+                                                    <a href="" class="secondary-content">
+                                                        <i class="material-icons">assignment_turned_in</i>撤销管理员</a>
+                                                </div>
+                                            {% elif member_ref.user.user_cls == db.Role.user %}
+                                                <div><i class="material-icons">person</i>{{ member_ref.user.name }}
+                                                    <a href="" class="secondary-content">
+                                                        <i class="material-icons">not_interested</i>删除成员</a>
+                                                    <a href="" class="secondary-content">
+                                                        <i class="material-icons">assignment_turned_in</i>设置为管理员</a>
+                                                </div>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col s12 l6">
+                                <blockquote>
+                                    群设置
+                                </blockquote>
+                                <form id="changeGroupForm">
+                                    <div class="row">
+                                        <div class="input-field col s12">
+                                            <input value="{{ group.name }}" id="groupName" name="groupName" type="text">
+                                            <label for="groupName">群名称</label>
+                                        </div>
+                                        <div class="input-field col s12">
+                                            <select id="groupClass" name="groupClass">
+                                                <option value="" disabled>选择群类型</option>
+                                                <option value="academic">学术类</option>
+                                                <option value="sport">体育类</option>
+                                                <option value="art">艺术类</option>
+                                                <option value="practice">实践类</option>
+                                                <option value="lecture">讲座</option>
+                                                <option value="daily">生活类</option>
+                                                <option value="other">其他</option>
+                                            </select>
+                                            <label for="groupClass">群类型</label>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="input-field col s12">
+                                    <div class="row">
+                                        <div class="input-field col s12">
                                         <textarea id="groupInfo" class="materialize-textarea"
-                                                  name="groupInfo" value="{{ group.info }}"></textarea>
-                                        <label for="groupInfo">简介</label>
+                                                  name="groupInfo"></textarea>
+                                            <label for="groupInfo">简介</label>
+                                        </div>
                                     </div>
-                                </div>
-                                <button class="btn waves-effect waves-light right" type="submit" name="action">提交修改
-                                    <i class="material-icons right">send</i>
-                                </button>
-                                <br><br>
-                            </form>
-                            <blockquote style="border: red;">
-                                关键操作
-                            </blockquote>
-                            <a class="waves-effect waves-light btn red modal-trigger" href="">删除群</a>
-                            <div id="modal1" class="modal">
-                                <div class="modal-content">
-                                    <h5>Warning</h5>
-                                    <p>正在删除群，所有成员将会被解散，确认？</p>
-                                </div>
-                                <div class="modal-footer">
-                                    <a href="" class="modal-action modal-close waves-effect red btn-flat">确认</a>
-                                    <a href="#!" class="modal-action modal-close waves-effect green btn-flat">取消</a>
+                                    <button class="btn waves-effect waves-light right" type="submit" name="action">提交修改
+                                        <i class="material-icons right">send</i>
+                                    </button>
+                                    <br><br>
+                                </form>
+                                <blockquote style="border: red;">
+                                    关键操作
+                                </blockquote>
+                                <a class="waves-effect waves-light btn red modal-trigger" href="">删除群</a>
+                                <div id="modal1" class="modal">
+                                    <div class="modal-content">
+                                        <h5>Warning</h5>
+                                        <p>正在删除群，所有成员将会被解散，确认？</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <a href="" class="modal-action modal-close waves-effect red btn-flat">确认</a>
+                                        <a href="#!" class="modal-action modal-close waves-effect green btn-flat">取消</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
         {% endif %}
     </div>
     <div class="row" id="sending_row">
@@ -310,16 +310,20 @@
         $('footer').css('display', 'none');
 
         $(document).ready(function () {
+
             $('.modal').modal();
             $('select').material_select();
+            $('#groupName').val("{{ group.name }}");
+            $('#groupInfo').val('{{ group.info }}').trigger('autoresize');
+            $('#groupClass>option:{{ group.class }}').attr('class','');
             Materialize.updateTextFields();
             $('#manage-body').click(function () {
                 $("#sending_row").hide();
             });
-            $('#chat-body').click(function (){
+            $('#chat-body').click(function () {
                 $("#sending_row").show();
             });
-            $('#public-body').click(function (){
+            $('#public-body').click(function () {
                 $("#sending_row").show();
             });
             if ("{{ db.UserGroup.query.filter(db.UserGroup.user_id == user.id).first().user_cls.name }}" === "normal") {
