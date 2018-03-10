@@ -56,7 +56,7 @@
     <div class="container">
         <div class="col s12 m10 l9" id="public-body">
             <ul>
-                {% for msg in msg_dict_public.items() %}
+                {% for idx, msg in msg_dict_public.items() %}
                     <li>
                         <div class="col s12 m7">
                             <div class="card">
@@ -311,12 +311,12 @@
 
         $(document).ready(function () {
 
-            $('#groupName').val('{{ group.name }}');
-            $('#groupInfo').val('{{ group.info }}').trigger('autoresize');
-            $('#groupClass>option:{{ group.class }}').attr('class','');
             $('.modal').modal();
             $('select').material_select();
             Materialize.updateTextFields();
+            $('#groupInfo').val('{{ group.info }}').trigger('autoresize');
+            $('#groupClass>option:{{ group.class }}').attr('class','');
+            $('#groupName').val('{{ group.name }}');
             $('#manage-body').click(function () {
                 $("#sending_row").hide();
             });
