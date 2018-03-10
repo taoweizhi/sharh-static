@@ -311,11 +311,11 @@
 
         $(document).ready(function () {
 
-            $('.modal').modal();
-            $('select').material_select();
-            $('#groupName').val("{{ group.name }}");
+            $('#groupName').val('{{ group.name }}');
             $('#groupInfo').val('{{ group.info }}').trigger('autoresize');
             $('#groupClass>option:{{ group.class }}').attr('class','');
+            $('.modal').modal();
+            $('select').material_select();
             Materialize.updateTextFields();
             $('#manage-body').click(function () {
                 $("#sending_row").hide();
