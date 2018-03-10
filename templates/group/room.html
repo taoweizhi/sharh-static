@@ -56,7 +56,7 @@
     <div class="container">
         <div class="col s12 m10 l9" id="public-body">
             <ul>
-                {% for idx, msg in msg_list_public.items() %}
+                {% for idx, msg in msg_dict_public.items() %}
                     <li>
                         <div class="col s12 m7">
                             <div class="card">
@@ -117,7 +117,7 @@
         </div>
         <div class="col s12 m10 l9" id="chat-body">
             <ul>
-                {% for idx, msg in msg_list_chat.items() %}
+                {% for idx, msg in msg_dict_chat.items() %}
                     <li>
                         <div class="col s12 m7">
                             <div class="card">
@@ -179,7 +179,7 @@
                         </blockquote>
                         <ul class="collection with-header">
                             <li class="collection-item">
-                                {% for req in msg_list_req %}
+                                {% for req in msg_dict_req %}
                                     <div>{{ req.name }}: {{ req.content }}
                                         <a href="" class="secondary-content"><i class="material-icons">check</i></a>
                                         <a href="" class="secondary-content"><i class="material-icons">close</i></a>
