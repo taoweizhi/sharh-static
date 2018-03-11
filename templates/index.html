@@ -24,6 +24,9 @@
         {% endif %}
     </ul>
 {% endblock %}
+{% block navbar_tabs %}
+    <li class="tab"><a href="" class="active" style="display: none"><i class="material-icons left">home</i>主页</a></li>
+{% endblock %}
 {% block content %}
     <div class="row">
         <div class="slider">
@@ -116,12 +119,16 @@
         .page-content {
             margin-top: 60px !important;
         }
+
+        .waves-effect img {
+            z-index: 1 !important;
+        }
     </style>
     <script type="text/javascript" src="../static/js/jquery.cookie.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             var sw = document.body.clientWidth;
-            var sh = document.body.clientHeight - 60;
+            var sh = document.body.clientHeight-60;
             if (sw <= 992)
                 sh = sw * 0.618;
 
@@ -133,7 +140,7 @@
 
             $(window).resize(function () {
                 sw = document.body.clientWidth;
-                sh = document.body.clientHeight - 60;
+                sh = document.body.clientHeight -60;
                 if (sw <= 992)
                     sh = sw * 0.618;
 

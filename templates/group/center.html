@@ -13,6 +13,9 @@
         <li><a href="#add" class="modal-trigger">添加群组</a></li>
     </ul>
 {% endblock %}
+{% block navbar_tabs %}
+    <li class="tab"><a href="#" class="active"><i class="material-icons left">group</i>群组</a></li>
+{% endblock %}
 {% block content %}
     <br>
     <div id="create" class="modal">
@@ -94,15 +97,34 @@
                                 </div>
                                 <div id="my_{{ group.id }}" class="modal modal-fixed-footer">
                                     <div class="modal-content">
-                                        <h3>{{ group.name }}</h3>
-                                        <h5>群号</h5>
-                                        <p>{{ group.number }}</p>
-                                        <h5>类型</h5>
-                                        <p>{{ group.cls }}</p>
-                                        <h5>简介</h5>
-                                        <p>{{ group.info }}</p>
+                                        <blockquote style="border-left:5px solid orange;">
+                                            <h4>{{ group.name }}</h4>
+                                        </blockquote>
+                                        <div class="container">
+                                            <blockquote>群号</blockquote>
+                                            <p>{{ group.id }}</p>
+                                            <blockquote>类型</blockquote>
+                                            <p>{{ group.cls.value }}</p>
+                                            <blockquote>简介</blockquote>
+                                            <p>{{ group.info }}</p>
+                                        </div>
+
                                     </div>
                                     <div class="modal-footer">
+                                        <a onclick="show_modal('exit_group_{{ group.id }}')" class="modal-action modal-close waves-effect waves-green btn-flat">删除群</a>
+                                        <div id="exit_group_{{ group.id }}" class="modal">
+                                            <div class="modal-content">
+                                                <h4>确认</h4>
+                                                <p>确认退出群组 "{{ group.name }}" ？</p><br>
+                                                <p class="gray-text">群ID: {{ group.id }}</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <a href=""
+                                                   class="modal-action modal-close waves-effect waves-green btn-flat">确认</a>
+                                                <a href="#!"
+                                                   class="modal-action modal-close waves-effect waves-red btn-flat">取消</a>
+                                            </div>
+                                        </div>
                                         <a href="#!"
                                            class="modal-action modal-close waves-effect waves-green btn-flat ">关闭</a>
                                     </div>
@@ -133,15 +155,21 @@
                                 </div>
                                 <div id="manage_{{ group.id }}" class="modal modal-fixed-footer">
                                     <div class="modal-content">
-                                        <h3>{{ group.name }}</h3>
-                                        <h5>群号</h5>
-                                        <p>{{ group.number }}</p>
-                                        <h5>类型</h5>
-                                        <p>{{ group.cls }}</p>
-                                        <h5>简介</h5>
-                                        <p>{{ group.info }}</p>
+                                        <blockquote style="border-left:5px solid orange;">
+                                            <h4>{{ group.name }}</h4>
+                                        </blockquote>
+                                        <div class="container">
+                                            <blockquote>群号</blockquote>
+                                            <p>{{ group.id }}</p>
+                                            <blockquote>类型</blockquote>
+                                            <p>{{ group.cls.value }}</p>
+                                            <blockquote>简介</blockquote>
+                                            <p>{{ group.info }}</p>
+                                        </div>
+
                                     </div>
                                     <div class="modal-footer">
+                                        <a class="modal-action modal-close waves-effect waves-green btn-flat disabled">退出群</a>
                                         <a href="#!"
                                            class="modal-action modal-close waves-effect waves-green btn-flat ">关闭</a>
                                     </div>
@@ -155,6 +183,17 @@
     </div>
 {% endblock %}
 {% block script_content %}
+    <style>
+        @media screen and (max-width: 600px) {
+            .nav-wrapper {
+                height: 64px !important;
+            }
+        }
+
+        #global-nav {
+            height: 112px;
+        }
+    </style>
     <script>
         $('.dropdown-button').dropdown({
                 inDuration: 300,
@@ -181,5 +220,9 @@
                 {% endif %}
             {% endwith %}
         });
+
+        function show_modal(modal_id) {
+            $(modal_id).modal('open');
+        }
     </script>
 {% endblock %}

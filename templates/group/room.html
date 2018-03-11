@@ -179,9 +179,6 @@
                         </ul>
                     </div>
                     <div class="col s12 l8">
-                        <blockquote class="groupId" id="{{ group.id }}">
-                            群设置
-                        </blockquote>
                         <div class="row">
                             <div class="col s12 l6">
                                 <blockquote>
@@ -217,50 +214,57 @@
                                 <blockquote>
                                     群设置
                                 </blockquote>
-                                <form id="changeGroupForm">
-                                    <div class="row">
-                                        <div class="input-field col s12">
-                                            <input value="{{ group.name }}" id="groupName" name="groupName" type="text">
-                                            <label for="groupName">群名称</label>
+                                <div class="container">
+                                    <form id="changeGroupForm">
+                                        <div class="row">
+                                            <div class="input-field col s12">
+                                                <input value="{{ group.name }}" id="groupName" name="groupName"
+                                                       type="text">
+                                                <label for="groupName">群名称</label>
+                                            </div>
+                                            <div class="input-field col s12">
+                                                <select id="groupClass" name="groupClass">
+                                                    <option value="" disabled>选择群类型</option>
+                                                    <option value="academic">学术类</option>
+                                                    <option value="sport">体育类</option>
+                                                    <option value="art">艺术类</option>
+                                                    <option value="practice">实践类</option>
+                                                    <option value="lecture">讲座</option>
+                                                    <option value="daily">生活类</option>
+                                                    <option value="other">其他</option>
+                                                </select>
+                                                <label for="groupClass">群类型</label>
+                                            </div>
                                         </div>
-                                        <div class="input-field col s12">
-                                            <select id="groupClass" name="groupClass">
-                                                <option value="" disabled>选择群类型</option>
-                                                <option value="academic">学术类</option>
-                                                <option value="sport">体育类</option>
-                                                <option value="art">艺术类</option>
-                                                <option value="practice">实践类</option>
-                                                <option value="lecture">讲座</option>
-                                                <option value="daily">生活类</option>
-                                                <option value="other">其他</option>
-                                            </select>
-                                            <label for="groupClass">群类型</label>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="input-field col s12">
+                                        <div class="row">
+                                            <div class="input-field col s12">
                                         <textarea id="groupInfo" class="materialize-textarea"
                                                   name="groupInfo"></textarea>
-                                            <label for="groupInfo">简介</label>
+                                                <label for="groupInfo">简介</label>
+                                            </div>
                                         </div>
+                                        <button class="btn waves-effect waves-light right" type="submit" name="action">
+                                            提交修改
+                                            <i class="material-icons right">send</i>
+                                        </button>
+                                        <br><br>
+                                    </form>
+                                    <blockquote>
+                                        关键操作
+                                    </blockquote>
+                                    <div class="row">
+                                        <a class="waves-effect waves-light btn red modal-trigger"
+                                           href="#delete_modal">删除群<i class="material-icons right">close</i></a>
                                     </div>
-                                    <button class="btn waves-effect waves-light right" type="submit" name="action">提交修改
-                                        <i class="material-icons right">send</i>
-                                    </button>
-                                    <br><br>
-                                </form>
-                                <blockquote>
-                                    关键操作
-                                </blockquote>
-                                <a class="waves-effect waves-light btn red modal-trigger" href="#delete_modal">删除群</a>
-                                <div id="delete_modal" class="modal">
-                                    <div class="modal-content">
-                                        <h5>Warning</h5>
-                                        <p>正在删除群，所有成员将会被解散，确认？</p>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <a href="" class="modal-action modal-close waves-effect red btn-flat">确认</a>
-                                        <a href="#!" class="modal-action modal-close waves-effect green btn-flat">取消</a>
+                                    <div id="delete_modal" class="modal">
+                                        <div class="modal-content">
+                                            <h5>Warning</h5>
+                                            <p>正在删除群，所有成员将会被解散，确认？</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <a href="" class="modal-action modal-close waves-effect waves-red btn-flat">确认</a>
+                                            <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">取消</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -325,8 +329,14 @@
         }
 
         @media screen and (max-width: 992px) {
-            #sending_row {
-                left: 0 !important;
+            #global-nav {
+                height: 104px;
+            }
+        }
+
+        @media screen and (max-width: 600px) {
+            .nav-wrapper {
+                height: 64px !important;
             }
         }
 
@@ -341,6 +351,7 @@
 
             $('#groupName').val('{{ group.name }}');
             $('#groupInfo').val('{{ group.info }}').trigger('autoresize');
+            $('#groupClass').val('{{ group.cls.name }}');
             $('.modal').modal();
             $('select').material_select();
             Materialize.updateTextFields();
@@ -378,10 +389,6 @@
             $("#managemsgContent").val(msg_content);
             Materialize.updateTextFields();
             $('#manage_msg').modal('open');
-        }
-
-        function sendMsg() {
-            var msg = $('#announce').val();
         }
     </script>
 {% endblock %}
