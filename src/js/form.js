@@ -122,6 +122,12 @@ const Form = {
     },
     url: '/group/change_group',
   },
+  subscribeGroupForm: {
+    content: {
+      groupNumber: field.number,
+    },
+    url: '/group/search'
+  },
 };
 
 const defaultErrorPlacement = (error, elem) => {
@@ -225,6 +231,27 @@ $(document).ready(
         const groupId = $('.groupId').attr('id');
         $.post(`/group/change_group%3Fgroup%3d${groupId}`, $(form).serializeArray(),
           defaultAction(changeGroupFormHandler))
+      }
+    });
+    $('#subscribeGroup').validate({
+      rules: Form.subscribeGroupForm.content,
+      errorPlacement: defaultErrorPlacement,
+      submitHandler: (form) => {
+        $.post(Form.subscribeGroupForm.url, $(form).serializeArray(), (result) => {
+          const gen = (x) => {
+            return $(`<li><span>${x}</span></li>`);
+          };
+          const insertBar = $('#exist');
+          if (insertBar) insertBar.remove();
+          const searchBar = $('<ul id="exist"></ul>');
+          if (result.found) {
+            const groupIDs = result.groups;
+            groupIDs.map(gen).forEach(x => searchBar.append(x));
+          } else {
+            searchBar.append($('<li>没有找到</li>'));
+          }
+          $('#insert').after(searchBar);
+        })
       }
     });
     $("title").append(style);
