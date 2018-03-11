@@ -111,20 +111,8 @@
 
                                     </div>
                                     <div class="modal-footer">
-                                        <a onclick="show_modal('exit_group_{{ group.id }}')" class="modal-action modal-close waves-effect waves-green btn-flat">删除群</a>
-                                        <div id="exit_group_{{ group.id }}" class="modal">
-                                            <div class="modal-content">
-                                                <h4>确认</h4>
-                                                <p>确认退出群组 "{{ group.name }}" ？</p><br>
-                                                <p class="gray-text">群ID: {{ group.id }}</p>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <a href=""
-                                                   class="modal-action modal-close waves-effect waves-green btn-flat">确认</a>
-                                                <a href="#!"
-                                                   class="modal-action modal-close waves-effect waves-red btn-flat">取消</a>
-                                            </div>
-                                        </div>
+                                        <a href="#!"
+                                           class="modal-action modal-close waves-effect waves-green btn-flat">删除群</a>
                                         <a href="#!"
                                            class="modal-action modal-close waves-effect waves-green btn-flat ">关闭</a>
                                     </div>
@@ -169,9 +157,23 @@
 
                                     </div>
                                     <div class="modal-footer">
-                                        <a class="modal-action modal-close waves-effect waves-green btn-flat disabled">退出群</a>
+                                        <a onclick="hide_show_modal('#manage_{{ group.id }}','#exit_group_{{ group.id }}')"
+                                                class="waves-effect waves-green btn-flat disabled">退出群</a>
                                         <a href="#!"
                                            class="modal-action modal-close waves-effect waves-green btn-flat ">关闭</a>
+                                    </div>
+                                </div>
+                                <div id="exit_group_{{ group.id }}" class="modal">
+                                    <div class="modal-content">
+                                        <h4>确认</h4>
+                                        <p>确认退出群组 "{{ group.name }}" ？</p><br>
+                                        <p class="gray-text">群ID: {{ group.id }}</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <a href=""
+                                           class="waves-effect waves-green btn-flat">确认</a>
+                                        <a onclick="hide_show_modal('#exit_group_{{ group.id }}','#manage_{{ group.id }}')"
+                                           class="modal-action modal-close waves-effect waves-red btn-flat">取消</a>
                                     </div>
                                 </div>
                             </div>
@@ -221,8 +223,9 @@
             {% endwith %}
         });
 
-        function show_modal(modal_id) {
-            $(modal_id).modal('open');
+        function hide_show_modal(modal_hd, modal_sh) {
+            $(modal_hd).modal('close');
+            $(modal_sh).modal('open');
         }
     </script>
 {% endblock %}
