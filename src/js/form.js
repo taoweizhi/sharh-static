@@ -257,19 +257,22 @@ $(document).ready(
       errorPlacement: defaultErrorPlacement,
       submitHandler: (form) => {
         $.post(Form.subscribeGroupForm.url, $(form).serializeArray(), (result) => {
+          let group_id=$('#groupNumber').val();
           const gen = (x) => {
-            return $(`<li><span>${x}</span></li>`);
+            return $(`<li class="collection-item" style="opacity: 0;"><span>${x}</span><a onclick="subGroupHandler(`+group_id+`)" class="secondary-content"><i class="material-icons right">send</i>申请入群</a></li>`);
           };
           const insertBar = $('#exist');
           if (insertBar) insertBar.remove();
-          const searchBar = $('<ul id="exist"></ul>');
+          const searchBar = $('<ul id="exist" class="collection"></ul>');
           if (result.found) {
             const groupIDs = result.groups;
             groupIDs.map(gen).forEach(x => searchBar.append(x));
           } else {
-            searchBar.append($('<li>没有找到</li>'));
+            searchBar.append($('<li class="collection-item red-text"><i class="material-icons left">close</i>没有找到</li>'));
           }
           $('#insert').after(searchBar);
+          Materialize.showStaggeredList('#exist');
+
         })
       }
     });

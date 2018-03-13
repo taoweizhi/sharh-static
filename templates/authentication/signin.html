@@ -28,7 +28,7 @@
 <div class="container">
   <div class="card-panel white z-depth-3">
     <div class="container login">
-      <a class="waves-effect waves-orange btn-flat" onclick="window.history.go(-1);"
+      <a class="waves-effect waves-orange btn-flat" onclick="location.href='{{ url_for('index') }}'"
          style="position: absolute; top:10px; left:10px; padding: 0 1rem"><i class="material-icons large">arrow_back</i></a>
       <form id="signinForm">
         <div class="photo"></div>
@@ -40,6 +40,7 @@
                href={{ url_for('authentication.signin') }}>注册</a>
           </div>
         </div>
+        <br>
         <div class="row">
           <div class="input-field s10 m=8 l=6">
             <select id="permission" name="permission">

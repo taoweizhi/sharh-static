@@ -111,8 +111,7 @@
 
                                     </div>
                                     <div class="modal-footer">
-                                        <a href="#!"
-                                           class="modal-action modal-close waves-effect waves-green btn-flat">删除群</a>
+                                        <a class="modal-action modal-close waves-effect waves-green btn-flat disabled">删除群</a>
                                         <a href="#!"
                                            class="modal-action modal-close waves-effect waves-green btn-flat ">关闭</a>
                                     </div>
@@ -170,7 +169,7 @@
                                         <p class="gray-text">群ID: {{ group.id }}</p>
                                     </div>
                                     <div class="modal-footer">
-                                        <a href=""
+                                        <a href="{{ url_for('leave_group', group_id=group.id) }}"
                                            class="waves-effect waves-green btn-flat">确认</a>
                                         <a onclick="hide_show_modal('#exit_group_{{ group.id }}','#manage_{{ group.id }}')"
                                            class="modal-action modal-close waves-effect waves-red btn-flat">取消</a>
@@ -222,7 +221,14 @@
                 {% endif %}
             {% endwith %}
         });
-
+        function subGroupHandler(g_id){
+            $.getJSON('{{ url_for('group.apply_into_group',group_id=0) }}'+g_id.toString(),
+                function (data) {
+                    if (data){
+                        Materialize.toast(data, 3000);
+                    }
+                })
+        }
         function hide_show_modal(modal_hd, modal_sh) {
             $(modal_hd).modal('close');
             $(modal_sh).modal('open');

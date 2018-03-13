@@ -17,7 +17,7 @@
 <script type="text/javascript" src="../../static/js/materialize.min.js"></script>
 <script type="text/javascript" src="../../static/js/jquery.validate.min.js"></script>
 <script type="text/javascript" src="../../static/js/messages_zh.min.js"></script>
-<script type="text/javascript" src="../../static/js/common.min.js" ></script>
+<script type="text/javascript" src="../../static/js/common.min.js"></script>
 <script type="text/javascript" src="../../static/js/form.min.js"></script>
 <!--背景-->
 <div id="background" style="
@@ -34,7 +34,7 @@
 <div class="container">
     <div class="card-panel white z-depth-3">
         <div class="container login">
-            <a class="waves-effect waves-orange btn-flat" onclick="window.history.go(-1);"
+            <a class="waves-effect waves-orange btn-flat" onclick="location.href='{{ url_for('index') }}'"
                style="position: absolute; top:10px; left:10px; padding: 0 1rem"><i class="material-icons large">arrow_back</i></a>
             <form id="loginForm">
                 <div class="photo"></div>
@@ -60,10 +60,8 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col s6 right-align">
-                        <button class="btn waves-effect waves-light #ef5350 orange" type="submit">确定
-                        </button>
-                    </div>
+                    <button class="btn waves-effect waves-light #ef5350 orange right" type="submit">确定
+                    </button>
                 </div>
                 {% with messages = get_flashed_messages(with_categories=true) %}
                     <div class="row">
@@ -73,12 +71,12 @@
                                     {% if message[0] == 'message' %}
                                         <li class="blue-grey-text" style="opacity: 0">
                                             <i class="material-icons left">warning</i>
-                                            <span class="flow-text">{{ message[1] }}</span>
+                                            <span>{{ message[1] }}</span>
                                         </li>
                                     {% elif message[0] == '错误' %}
                                         <li class="red-text" style="opacity: 0">
                                             <i class="material-icons left">clear</i>
-                                            <span class="flow-text">{{ message[1] }}</span>
+                                            <span>{{ message[1] }}</span>
                                         </li>
                                     {% endif %}
                                 {% endfor %}

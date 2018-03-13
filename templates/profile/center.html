@@ -46,6 +46,7 @@
                                                   "学院":user.ref_students.first().student.faculty,
                                                   "专业":user.ref_students.first().student.department,
                                                   "年级":user.ref_students.first().student.grade} %}
+                                        {% set info=user.ref_students.first().student.info %}
                                         {{ user.ref_students.first().student.name }}
                                     {% elif user.permission.name == "teacher" %}
                                         {% set
@@ -54,6 +55,7 @@
                                                   "工号":user.ref_teachers.first().teacher.number,
                                                   "隶属部门":user.ref_teachers.first().teacher.faculty,
                                                   "直属部门":user.ref_teachers.first().teacher.department} %}
+                                        {% set info=user.ref_teachers.first().teacher.info %}
                                         {{ user.ref_teachers.first().teacher.name }}
                                     {% endif %}
                                 </span>
@@ -84,9 +86,11 @@
         </div>
         <div class="row">
             <form id="infoForm">
-                <div class="col s12 m12 l12 textarea">
-                    <input type="text" id="info" name="info">
-                    <label for="info">简介</label>
+                <div class="row">
+                    <div class="input-field col s12 m12 l12 ">
+                        <textarea type="text" id="info" name="info" class="materialize-textarea"></textarea>
+                        <label for="info">简介</label>
+                    </div>
                 </div>
                 <div class="button col s6 m6 l6">
                     <button class="btn waves-effect waves-light #ef5350 orange" type="submit" id="btn">确定
@@ -119,13 +123,9 @@
         }
     </style>
     <script type="text/javascript">
-        var info = document.getElementById("info").value;
-        if (info != '') {
-            document.getElementById("info").innerHTML = "这个人很懒, 什么也没有留下。";
-        }
-        else {
-            document.getElementById("info").innerHTML = "{{ user.info }}"
-        }
-        $('.materialize-textarea').trigger('autoresize');
+        $('#info').val('{{ info }}').trigger('autoresize');
+        $('#back_button').click(function (){
+            location.href="{{ url_for('index') }}";
+        })
     </script>
 {% endblock %}

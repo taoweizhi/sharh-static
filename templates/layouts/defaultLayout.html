@@ -121,6 +121,9 @@
             </div>
         </li>
         <li></li>
+        <li><a class="waves-effect" href="{{ url_for('index') }}"><i
+                    class="material-icons">home</i>主页</a></li>
+        <li><div class="divider"></div></li>
         {% for option in side_options %}
             <li><a class="waves-effect" href="{{ option['href'] }}"><i
                     class="material-icons">{{ option['icon'] }}</i>{{ option['title'] }}</a></li>
