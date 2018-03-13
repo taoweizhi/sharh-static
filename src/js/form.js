@@ -91,7 +91,7 @@ const Form = {
     content: {
       info: field.text,
     },
-    url: '/profile/change_info'
+    url: '/profile/'
   },
   codeSubmitForm: {
     content: {
