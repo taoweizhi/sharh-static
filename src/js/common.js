@@ -8,7 +8,9 @@ $(document).ready(function () {
     windowHeight = $(window).height();
     $('.counter').html(scrollTop);
 
-    if (scrollTop + windowHeight > scrollHeight -80) {
+    if ($(window).width() < 992) {
+      $('footer').addClass('scrolled-footer');
+    } else if (scrollTop + windowHeight > scrollHeight -80) {
       $('footer').addClass('scrolled-footer');
     } else if (scrollTop + windowHeight <= scrollHeight-80) {
       $('footer').removeClass('scrolled-footer');
