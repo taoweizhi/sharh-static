@@ -87,22 +87,22 @@
                 </a>
             </div>
             <div id="send-public" class="modal">
-                <form class="col s12" method="POST">
+                <form class="col s12" id="sendAnno">
                     <div class="modal-content">
                         <h5>发送公告</h5>
                         <div class="row">
                             <div class="input-field col s12">
-                                <input value="" id="msgTitle" type="text" class="validate">
-                                <label class="active" for="msgTitle">消息标题</label>
+                                <input value="" id="annoTitle" type="text" name="title">
+                                <label class="active" for="annoTitle">公告标题</label>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-field col s12">
-                                <textarea id="msgContent" class="materialize-textarea"></textarea>
-                                <label for="msgContent">消息内容</label>
+                                <textarea id="annoContent" name="content" class="materialize-textarea"></textarea>
+                                <label for="annoContent">公告内容</label>
                             </div>
                         </div>
-                        <button class="btn waves-effect waves-light right" type="submit" name="action">发送
+                        <button class="btn waves-effect waves-light right" type="submit">发送
                             <i class="material-icons right">send</i>
                         </button>
                         <br><br>
@@ -137,22 +137,22 @@
                 </a>
             </div>
             <div id="send-chat" class="modal">
-                <form class="col s12" method="POST">
+                <form class="col s12" id="sendMsg">
                     <div class="modal-content">
-                        <h5>发送公告</h5>
+                        <h5>发送消息</h5>
                         <div class="row">
                             <div class="input-field col s12">
-                                <input value="" id="msgTitle" type="text" class="validate">
+                                <input value="" id="msgTitle" type="text" name="title">
                                 <label class="active" for="msgTitle">消息标题</label>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-field col s12">
-                                <textarea id="msgContent" class="materialize-textarea"></textarea>
+                                <textarea id="msgContent" name="content" class="materialize-textarea"></textarea>
                                 <label for="msgContent">消息内容</label>
                             </div>
                         </div>
-                        <button class="btn waves-effect waves-light right" type="submit" name="action">发送
+                        <button class="btn waves-effect waves-light right" type="submit">发送
                             <i class="material-icons right">send</i>
                         </button>
                         <br><br>
@@ -215,7 +215,7 @@
                                     群设置
                                 </blockquote>
                                 <div class="container">
-                                    <form id="changeGroupForm">
+                                    <form id="mutateGroupForm">
                                         <div class="row">
                                             <div class="input-field col s12">
                                                 <input value="{{ group.name }}" id="groupName" name="groupName"
@@ -243,7 +243,7 @@
                                                 <label for="groupInfo">简介</label>
                                             </div>
                                         </div>
-                                        <button class="btn waves-effect waves-light right" type="submit" name="action">
+                                        <button class="btn waves-effect waves-light right" type="submit">
                                             提交修改
                                             <i class="material-icons right">send</i>
                                         </button>
@@ -390,5 +390,7 @@
             Materialize.updateTextFields();
             $('#manage_msg').modal('open');
         }
+
+        function getId() { return {{group.id}} }
     </script>
 {% endblock %}

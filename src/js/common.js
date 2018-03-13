@@ -44,6 +44,10 @@ const groupFormHandler = (result) => {
 };
 const changeGroupFormHandler = (result) => {
 };
+const sendAnnoFormHandler = (result) => {
+};
+const sendMsgFormHandler = (result) => {
+};
 
 const sendSms = () => {
   const section = $('#section1');

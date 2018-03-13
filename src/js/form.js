@@ -22,6 +22,11 @@ const field = {
     required: true,
     dateISO: true
   },
+  title: {
+    require: true,
+    minlength: 5,
+    maxlength: 50,
+  },
   text: {
     required: false,
     maxlength: 500,
@@ -114,19 +119,33 @@ const Form = {
     },
     url: '/group/register'
   },
-  changeGroupForm: {
+  mutateGroupForm: {
     content: {
       groupName: field.username,
       groupClass: field.require,
       groupInfo: field.text,
     },
-    url: '/group/change_group',
+    url: '/group/mutate_group',
   },
   subscribeGroupForm: {
     content: {
       groupNumber: field.number,
     },
     url: '/group/search'
+  },
+  sendAnnoForm: {
+    content: {
+      annoTitle: field.title,
+      annoContent: field.text,
+    },
+    url: '/group/send',
+  },
+  sendMsgForm: {
+    content: {
+      msgTitle: field.title,
+      mdgContent: field.text,
+    },
+    url: '/group/send',
   },
 };
 
@@ -224,12 +243,12 @@ $(document).ready(
       errorPlacement: defaultErrorPlacement,
       submitHandler: $.afterPOST(groupFormHandler)(Form.groupForm.url)
     });
-    $('#changeGroupForm').validate({
-      rules: Form.changeGroupForm.content,
+    $('#mutateGroupForm').validate({
+      rules: Form.mutateGroupForm.content,
       errorPlacement: defaultErrorPlacement,
       submitHandler: (form) => {
-        const groupId = $('.groupId').attr('id');
-        $.post(`/group/change_group%3Fgroup%3d${groupId}`, $(form).serializeArray(),
+        const groupId = getId();
+        $.post(`${Form.mutateGroupForm.url}%3Fgroup%3d${groupId}`, $(form).serializeArray(),
           defaultAction(changeGroupFormHandler))
       }
     });
@@ -253,6 +272,24 @@ $(document).ready(
           $('#insert').after(searchBar);
         })
       }
+    });
+    $('#sendAnno').validate({
+      rules: Form.sendAnnoForm.content,
+      errorPlacement: defaultErrorPlacement,
+      submitHandler: (form) => {
+        const groupId = getId();
+        $.post(`${Form.sendAnnoForm.url}%3Fgroup%3D${groupId}%3Fchannel%3Dboard`, $(form).serializeArray(),
+          defaultAction(sendAnnoFormHandler));
+      },
+    });
+    $('#sendMsg').validate({
+      rules: Form.sendMsgForm.content,
+      errorPlacement: defaultErrorPlacement,
+      submitHandler: (form) => {
+        const groupId = getId();
+        $.post(`${Form.sendMsgForm.url}%3Fgroup%3D${groupId}%3Fchannel%3Dpublic`, $(form).serializeArray(),
+          defaultAction(sendAnnoFormHandler));
+      },
     });
     $("title").append(style);
   }
