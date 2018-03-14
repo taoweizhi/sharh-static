@@ -61,19 +61,22 @@
                         <div class="col s12 m7">
                             <div class="card">
                                 <div class="card-content msg">
-                                <span class="card-title right" style="text-shadow: 0px 0px 7px #ffffff">
-                                    <font size="4">来自</font>{{ msg.name }}<font size="5.2"></font>
+                                    <span class="card-title right" style="text-shadow: 0px 0px 7px #ffffff">
+                                    <font size="4">来自</font>{{ msg.username }}<font size="5.2"></font>
                                     <font size="4">的公告:</font></span>
                                     <br><br>
                                     <blockquote>
                                         <span class="flow-text">{{ msg.title }}</span>
                                         <span>{{ msg.content }}</span>
                                     </blockquote>
-                                    <span class="flow-text grey-text lighten-4 right"><font
-                                            size="2">{{ msg.time }}</font></span>
-                                    <a onclick="manageMsg({{ idx }},'{{ msg.title }}','{{ msg.content }}')"
-                                       class="manage_msg btn-floating right"><i
-                                            class="material-icons">edit</i></a>
+                                    <div class="row">
+                                        <span class="flow-text grey-text lighten-4 right"><font
+                                                size="2">{{ msg.time.strftime("%Y-%m-%d %X") }}</font></span>
+                                        <a onclick="manageMsg({{ idx }},'{{ msg.title }}','{{ msg.content }}')"
+                                           class="manage_msg btn-floating right"><i
+                                                class="material-icons">edit</i></a>
+                                    </div>
+
                                     <br>
                                 </div>
                             </div>
@@ -263,7 +266,8 @@
                                         </div>
                                         <div class="modal-footer">
                                             <a href="" class="modal-action modal-close waves-effect waves-red btn-flat">确认</a>
-                                            <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">取消</a>
+                                            <a href="#!"
+                                               class="modal-action modal-close waves-effect waves-green btn-flat">取消</a>
                                         </div>
                                     </div>
                                 </div>
@@ -391,6 +395,9 @@
             $('#manage_msg').modal('open');
         }
 
-        function getId() { return {{group.id}} }
+        function getId() {
+            return
+            {{group.id}}
+        }
     </script>
 {% endblock %}

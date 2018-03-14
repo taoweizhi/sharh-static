@@ -1,4 +1,24 @@
 const style = "<style>label.error{color: red; font-size: 15px}</style>";
+const applyInGroup =
+    "<form id='applyInGroup'>" +
+    " <div class='row'>" +
+    "   <div class='input-field col s12'>" +
+    "     <input id='applyInGroupTitle' type='text' class='validate'>\n" +
+    "     <label for='applyInGroupTitle'>请求标题</label>" +
+    "   </div>" +
+    " </div>" +
+    " <div class='row'>" +
+    "   <div class='input-field col s12'>" +
+    "     <input id='applyInGroupContent' type='text' class='validate'>\n" +
+    "     <label for='applyInGroupContent'>请求内容</label>" +
+    "   </div>" +
+    " </div>" +
+    " <div class='row'>" +
+    "   <a class=\"btn waves-effect waves-light right\" onclick='subGroupHandler()'>发送\n" +
+    "    <i class=\"material-icons right\">send</i>\n" +
+    "   </a>" +
+    " </div> " +
+    "</form>";
 
 
 const field = {
@@ -257,9 +277,9 @@ $(document).ready(
       errorPlacement: defaultErrorPlacement,
       submitHandler: (form) => {
         $.post(Form.subscribeGroupForm.url, $(form).serializeArray(), (result) => {
-          let group_id=$('#groupNumber').val();
           const gen = (x) => {
-            return $(`<li class="collection-item" style="opacity: 0;"><span>${x}</span><a onclick="subGroupHandler(`+group_id+`)" class="secondary-content"><i class="material-icons right">send</i>申请入群</a></li>`);
+            return $(
+                `<li class="collection-item" style="opacity: 0;"><div>${x}<a href="#" onclick="insertAIGForm()" class="secondary-content">申请入群<i class="material-icons right">send</i></a></div></li>`);
           };
           const insertBar = $('#exist');
           if (insertBar) insertBar.remove();
@@ -295,5 +315,6 @@ $(document).ready(
       },
     });
     $("title").append(style);
+
   }
 );

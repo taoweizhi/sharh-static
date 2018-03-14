@@ -221,13 +221,24 @@
                 {% endif %}
             {% endwith %}
         });
-        function subGroupHandler(g_id){
-            $.getJSON('{{ url_for('group.apply_into_group',group_id=0) }}'+g_id.toString(),
+        function subGroupHandler(){
+            var group_id=$('#groupNumber').val();
+            $.post('{{ url_for('group.apply_into_group',group_id=0) }}'+group_id.toString(),
+                {
+                  title:$("#applyInGroupTitle").val(),
+                  content:$("#applyInGroupContent").val()
+                },
                 function (data) {
                     if (data){
                         Materialize.toast(data, 3000);
                     }
-                })
+                });
+        }
+        function insertAIGForm() {
+          const applyInGroupF = $('#applyInGroup');
+          if (applyInGroupF) applyInGroupF.remove();
+          $("#exist").css("display","none");
+          $("#exist").after(applyInGroup);
         }
         function hide_show_modal(modal_hd, modal_sh) {
             $(modal_hd).modal('close');
