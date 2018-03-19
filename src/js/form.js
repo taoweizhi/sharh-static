@@ -167,6 +167,14 @@ const Form = {
     },
     url: '/group/send',
   },
+  manageMsgForm: {
+    content: {
+      manageMsgID: field.number,
+      manageMsgTitle: field.title,
+      manageMsgContent: field.text,
+    },
+    url: '/group/update_msg',
+  },
 };
 
 const defaultErrorPlacement = (error, elem) => {
@@ -258,6 +266,21 @@ $(document).ready(
           defaultAction(codeSubmitFormHandler))
       }
     });
+    $('#manageMsgForm').validate({
+        rules: Form.manageMsgForm.content,
+        errorPlacement: defaultErrorPlacement,
+        submitHandler: (form) => {
+          const groupId = getId();
+          const index = $('#manageMsgID').val();
+          let channel = '';
+          if($('#public-body').hasClass('active'))
+            channel = 'board';
+          else if($('#chat-body').hasClass('active'))
+            channel = 'public';
+          $.post(`${Form.manageMsgForm.url}%3Fgroup%3D${groupId}%3Fchannel%3D${channel}%3Findex%3D${index}`, $(form).serializeArray(),
+            defaultAction(manageMsgFormHandler));
+      }
+    });
     $('#groupForm').validate({
       rules: Form.groupForm.content,
       errorPlacement: defaultErrorPlacement,
@@ -278,8 +301,7 @@ $(document).ready(
       submitHandler: (form) => {
         $.post(Form.subscribeGroupForm.url, $(form).serializeArray(), (result) => {
           const gen = (x) => {
-            return $(
-                `<li class="collection-item" style="opacity: 0;"><div>${x}<a href="#" onclick="insertAIGForm()" class="secondary-content">申请入群<i class="material-icons right">send</i></a></div></li>`);
+            return $(`<li class="collection-item" style="opacity: 0;"><div>${x}<a href="#" onclick="insertAIGForm()" class="secondary-content">申请入群<i class="material-icons right">send</i></a></div></li>`);
           };
           const insertBar = $('#exist');
           if (insertBar) insertBar.remove();

@@ -21,63 +21,70 @@
 {% endblock %}
 {% block content %}
     <div id="manage_msg" class="modal manage">
-        <div class="modal-content">
-            <h5>消息管理</h5>
-            <form class="col s12" method="POST">
+        <form class="col s12" id="manageMsgForm">
+            <div class="modal-content">
+                <h5>消息管理</h5>
                 <div class="row">
                     <div class="input-field col s12">
-                        <input disabled value="" id="managemsgID" type="text" class="validate">
-                        <label for="managemsgID">消息ID</label>
+                        <input disabled value="" id="manageMsgID" name="id" type="text" class="validate">
+                        <label for="manageMsgID">消息ID</label>
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-field col s12">
-                        <input value="" id="managemsgTitle" type="text" class="validate">
-                        <label class="active" for="managemsgTitle">消息标题</label>
+                        <input value="" id="manageMsgTitle" name="title" type="text" class="validate">
+                        <label class="active" for="manageMsgTitle">消息标题</label>
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-field col s12">
-                        <textarea id="managemsgContent" class="materialize-textarea"></textarea>
-                        <label for="managemsgContent">消息内容</label>
+                        <textarea id="manageMsgContent" name="content" class="materialize-textarea"></textarea>
+                        <label for="manageMsgContent">消息内容</label>
                     </div>
                 </div>
-                <button class="btn waves-effect waves-light right" type="submit" name="action">修改
-                    <i class="material-icons right">send</i>
-                </button>
-                <br><br>
-            </form>
-        </div>
-        <div class="modal-footer">
-            <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">确认</a>
-        </div>
+                <div class="row">
+                    <div class="col s4 l3 m4">
+                        <a class="btn grey waves-effect waves-light modal-close right">
+                            关闭<i class="material-icons right">close</i>
+                        </a>
+                    </div>
+                    <div class="col s4 l3 m4">
+                        <a class="btn red waves-effect waves-light right" onclick="deleteMsg($('#manageMsgID').val())">
+                            删除<i class="material-icons right">delete</i>
+                        </a>
+                    </div>
+                    <div class="col s4 l3 m4">
+                        <button class="btn waves-effect waves-light right" type="submit">修改
+                            <i class="material-icons right">send</i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
     </div>
     <br>
     <div class="container">
         <div class="col s12 m10 l9" id="public-body">
-            <ul>
+            <ul id="public-msg">
                 {% for idx, msg in msg_dict_public.items() %}
-                    <li>
+                    <li style="opacity: 0">
                         <div class="col s12 m7">
                             <div class="card">
                                 <div class="card-content msg">
                                     <span class="card-title right" style="text-shadow: 0px 0px 7px #ffffff">
-                                    <font size="4">来自</font>{{ msg.username }}<font size="5.2"></font>
-                                    <font size="4">的公告:</font></span>
+                                    <font size="4">来自</font> {{ msg.username }} <font size="4">的公告:</font></span>
                                     <br><br>
                                     <blockquote>
                                         <span class="flow-text">{{ msg.title }}</span>
                                         <span>{{ msg.content }}</span>
                                     </blockquote>
-                                    <div class="row">
-                                        <span class="flow-text grey-text lighten-4 right"><font
-                                                size="2">{{ msg.time.strftime("%Y-%m-%d %X") }}</font></span>
+                                    <div class="row" style="margin-bottom: 0">
                                         <a onclick="manageMsg({{ idx }},'{{ msg.title }}','{{ msg.content }}')"
                                            class="manage_msg btn-floating right"><i
                                                 class="material-icons">edit</i></a>
+                                        <span class="flow-text grey-text lighten-4 right" style="margin-top: 5px"><font
+                                                size="2">{{ msg.time[:-7] }}</font>&nbsp;&nbsp;</span>
                                     </div>
-
-                                    <br>
                                 </div>
                             </div>
                         </div>
@@ -121,7 +128,7 @@
                             <div class="card">
                                 <div class="card-content msg">
                                 <span class="card-title right" style="text-shadow: 0 0 7px #ffffff">
-                                    <font size="3">{{ msg.name }}</font></span>
+                                    <font size="3">{{ msg.username }}</font></span>
                                     <br><br>
                                     <span class="flow-text">{{ msg.title }}</span>
                                     <span>{{ msg.content }}</span>
@@ -352,13 +359,13 @@
         $('footer').css('display', 'none');
 
         $(document).ready(function () {
-
             $('#groupName').val('{{ group.name }}');
             $('#groupInfo').val('{{ group.info }}').trigger('autoresize');
             $('#groupClass').val('{{ group.cls.name }}');
             $('.modal').modal();
             $('select').material_select();
             Materialize.updateTextFields();
+
             $('#manage-body').click(function () {
                 $("#sending_row").hide();
             });
@@ -368,6 +375,7 @@
             $('#public-body').click(function () {
                 $("#sending_row").show();
             });
+            Materialize.showStaggeredList('#public-msg');
             if ("{{ db.UserGroup.query.filter(db.UserGroup.user_id == user.id).first().user_cls.name }}" === "normal") {
                 hideItem('.manage');
             }
@@ -388,16 +396,15 @@
         }
 
         function manageMsg(msg_id, msg_title, msg_content) {
-            $("#managemsgID").val(msg_id);
-            $("#managemsgTitle").val(msg_title);
-            $("#managemsgContent").val(msg_content);
+            $("#manageMsgID").val(msg_id);
+            $("#manageMsgTitle").val(msg_title);
+            $("#manageMsgContent").val(msg_content);
             Materialize.updateTextFields();
             $('#manage_msg').modal('open');
         }
 
         function getId() {
-            return
-            {{group.id}}
+            return {{ group.id }};
         }
     </script>
 {% endblock %}
