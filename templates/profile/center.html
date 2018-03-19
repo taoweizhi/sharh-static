@@ -42,7 +42,7 @@
                                         {% if user.birthday %}
                                             {% set
                                             profile_dict={"性别":user.sex.value,
-                                                  "生日":user.birthday.date(),
+                                                  "生日":str(user.birthday),
                                                   "学号":user.ref_students.first().student.number,
                                                   "学院":user.ref_students.first().student.faculty,
                                                   "专业":user.ref_students.first().student.department,
@@ -62,7 +62,7 @@
                                         {% if user.birthday %}
                                             {% set
                                             profile_dict={"性别":user.sex.value,
-                                                  "生日":user.birthday.date(),
+                                                  "生日":str(user.birthday),
                                                   "工号":user.ref_teachers.first().teacher.number,
                                                   "隶属部门":user.ref_teachers.first().teacher.faculty,
                                                   "直属部门":user.ref_teachers.first().teacher.department} %}
@@ -83,7 +83,7 @@
                             <blockquote>
                                 昵称
                             </blockquote>
-                            <span class="">{{ user.nickname }}</span>
+                            <span class="">{{ user.nickname or "未设置" }}</span>
                         </div>
                     </div>
                 </div>
@@ -146,9 +146,20 @@
         }
     </style>
     <script type="text/javascript">
-        $('#info').val('{{ info }}').trigger('autoresize');
+        $('#info').val('{{ user.info }}').trigger('autoresize');
         $('#back_button').click(function () {
             location.href = "{{ url_for('index') }}";
         })
+
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for message in messages %}
+        if ($.cookie('toast_ctrl_index') !== '{{ message }}') {
+          Materialize.toast('{{ message }}', 3000);
+          $.cookie('toast_ctrl_index', '{{ message }}');
+        }
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
     </script>
 {% endblock %}

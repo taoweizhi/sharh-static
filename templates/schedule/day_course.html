@@ -43,7 +43,7 @@ current_day: time -> 当前所在日期的时间
                                 {% for course in day_courses[sec.name] %}
                                     {{ course.name }}
                                     <br>
-                                    {{ course.location }}
+                                    {{ course.location or "无" }}
                                 {% endfor %}
                             </div>
                         </li>
@@ -75,7 +75,7 @@ current_day: time -> 当前所在日期的时间
                             {% for course in day_courses['online'] %}
                                 {{ course.name }}
                                 <br>
-                                {{ course.location }}
+                                {{ course.location or "无" }}
                             {% endfor %}
                         </div>
                     </li>
@@ -171,5 +171,15 @@ current_day: time -> 当前所在日期的时间
             var _reURL = '/schedule/today_course%3Fyear%3D' + _date[0] + '%3Fmonth%3D' + _date[1] + '%3Fday%3D' + _date[2];
             window.location.href=_reURL;
         }
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for message in messages %}
+        if ($.cookie('toast_ctrl_index') !== '{{ message }}') {
+          Materialize.toast('{{ message }}', 3000);
+          $.cookie('toast_ctrl_index', '{{ message }}');
+        }
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
     </script>
 {% endblock %}
