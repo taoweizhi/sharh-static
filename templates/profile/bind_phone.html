@@ -12,7 +12,7 @@
                         <input id="phoneNumber" name="phoneNumber" type="tel" value="">
                         <label for="phoneNumber">手机号</label>
                     </div>
-                    <div class="col s2">
+                    <div class="col s4">
                         <a id="sendSms" class="btn waves-effect waves-teal btn-flat" onclick="sendSms()">获取验证码</a>
                     </div>
                 </div>
@@ -75,5 +75,15 @@
                 $('#sendSms').text(remindTime.toString() + '秒后再次获取');
             }
         }
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for message in messages %}
+        if ($.cookie('toast_ctrl_index') !== '{{ message }}') {
+          Materialize.toast('{{ message }}', 3000);
+          $.cookie('toast_ctrl_index', '{{ message }}');
+        }
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
     </script>
 {% endblock %}

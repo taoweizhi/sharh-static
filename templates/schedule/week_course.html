@@ -22,6 +22,7 @@
 {% block content %}
     <div class="container">
         <div id="course_offline" class="col s12">
+            <br>
             <blockquote>
                 第{{ week }}周课程
             </blockquote>
@@ -50,7 +51,7 @@
                                     {% endfor %}
                                     <br>
                                     {% for course in courses[sec.name] %}
-                                        {{ course.location }}
+                                        {{ course.location or "无" }}
                                     {% endfor %}
                                     <br>
                                 </td>
@@ -70,7 +71,7 @@
                                     {% for course in courses[sec.name] %}
                                         {{ course.name }}
                                         <br>
-                                        {{ course.location }}
+                                        {{ course.location or "无" }}
                                         <br>
                                     {% endfor %}
                                 </td>
@@ -82,6 +83,7 @@
             </table>
         </div>
         <div id="course_online" class="col s12">
+            <br>
             <blockquote>
                 线上课程
             </blockquote>
@@ -105,7 +107,7 @@
                                 {% for course in courses[Section.online.name] %}
                                     {{ course.name }}
                                     <br/>
-                                    {{ course.location }}
+                                    {{ course.location or "无" }}
                                 {% endfor %}
                             </td>
                         {% endfor %}
@@ -130,5 +132,16 @@
             if (window_width < 500)
                 $("#course_text").attr('width', (window_width / 8).toString());
         });
+
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for message in messages %}
+        if ($.cookie('toast_ctrl_index') !== '{{ message }}') {
+          Materialize.toast('{{ message }}', 3000);
+          $.cookie('toast_ctrl_index', '{{ message }}');
+        }
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
     </script>
 {% endblock %}

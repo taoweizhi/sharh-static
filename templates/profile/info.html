@@ -37,7 +37,7 @@
                         <input value="{{ user.password }}" type="password" id="password" name="password">
                         <label for="password">密码</label>
                     </div>
-                    <div class="input-field row">
+                    <div class="row">
                         <div class="col s3 l2 m2">
                             <input name="sex" type="radio" value="男" id="man"/>
                             <label for="man">男</label>
@@ -76,8 +76,8 @@
             var sex = "{{ user.sex.name }}";
             if (sex === "man")
                 $("#man").attr('checked', '');
-            else if (sex === "woman")
-                $("#woman").attr('checked', '');
+            else if (sex === "female")
+                $("#female").attr('checked', '');
         });
     </script>
 {% endblock %}
