@@ -63,7 +63,7 @@
         </form>
     </div>
     <br>
-    <div class="container">
+    <div class="container" style="width: 85%">
         <div class="col s12 m10 l9" id="public-body">
             <ul id="public-msg">
                 {% for idx, msg in msg_dict_public.items() %}
@@ -178,11 +178,16 @@
                             加群请求
                         </blockquote>
                         <ul class="collection with-header">
-                            <li class="collection-item">
-                                {% for req in msg_dict_req %}
-                                    <div>{{ req.name }}: {{ req.content }}
-                                        <a href="" class="secondary-content"><i class="material-icons">check</i></a>
-                                        <a href="" class="secondary-content"><i class="material-icons">close</i></a>
+                            <li class="collection-item" style="padding-left: 10px">
+                                {% for _idx, req in msg_dict_req.items() %}
+                                    <div class="row" style="margin-bottom: 0;">
+                                        <div class="col s1 m1 l2"><i class="material-icons purple-text">insert_comment</i>
+                                        </div>
+                                        <div class="col s8 m8 l6">{{ req.username }}:<br>{{ req.content }}</div>
+                                        <div class="col s3 m3 l4">
+                                            <a href="#" class="red-text"><i class="material-icons">close</i></a>
+                                            <a href="{{ url_for('group.enter_group',group_id=group.id,invited_user_id=req.user_id,msg_index=_idx) }}" class="secondary-content"><i class="material-icons">check</i></a>
+                                        </div>
                                     </div>
                                 {% endfor %}
                             </li>
@@ -389,6 +394,11 @@
                     {% endfor %}
                 {% endif %}
             {% endwith %}
+            {% if channel_branch == 'board' %}
+                $('ul.tabs').tabs('select_tab', 'public-body');
+            {% elif channel_branch == 'public' %}
+                $('ul.tabs').tabs('select_tab', 'chat-body');
+            {% endif %}
         });
 
         function hideItem(object_id) {

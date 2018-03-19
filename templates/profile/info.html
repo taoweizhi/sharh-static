@@ -16,9 +16,15 @@
                         <input value="{{ user.nickname }}" type="text" id="nickname" name="nickname">
                         <label for="nickname">昵称</label>
                     </div>
-                    <div class="input-field s10 m=8 l=6">
+                    <div class="input-field s10 m8 l6">
                         <i class="material-icons prefix"><i class="material-icons ">cake</i></i>
-                        <input value="{{ str(user.birthday)[:10] }}" type="text" class="datepicker" id="birthday" name="birthday">
+                        {% if user.birthday %}
+                            <input value="{{ str(user.birthday)[:10] }}" type="text" class="datepicker" id="birthday"
+                                   name="birthday">
+                        {% else %}
+                            <input value="" type="text" class="datepicker" id="birthday"
+                                   name="birthday">
+                        {% endif %}
                         <label for="birthday">生日</label>
                     </div>
                     <div class="input-field s10 m=8 l=6">

@@ -47,6 +47,8 @@ const groupFormHandler = (result) => {
 const changeGroupFormHandler = (result) => {
 };
 const sendAnnoFormHandler = (result) => {
+    if(result)
+        Materialize.toast(result, 3000);
 };
 const manageMsgFormHandler = (result) => {
 };

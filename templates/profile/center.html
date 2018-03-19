@@ -39,22 +39,41 @@
                             </blockquote>
                             <span class="">
                                     {% if user.permission.name == "student" %}
-                                        {% set
+                                        {% if user.birthday %}
+                                            {% set
                                             profile_dict={"性别":user.sex.value,
                                                   "生日":user.birthday.date(),
                                                   "学号":user.ref_students.first().student.number,
                                                   "学院":user.ref_students.first().student.faculty,
                                                   "专业":user.ref_students.first().student.department,
                                                   "年级":user.ref_students.first().student.grade} %}
+                                        {% else %}
+                                            {% set
+                                            profile_dict={"性别":user.sex.value,
+                                                  "生日":'',
+                                                  "学号":user.ref_students.first().student.number,
+                                                  "学院":user.ref_students.first().student.faculty,
+                                                  "专业":user.ref_students.first().student.department,
+                                                  "年级":user.ref_students.first().student.grade} %}
+                                        {% endif %}
                                         {% set info=user.ref_students.first().student.info %}
                                         {{ user.ref_students.first().student.name }}
                                     {% elif user.permission.name == "teacher" %}
-                                        {% set
+                                        {% if user.birthday %}
+                                            {% set
                                             profile_dict={"性别":user.sex.value,
                                                   "生日":user.birthday.date(),
                                                   "工号":user.ref_teachers.first().teacher.number,
                                                   "隶属部门":user.ref_teachers.first().teacher.faculty,
                                                   "直属部门":user.ref_teachers.first().teacher.department} %}
+                                        {% else %}
+                                            {% set
+                                            profile_dict={"性别":user.sex.value,
+                                                  "生日":'',
+                                                  "工号":user.ref_teachers.first().teacher.number,
+                                                  "隶属部门":user.ref_teachers.first().teacher.faculty,
+                                                  "直属部门":user.ref_teachers.first().teacher.department} %}
+                                        {% endif %}
                                         {% set info=user.ref_teachers.first().teacher.info %}
                                         {{ user.ref_teachers.first().teacher.name }}
                                     {% endif %}
@@ -75,7 +94,11 @@
                         <div class="row">
                             <div class="col s12">
                                 <blockquote>
-                                    {{ name }}
+                                    {% if name %}
+                                        {{ name }}
+                                    {% else %}
+                                        <font color="#808080">未设置</font>
+                                    {% endif %}
                                 </blockquote>
                                 <span class="">{% if info %}{{ info }}{% else %}{{ "tan90°" }}{% endif %}</span>
                             </div>
@@ -124,8 +147,8 @@
     </style>
     <script type="text/javascript">
         $('#info').val('{{ info }}').trigger('autoresize');
-        $('#back_button').click(function (){
-            location.href="{{ url_for('index') }}";
+        $('#back_button').click(function () {
+            location.href = "{{ url_for('index') }}";
         })
     </script>
 {% endblock %}

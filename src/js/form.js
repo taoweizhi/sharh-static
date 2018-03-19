@@ -3,13 +3,7 @@ const applyInGroup =
     "<form id='applyInGroup'>" +
     " <div class='row'>" +
     "   <div class='input-field col s12'>" +
-    "     <input id='applyInGroupTitle' type='text' class='validate'>\n" +
-    "     <label for='applyInGroupTitle'>请求标题</label>" +
-    "   </div>" +
-    " </div>" +
-    " <div class='row'>" +
-    "   <div class='input-field col s12'>" +
-    "     <input id='applyInGroupContent' type='text' class='validate'>\n" +
+    "     <input id='applyInGroupContent' type='text' class='validate' name='apply_in_text'>\n" +
     "     <label for='applyInGroupContent'>请求内容</label>" +
     "   </div>" +
     " </div>" +
@@ -43,12 +37,12 @@ const field = {
     dateISO: true
   },
   title: {
-    require: true,
+    required: true,
     minlength: 5,
     maxlength: 50,
   },
   text: {
-    required: false,
+    required: true,
     maxlength: 500,
   },
   email: {
