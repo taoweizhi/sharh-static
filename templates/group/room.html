@@ -277,7 +277,7 @@
                                             <p>正在删除群，所有成员将会被解散，确认？</p>
                                         </div>
                                         <div class="modal-footer">
-                                            <a href="" class="modal-action modal-close waves-effect waves-red btn-flat">确认</a>
+                                            <a href="{{ url_for('group.delete_group', group_id=group.id) }}" class="modal-action modal-close waves-effect waves-red btn-flat">确认</a>
                                             <a href="#!"
                                                class="modal-action modal-close waves-effect waves-green btn-flat">取消</a>
                                         </div>
