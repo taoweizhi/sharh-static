@@ -178,7 +178,7 @@ const Form = {
       activityEndDate: field.require,
       activityEndTime: field.require,
     },
-    url: ''
+    url: '/group/register_activity'
   }
 };
 
@@ -344,7 +344,11 @@ $(document).ready(
     $('#activityForm').validate({
       rules: Form.activityForm.content,
       errorPlacement: defaultErrorPlacement,
-      submitHandler: $.afterPOST(activityFormHandler)(Form.activityForm.url),
+      submitHandler: (form) => {
+        const groupId = getId();
+        $.post(`${Form.activityForm.url}%3Fgroup%3D${groupId}`, $(form).serializeArray(),
+          defaultAction(activityFormHandler));
+      },
     });
     $("title").append(style);
 

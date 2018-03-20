@@ -435,11 +435,15 @@
                     activityStartDate = inst.getVal();
                     $('#activityEndDate').mobiscroll('option', {min: activityStartDate});
                     $('#activityEndTime').mobiscroll('option', {min: activityStartDate});
+                    $('#activityStartTime').mobiscroll('option', {defaultValue: activityStartDate});
                 }
             });
             $('#activityEndDate').mobiscroll().calendar({
                 dateFormat: "yy-mm-dd",
-                min: activityStartDate
+                min: activityStartDate,
+                onClose: function (event, inst) {
+                    $('#activityEndTime').mobiscroll('option', {defaultValue: inst.getVal()});
+                }
             });
 
             $('#activityStartTime').mobiscroll().time({
