@@ -10,6 +10,8 @@
 
 {% extends "layouts/defaultLayout.html" %}
 {% block navbar_content %}
+    <a class="modal-trigger" href="#activity"><i class="material-icons left">add</i>发起活动</a>
+
 {% endblock %}
 {% set AdminPermotion = not (db.UserGroup.query.filter(db.UserGroup.user_id == user.id).first().user_cls == db.Role.normal) %}
 {% block navbar_tabs %}
@@ -20,6 +22,57 @@
     {% endif %}
 {% endblock %}
 {% block content %}
+    <div id="activity" class="modal manage" style="max-height: 88%">
+        <form class="col s12" id="activityForm">
+            <div class="modal-content">
+                <h5>活动发起</h5>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input value="" id="activityName" name="title" type="text" class="validate">
+                        <label class="active" for="activityName">活动名称</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <textarea id="activityContent" name="content" class="materialize-textarea"></textarea>
+                        <label for="activityContent">活动内容</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s6">
+                        <input id="activityStartDate" type="text">
+                        <label for="activityStart">开始日期</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <input id="activityStartTime" type="text">
+                        <label for="activityStart">开始时间</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s6">
+                        <input id="activityEndDate" type="text">
+                        <label for="activityEndDate">结束日期</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <input id="activityEndTime" type="text">
+                        <label for="activityEndTime">结束时间</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s4 l3 m4 right">
+                        <button class="btn waves-effect waves-light right" type="submit">
+                            发起<i class="material-icons right">send</i>
+                        </button>
+                    </div>
+                    <div class="col s4 l3 m4 right">
+                        <a class="btn grey waves-effect waves-light modal-close right">
+                            取消<i class="material-icons right">close</i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
     <div id="manage_msg" class="modal manage">
         <form class="col s12" id="manageMsgForm">
             <div class="modal-content">
@@ -182,12 +235,14 @@
                             <li class="collection-item" style="padding-left: 10px">
                                 {% for _idx, req in msg_dict_req.items() %}
                                     <div class="row" style="margin-bottom: 0;">
-                                        <div class="col s1 m1 l2"><i class="material-icons purple-text">insert_comment</i>
+                                        <div class="col s1 m1 l2"><i
+                                                class="material-icons purple-text">insert_comment</i>
                                         </div>
                                         <div class="col s8 m8 l6">{{ req.username }}:<br>{{ req.content }}</div>
                                         <div class="col s3 m3 l4">
                                             <a href="#" class="red-text"><i class="material-icons">close</i></a>
-                                            <a href="{{ url_for('group.enter_group',group_id=group.id,invited_user_id=req.user_id,msg_index=_idx) }}" class="secondary-content"><i class="material-icons">check</i></a>
+                                            <a href="{{ url_for('group.enter_group',group_id=group.id,invited_user_id=req.user_id,msg_index=_idx) }}"
+                                               class="secondary-content"><i class="material-icons">check</i></a>
                                         </div>
                                     </div>
                                 {% endfor %}
@@ -278,7 +333,8 @@
                                             <p>正在删除群，所有成员将会被解散，确认？</p>
                                         </div>
                                         <div class="modal-footer">
-                                            <a href="{{ url_for('group.delete_group', group_id=group.id) }}" class="modal-action modal-close waves-effect waves-red btn-flat">确认</a>
+                                            <a href="{{ url_for('group.delete_group', group_id=group.id) }}"
+                                               class="modal-action modal-close waves-effect waves-red btn-flat">确认</a>
                                             <a href="#!"
                                                class="modal-action modal-close waves-effect waves-green btn-flat">取消</a>
                                         </div>
@@ -363,7 +419,7 @@
     </style>
     <script type="text/javascript">
         $('footer').css('display', 'none');
-
+        var activityStartDate = new Date();
         $(document).ready(function () {
             $('#groupName').val('{{ group.name }}');
             $('#groupInfo').val('{{ group.info }}').trigger('autoresize');
@@ -372,6 +428,42 @@
             $('select').material_select();
             Materialize.updateTextFields();
 
+            $('#activityStartDate').mobiscroll().calendar({
+                dateFormat: "yy-mm-dd",
+                min: activityStartDate,
+                onClose: function (event, inst) {
+                    activityStartDate = inst.getVal();
+                    $('#activityEndDate').mobiscroll('option', {min: activityStartDate});
+                    $('#activityEndTime').mobiscroll('option', {min: activityStartDate});
+                }
+            });
+            $('#activityEndDate').mobiscroll().calendar({
+                dateFormat: "yy-mm-dd",
+                min: activityStartDate
+            });
+
+            $('#activityStartTime').mobiscroll().time({
+                timeFormat: 'hh:ii A',
+                min: activityStartDate,
+                onClose: function (event, inst) {
+                    activityStartDate = inst.getVal();
+                    $('#activityEndDate').mobiscroll('option', {min: activityStartDate});
+                    $('#activityEndTime').mobiscroll('option', {min: activityStartDate});
+                }
+            });
+            $('#activityEndTime').mobiscroll().time({
+                timeFormat: 'hh:ii A',
+                min: activityStartDate
+            });
+
+            $('.datepicker').pickadate({
+                selectMonths: true, // Creates a dropdown to control month
+                selectYears: 15, // Creates a dropdown of 15 years to control year,
+                today: '今天',
+                clear: '清除',
+                close: '确认',
+                closeOnSelect: false // Close upon selecting a date,
+            });
             $('#manage-body').click(function () {
                 $("#sending_row").hide();
             });

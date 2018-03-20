@@ -169,6 +169,15 @@ const Form = {
     },
     url: '/group/update_msg',
   },
+  activityForm: {
+    content: {
+      activityName: field.title,
+      activityContent: field.text,
+      activityStart: field.date,
+      activityEnd: field.date,
+    },
+    url: ''
+  }
 };
 
 const defaultErrorPlacement = (error, elem) => {
@@ -327,6 +336,15 @@ $(document).ready(
       submitHandler: (form) => {
         const groupId = getId();
         $.post(`${Form.sendMsgForm.url}%3Fgroup%3D${groupId}%3Fchannel%3Dpublic`, $(form).serializeArray(),
+          defaultAction(sendAnnoFormHandler));
+      },
+    });
+    $('#activityForm').validate({
+      rules: Form.activityForm.content,
+      errorPlacement: defaultErrorPlacement,
+      submitHandler: (form) => {
+        const groupId = getId();
+        $.post(`${Form.sendMsgForm.url}`, $(form).serializeArray(),
           defaultAction(sendAnnoFormHandler));
       },
     });

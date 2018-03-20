@@ -14,7 +14,8 @@ current_day: time -> 当前所在日期的时间
 {% extends "layouts/defaultLayout.html" %}
 {% block navbar_content %}
     <li><a href="{{ url_for('schedule.toweek_course_') }}">本周课程</a></li>
-    <li><a href="" id="dpcaller">日期</a></li>
+    <input id="date-container" style="display: none"/>
+    <li><a href="#" id="dpcaller">日期</a></li>
 {% endblock %}
 
 
@@ -66,20 +67,20 @@ current_day: time -> 当前所在日期的时间
                 线上课程
             </blockquote>
             <ul class="collapsible popout" data-collapsible="accordion" id="collapsible_online">
-                    <li>
-                        <div class="collapsible-header">
-                            <i class="material-icons">event</i>
-                            线上课程
-                        </div>
-                        <div class="collapsible-body">
-                            {% for course in day_courses['online'] %}
-                                {{ course.name }}
-                                <br>
-                                {{ course.location or "无" }}
-                            {% endfor %}
-                        </div>
-                    </li>
-                </ul>
+                <li>
+                    <div class="collapsible-header">
+                        <i class="material-icons">event</i>
+                        线上课程
+                    </div>
+                    <div class="collapsible-body">
+                        {% for course in day_courses['online'] %}
+                            {{ course.name }}
+                            <br>
+                            {{ course.location or "无" }}
+                        {% endfor %}
+                    </div>
+                </li>
+            </ul>
         </div>
     </div>
 {% endblock %}
@@ -88,45 +89,14 @@ current_day: time -> 当前所在日期的时间
 {% block script_content %}
     <!--Color format-->
     <style>
-        .picker__date-display {
-            background-color: #ffab40;
-        }
-
-        .picker__day--selected, .picker__day--selected:hover, .picker--focused .picker__day--selected {
-            background-color: #ffab40;
-        }
-
-        .picker__close, .picker__today, .picker__clear {
-            color: #f57c00;
-        }
-
-        .picker__day.picker__day--today {
-            color: #f57c00;
-        }
-
-        #datepicker {
-            background-color: rgba(0, 0, 0, 0);
-            border: none;
-            /* border-bottom: 1px solid rgb(158, 158, 158); */
-            border-radius: 0;
-            outline: none;
-            height: 3rem;
-            width: 50%;
-            font-size: 1rem;
-            margin: 0 0 0 0;
-            padding: 0;
-            -webkit-box-shadow: none;
-            box-shadow: none;
-            -webkit-box-sizing: content-box;
-            box-sizing: content-box;
-            -webkit-transition: all 0.3s;
-            transition: all 0.3s;
-        }
-
-        }
 
     </style>
     <script type="text/javascript">
+        var currYear = (new Date()).getFullYear();
+        var dateSelected = new Date(
+            parseInt($.getUrlParam('year')),
+            parseInt($.getUrlParam('month'))-1,
+            parseInt($.getUrlParam('day')));
         $(document).ready(function () {
             $('.collapsible').collapsible();
             $("#collapsible_online").collapsible('open', 0);
@@ -147,39 +117,36 @@ current_day: time -> 当前所在日期的时间
             else
                 $("#collapsible_offline").collapsible('open', 4);
 
-            var currYear = (new Date()).getFullYear();
-            var opt = {};
-            opt.date = {preset: 'date'};
-            opt.default = {
+            $('#date-container').mobiscroll().calendar({
                 theme: 'material', //皮肤样式
-                display: 'modal', //显示方式
-                mode: 'scroller', //日期选择模式
-                dateFormat: 'yyyy-mm-dd',
                 lang: 'zh',
-                showNow: true,
-                nowText: "今天",
                 startYear: currYear - 1, //开始年份
                 endYear: currYear + 1, //结束年份
-                onSelect: jumpToDate
-            };
-            $('#dpcaller').mobiscroll($.extend(opt['date'], opt['default']));
+                defaultValue: dateSelected,
+                buttons: ['now', 'set', 'cancel']
+            });
+            $('#dpcaller').click(function () {
+                $('#date-container').mobiscroll('show');
+                return false;
+            });
 
+            $('#date-container').change(function () {
+                var _date = $('#date-container').val().split('/');
+                var _reURL = '/schedule/today_course%3Fyear%3D' + _date[0] + '%3Fmonth%3D' + _date[1] + '%3Fday%3D' + _date[2];
+                window.location.href = _reURL;
+            });
         });
 
-        function jumpToDate(val, inst) {
-            var _date = val.split('-');
-            var _reURL = '/schedule/today_course%3Fyear%3D' + _date[0] + '%3Fmonth%3D' + _date[1] + '%3Fday%3D' + _date[2];
-            window.location.href=_reURL;
-        }
+
         {% with messages = get_flashed_messages() %}
-        {% if messages %}
-        {% for message in messages %}
-        if ($.cookie('toast_ctrl_index') !== '{{ message }}') {
-          Materialize.toast('{{ message }}', 3000);
-          $.cookie('toast_ctrl_index', '{{ message }}');
-        }
-        {% endfor %}
-        {% endif %}
+            {% if messages %}
+                {% for message in messages %}
+                    if ($.cookie('toast_ctrl_index') !== '{{ message }}') {
+                        Materialize.toast('{{ message }}', 3000);
+                        $.cookie('toast_ctrl_index', '{{ message }}');
+                    }
+                {% endfor %}
+            {% endif %}
         {% endwith %}
     </script>
 {% endblock %}

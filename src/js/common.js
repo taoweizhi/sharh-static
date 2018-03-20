@@ -47,10 +47,14 @@ const groupFormHandler = (result) => {
 const changeGroupFormHandler = (result) => {
 };
 const sendAnnoFormHandler = (result) => {
-    if(result)
-        Materialize.toast(result, 3000);
+  if(result)
+      Materialize.toast(result, 3000);
 };
 const manageMsgFormHandler = (result) => {
+};
+const activityFormHandler = (result) => {
+  if(result)
+      Materialize.toast(result, 3000);
 };
 const sendSms = () => {
   const section = $('#section1');
@@ -66,8 +70,6 @@ const deleteMsg = (msgIndex) => {
   const groupId=getId();
   $.post(
       '/group/delete_msg%3Fgroup%3D'+groupId.toString()+'%3Fchannel%3Dboard%3Findex%3D'+msgIndex.toString(),
-      function (result) {
-          
-      }
+      (result) => {}
   )
 };
