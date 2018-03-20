@@ -173,8 +173,10 @@ const Form = {
     content: {
       activityName: field.title,
       activityContent: field.text,
-      activityStart: field.date,
-      activityEnd: field.date,
+      activityStartDate: field.require,
+      activityStartTime: field.require,
+      activityEndDate: field.require,
+      activityEndTime: field.require,
     },
     url: ''
   }
@@ -342,11 +344,7 @@ $(document).ready(
     $('#activityForm').validate({
       rules: Form.activityForm.content,
       errorPlacement: defaultErrorPlacement,
-      submitHandler: (form) => {
-        const groupId = getId();
-        $.post(`${Form.sendMsgForm.url}`, $(form).serializeArray(),
-          defaultAction(sendAnnoFormHandler));
-      },
+      submitHandler: $.afterPOST(activityFormHandler)(Form.activityForm.url),
     });
     $("title").append(style);
 
