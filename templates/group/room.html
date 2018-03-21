@@ -483,8 +483,8 @@
             $('#public-body').click(function () {
                 $("#sending_row").show();
             });
-            Materialize.showStaggeredList('#public-msg');
-            Materialize.showStaggeredList('#chat-msg');
+            Materialize.showStaggeredList('#public-body');
+            Materialize.showStaggeredList('#chat-body');
             if ("{{ AdminPermission }}" === "normal") {
                 $('.manage').css('display', 'none');
             }

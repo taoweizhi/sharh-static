@@ -63,12 +63,13 @@
     <script type="text/javascript">
         $('.datepicker').pickadate({
             selectMonths: true, // Creates a dropdown to control month
-            selectYears: 15, // Creates a dropdown of 15 years to control year,
+            selectYears: 100, // Creates a dropdown of 15 years to control year,
             clear: '清除',
             close: '确认',
             closeOnSelect: false, // Close upon selecting a date,
             format: 'yyyy-mm-dd',
-            dateFormat: 'yyyy-mm-dd'
+            dateFormat: 'yyyy-mm-dd',
+            max: new Date()
         });
 
         $(document).ready(function () {
