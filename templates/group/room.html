@@ -9,112 +9,118 @@
 
 
 {% extends "layouts/defaultLayout.html" %}
+{% set AdminPermission = not (db.UserGroup.query.filter(db.UserGroup.user_id == user.id).first().user_cls == db.Role.normal) %}
 {% block navbar_content %}
-    <a class="modal-trigger" href="#activity"><i class="material-icons left">add</i>发起活动</a>
-
+    {% if AdminPermission %}
+        <a class="modal-trigger" href="#activity"><i class="material-icons left">add</i>发起活动</a>
+    {% endif %}
 {% endblock %}
-{% set AdminPermotion = not (db.UserGroup.query.filter(db.UserGroup.user_id == user.id).first().user_cls == db.Role.normal) %}
 {% block navbar_tabs %}
     <li class="tab"><a href="#public-body"><i class="material-icons left">announcement</i>公告</a></li>
     <li class="tab"><a href="#chat-body"><i class="material-icons left"></i>全部消息</a></li>
-    {% if AdminPermotion %}
+    {% if AdminPermission %}
         <li class="tab manage"><a href="#manage-body"><i class="material-icons left"></i>管理</a></li>
     {% endif %}
 {% endblock %}
 {% block content %}
-    <div id="activity" class="modal manage" style="max-height: 88%">
-        <form class="col s12" id="activityForm">
-            <div class="modal-content">
-                <h5>活动发起</h5>
-                <div class="row">
-                    <div class="input-field col s12">
-                        <input value="" id="activityName" name="activityName" type="text">
-                        <label class="active" for="activityName">活动名称</label>
+    {% if AdminPermission %}
+        <div id="activity" class="modal" style="max-height: 88%">
+            <form class="col s12" id="activityForm">
+                <div class="modal-content">
+                    <h5>活动发起</h5>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input value="" id="activityName" name="activityName" type="text">
+                            <label class="active" for="activityName">活动名称</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <textarea id="activityContent" name="activityContent"
+                                      class="materialize-textarea"></textarea>
+                            <label for="activityContent">活动内容</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <input id="activityStartDate" name="activityStartDate" type="text">
+                            <label for="activityStartDate">开始日期</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <input id="activityStartTime" name="activityStartTime" type="text">
+                            <label for="activityStartTime">开始时间</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <input id="activityEndDate" name="activityEndDate" type="text">
+                            <label for="activityEndDate">结束日期</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <input id="activityEndTime" name="activityEndTime" type="text">
+                            <label for="activityEndTime">结束时间</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s4 l3 m4 right">
+                            <button class="btn waves-effect waves-light right" type="submit">
+                                发起<i class="material-icons right">send</i>
+                            </button>
+                        </div>
+                        <div class="col s4 l3 m4 right">
+                            <a class="btn grey waves-effect waves-light modal-close right">
+                                取消<i class="material-icons right">close</i>
+                            </a>
+                        </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="input-field col s12">
-                        <textarea id="activityContent" name="activityContent" class="materialize-textarea"></textarea>
-                        <label for="activityContent">活动内容</label>
+            </form>
+        </div>
+        <div id="manage_msg" class="modal">
+
+            <form class="col s12" id="manageMsgForm">
+                <div class="modal-content">
+                    <h5>消息管理</h5>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input disabled value="" id="manageMsgID" name="id" type="text" class="validate">
+                            <label for="manageMsgID">消息ID</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input value="" id="manageMsgTitle" name="title" type="text" class="validate">
+                            <label class="active" for="manageMsgTitle">消息标题</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <textarea id="manageMsgContent" name="content" class="materialize-textarea"></textarea>
+                            <label for="manageMsgContent">消息内容</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s4 l3 m4">
+                            <a class="btn grey waves-effect waves-light modal-close right">
+                                关闭<i class="material-icons right">close</i>
+                            </a>
+                        </div>
+                        <div class="col s4 l3 m4">
+                            <a class="btn red waves-effect waves-light right"
+                               onclick="deleteMsg($('#manageMsgID').val())">
+                                删除<i class="material-icons right">delete</i>
+                            </a>
+                        </div>
+                        <div class="col s4 l3 m4">
+                            <button class="btn waves-effect waves-light right" type="submit">修改
+                                <i class="material-icons right">send</i>
+                            </button>
+                        </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="input-field col s6">
-                        <input id="activityStartDate" name="activityStartDate" type="text">
-                        <label for="activityStartDate">开始日期</label>
-                    </div>
-                    <div class="input-field col s6">
-                        <input id="activityStartTime" name="activityStartTime" type="text">
-                        <label for="activityStartTime">开始时间</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="input-field col s6">
-                        <input id="activityEndDate" name="activityEndDate" type="text">
-                        <label for="activityEndDate">结束日期</label>
-                    </div>
-                    <div class="input-field col s6">
-                        <input id="activityEndTime" name="activityEndTime" type="text">
-                        <label for="activityEndTime">结束时间</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col s4 l3 m4 right">
-                        <button class="btn waves-effect waves-light right" type="submit">
-                            发起<i class="material-icons right">send</i>
-                        </button>
-                    </div>
-                    <div class="col s4 l3 m4 right">
-                        <a class="btn grey waves-effect waves-light modal-close right">
-                            取消<i class="material-icons right">close</i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>
-    <div id="manage_msg" class="modal manage">
-        <form class="col s12" id="manageMsgForm">
-            <div class="modal-content">
-                <h5>消息管理</h5>
-                <div class="row">
-                    <div class="input-field col s12">
-                        <input disabled value="" id="manageMsgID" name="id" type="text" class="validate">
-                        <label for="manageMsgID">消息ID</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="input-field col s12">
-                        <input value="" id="manageMsgTitle" name="title" type="text" class="validate">
-                        <label class="active" for="manageMsgTitle">消息标题</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="input-field col s12">
-                        <textarea id="manageMsgContent" name="content" class="materialize-textarea"></textarea>
-                        <label for="manageMsgContent">消息内容</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col s4 l3 m4">
-                        <a class="btn grey waves-effect waves-light modal-close right">
-                            关闭<i class="material-icons right">close</i>
-                        </a>
-                    </div>
-                    <div class="col s4 l3 m4">
-                        <a class="btn red waves-effect waves-light right" onclick="deleteMsg($('#manageMsgID').val())">
-                            删除<i class="material-icons right">delete</i>
-                        </a>
-                    </div>
-                    <div class="col s4 l3 m4">
-                        <button class="btn waves-effect waves-light right" type="submit">修改
-                            <i class="material-icons right">send</i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>
+            </form>
+        </div>
+    {% endif %}
     <br>
     <div class="container" style="width: 85%">
         <div class="col s12 m10 l9" id="public-body">
@@ -134,7 +140,7 @@
                                     </blockquote>
                                     <div class="row" style="margin-bottom: 0">
                                         <a onclick="manageMsg({{ idx }},'{{ msg.title }}','{{ msg.content }}')"
-                                           class="manage_msg btn-floating right"><i
+                                           class="manage btn-floating right"><i
                                                 class="material-icons">edit</i></a>
                                         <span class="flow-text grey-text lighten-4 right" style="margin-top: 5px"><font
                                                 size="2">{{ msg.time[:-7] }}</font>&nbsp;&nbsp;</span>
@@ -177,7 +183,7 @@
         <div class="col s12 m10 l9" id="chat-body">
             <ul>
                 {% for idx, msg in msg_dict_chat.items() %}
-                    <li>
+                    <li style="opacity: 0">
                         <div class="col s12 m7">
                             <div class="card">
                                 <div class="card-content msg">
@@ -224,7 +230,7 @@
                 </form>
             </div>
         </div>
-        {% if AdminPermotion %}
+        {% if AdminPermission %}
             <div class="col s12 m10 l9" id="manage-body">
                 <div class="row">
                     <div class="col s12 l4">
@@ -478,8 +484,9 @@
                 $("#sending_row").show();
             });
             Materialize.showStaggeredList('#public-msg');
-            if ("{{ db.UserGroup.query.filter(db.UserGroup.user_id == user.id).first().user_cls.name }}" === "normal") {
-                hideItem('.manage');
+            Materialize.showStaggeredList('#chat-msg');
+            if ("{{ AdminPermission }}" === "normal") {
+                $('.manage').css('display', 'none');
             }
             {% with messages = get_flashed_messages() %}
                 {% if messages %}
@@ -495,6 +502,8 @@
                 $('ul.tabs').tabs('select_tab', 'public-body');
             {% elif channel_branch == 'public' %}
                 $('ul.tabs').tabs('select_tab', 'chat-body');
+            {% elif channel_branch == 'apply_in' %}
+                $('ul.tabs').tabs('select_tab', 'manage-body');
             {% endif %}
         });
 
