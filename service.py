@@ -40,4 +40,7 @@ conf_spec = dict(
 init(**conf_spec)
 app = Config.app
 app.debug = True
+
+from rx_sharh.states.message.ref import Group
+# Group.clear(group_id=all, channels=all)
 app.run()
