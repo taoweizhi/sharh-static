@@ -258,19 +258,19 @@
                                 <ul class="collection with-header">
                                     <li class="collection-item">
                                         {% for member_ref in group.ref_users %}
-                                            {% if member_ref.user.user_cls == db.Role.leader %}
-                                                <div>
-                                                    <i class="material-icons">account_circle</i>{{ member_ref.user.name }}
+                                            {% if member_ref.user_cls == db.Role.leader %}
+                                                <div class="row">
+                                                    <i class="material-icons">account_circle</i>{{ member_ref.user.nickname }}
                                                 </div>
-                                            {% elif member_ref.user.user_cls == db.Role.admin %}
-                                                <div><i class="material-icons">book</i>{{ member_ref.user.name }}
+                                            {% elif member_ref.user_cls == db.Role.admin %}
+                                                <div class="row"><i class="material-icons">book</i>{{ member_ref.user.nickname }}
                                                     <a href="" class="secondary-content">
                                                         <i class="material-icons">not_interested</i>删除成员</a>
                                                     <a href="" class="secondary-content">
                                                         <i class="material-icons">assignment_turned_in</i>撤销管理员</a>
                                                 </div>
-                                            {% elif member_ref.user.user_cls == db.Role.normal %}
-                                                <div><i class="material-icons">person</i>{{ member_ref.user.name }}
+                                            {% elif member_ref.user_cls == db.Role.normal %}
+                                                <div class="row"><i class="material-icons">person</i>{{ member_ref.user.nickname }}
                                                     <a href="" class="secondary-content">
                                                         <i class="material-icons">not_interested</i>删除成员</a>
                                                     <a href="" class="secondary-content">
