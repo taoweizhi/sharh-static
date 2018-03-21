@@ -1,4 +1,4 @@
-const style = "<style>label.error{color: red; font-size: 15px; padding-top: 40px;}</style>";
+const style = "<style>label.error{color: red; font-size: 15px; position: relative; padding-bottom: 5px;}</style>";
 const applyInGroup =
     "<form id='applyInGroup'>" +
     " <div class='row'>" +
@@ -186,7 +186,7 @@ const defaultErrorPlacement = (error, elem) => {
   if (elem.next().next().attr('id') === `${elem.id}-wrapper`)
     error.appendTo(elem.parent().next());
   else {
-    elem.next().after(`<div id="${elem.id}-wrapper" class="row"></div>`);
+    elem.next().after(`<div id="${elem.id}-wrapper" class="row" style="margin-bottom: 4px"></div>`);
     error.appendTo(elem.next().next());
   }
 };

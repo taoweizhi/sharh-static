@@ -32,7 +32,10 @@ const defaultAction = (action) => (data) => {
   else
     action(data);
 };
-
+const showToast = (msg) => {
+  if(result)
+      Materialize.toast(msg, 3000);
+};
 const signinFormHandler = (result) => {
 };
 const loginFormHandler = (result) => {
@@ -63,6 +66,7 @@ const activityFormHandler = (result) => {
   if(result)
       Materialize.toast(result, 3000);
 };
+
 const sendSms = () => {
   const section = $('#section1');
   const f = $('<form></form>');
@@ -77,6 +81,13 @@ const deleteMsg = (msgIndex) => {
   const groupId=getId();
   $.post(
     '/group/delete_msg%3Fgroup%3D'+groupId.toString()+'%3Fchannel%3Dboard%3Findex%3D'+msgIndex.toString(),
-    defaultAction((result) => {})
+    defaultAction(showToast)
+  )
+};
+
+const leaveGroup = (groupId) => {
+  $.post(
+    `/group/leave_group%3Fgroup%3D${groupId.toString()}`,
+    defaultAction(showToast)
   )
 };

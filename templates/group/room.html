@@ -23,6 +23,57 @@
     {% endif %}
 {% endblock %}
 {% block content %}
+    <div class="full-screen" id="preloader">
+        <div class="preloader-wrapper small active">
+            <div class="spinner-layer spinner-blue">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div>
+                <div class="gap-patch">
+                    <div class="circle"></div>
+                </div>
+                <div class="circle-clipper right">
+                    <div class="circle"></div>
+                </div>
+            </div>
+
+            <div class="spinner-layer spinner-red">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div>
+                <div class="gap-patch">
+                    <div class="circle"></div>
+                </div>
+                <div class="circle-clipper right">
+                    <div class="circle"></div>
+                </div>
+            </div>
+
+            <div class="spinner-layer spinner-yellow">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div>
+                <div class="gap-patch">
+                    <div class="circle"></div>
+                </div>
+                <div class="circle-clipper right">
+                    <div class="circle"></div>
+                </div>
+            </div>
+
+            <div class="spinner-layer spinner-green">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div>
+                <div class="gap-patch">
+                    <div class="circle"></div>
+                </div>
+                <div class="circle-clipper right">
+                    <div class="circle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
     {% if AdminPermission %}
         <div id="activity" class="modal" style="max-height: 88%">
             <form class="col s12" id="activityForm">
@@ -77,7 +128,6 @@
             </form>
         </div>
         <div id="manage_msg" class="modal">
-
             <form class="col s12" id="manageMsgForm">
                 <div class="modal-content">
                     <h5>消息管理</h5>
@@ -131,12 +181,12 @@
                             <div class="card">
                                 <div class="card-content msg">
                                     <span class="card-title right" style="text-shadow: 0px 0px 7px #ffffff">
-                                    <font size="4">来自</font> {{ msg.username }} <font size="4">的公告:</font></span>
+                                        <font size="4">来自</font> <font size="4.2">{{ msg.username }}</font> <font size="4">的公告:</font></span>
                                     <br><br>
                                     <blockquote>
-                                        <span class="flow-text">{{ msg.title }}</span>
+                                        <span style="font-size: 20px">{{ msg.title }}</span>
                                         <br>
-                                        <span>{{ msg.content }}</span>
+                                        <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ msg.content }}</span>
                                     </blockquote>
                                     <div class="row" style="margin-bottom: 0">
                                         <a onclick="manageMsg({{ idx }},'{{ msg.title }}','{{ msg.content }}')"
@@ -151,7 +201,7 @@
                     </li>
                 {% endfor %}
             </ul>
-            <div class="fixed-action-btn click-to-toggle">
+            <div class="manage fixed-action-btn click-to-toggle">
                 <a class="btn-floating btn-large waves-effect red modal-trigger" href="#send-public">
                     <i class="large material-icons">mode_edit</i>
                 </a>
@@ -185,16 +235,18 @@
                 {% for idx, msg in msg_dict_chat.items() %}
                     <li style="opacity: 0">
                         <div class="col s12 m7">
-                            <div class="card">
-                                <div class="card-content msg">
-                                <span class="card-title right" style="text-shadow: 0 0 7px #ffffff">
-                                    <font size="3">{{ msg.username }}</font></span>
-                                    <br><br>
-                                    <span class="flow-text">{{ msg.title }}</span>
-                                    <span>{{ msg.content }}</span>
-                                    <span class="flow-text grey-text lighten-4 right"><font
-                                            size="2">{{ msg.time }}</font></span>
-                                    <br>
+                            <div class="card" style="border-radius: 20px">
+                                <div class="card-content msg" style="padding: 10px 20px;">
+                                    <div class="row" style="margin: auto">
+                                         <span class="card-title left" style="text-shadow: 0 0 7px #ffffff">
+                                             <font size="3">{{ msg.username }}:</font></span>
+                                    </div>
+                                    <div class="row" style="margin: auto">
+                                        <span style="font-size: 16px">{{ msg.content }}</span>
+                                        <br>
+                                        <span class="flow-text grey-text lighten-4 right"><font
+                                                size="2">{{ msg.time[:-7] }}</font></span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -238,7 +290,7 @@
                             加群请求
                         </blockquote>
                         <ul class="collection with-header">
-                            <li class="collection-item" style="padding-left: 10px">
+                            <li class="collection-item" style="padding-left: 14px">
                                 {% for _idx, req in msg_dict_req.items() %}
                                     <div class="row" style="margin-bottom: 0;">
                                         <div class="col s1 m1 l2"><i
@@ -262,29 +314,50 @@
                                     管理成员
                                 </blockquote>
                                 <ul class="collection with-header">
-                                    <li class="collection-item">
-                                        {% for member_ref in group.ref_users %}
+                                    {% for member_ref in group.ref_users %}
+                                        <li class="collection-item" style="padding-left: 14px">
                                             {% if member_ref.user_cls == db.Role.leader %}
-                                                <div class="row">
-                                                    <i class="material-icons">account_circle</i>{{ member_ref.user.nickname }}
+                                                <div class="row" style="margin-bottom: 0;">
+                                                    <div class="col s1"><i class="material-icons">account_circle</i>
+                                                    </div>
+                                                    <div class="col s11"
+                                                         style="margin-top: 3px">{{ member_ref.user.nickname }}</div>
                                                 </div>
                                             {% elif member_ref.user_cls == db.Role.admin %}
-                                                <div class="row"><i class="material-icons">book</i>{{ member_ref.user.nickname }}
+                                                <div class="row" style="margin-bottom: 0">
+                                                    <div class="col s1"><i class="material-icons">book</i></div>
+                                                    <div class="col s5"
+                                                         style="margin-top: 3px">{{ member_ref.user.nickname or member_ref.user.account }}</div>
+                                                    <a href="" class="secondary-content red-text">
+                                                        <i class="material-icons left">close</i>
+                                                        <span>删除成员</span>
+                                                    </a>
+                                                </div>
+                                                <div class="row" style="margin-bottom: 0">
                                                     <a href="" class="secondary-content">
-                                                        <i class="material-icons">not_interested</i>删除成员</a>
-                                                    <a href="" class="secondary-content">
-                                                        <i class="material-icons">assignment_turned_in</i>撤销管理员</a>
+                                                        <i class="material-icons left">not_interest</i>
+                                                        <span>删除管理员</span>
+                                                    </a>
                                                 </div>
                                             {% elif member_ref.user_cls == db.Role.normal %}
-                                                <div class="row"><i class="material-icons">person</i>{{ member_ref.user.nickname }}
+                                                <div class="row" style="margin-bottom: 0">
+                                                    <div class="col s1"><i class="material-icons">book</i></div>
+                                                    <div class="col s5"
+                                                         style="margin-top: 3px">{{ member_ref.user.nickname or member_ref.user.account }}</div>
+                                                    <a href="" class="secondary-content red-text">
+                                                        <i class="material-icons left">close</i>
+                                                        <span>删除成员</span>
+                                                    </a>
+                                                </div>
+                                                <div class="row" style="margin-bottom: 0">
                                                     <a href="" class="secondary-content">
-                                                        <i class="material-icons">not_interested</i>删除成员</a>
-                                                    <a href="" class="secondary-content">
-                                                        <i class="material-icons">assignment_turned_in</i>设置为管理员</a>
+                                                        <i class="material-icons left">assignment_turned_in</i>
+                                                        <span>设置管理员</span>
+                                                    </a>
                                                 </div>
                                             {% endif %}
-                                        {% endfor %}
-                                    </li>
+                                        </li>
+                                    {% endfor %}
                                 </ul>
                             </div>
                             <div class="col s12 l6">
@@ -332,6 +405,8 @@
                                     <div class="row">
                                         <a class="waves-effect waves-light btn red modal-trigger"
                                            href="#delete_modal">删除群<i class="material-icons right">close</i></a>
+                                        <a class="waves-effect waves-light btn red modal-trigger"
+                                           href="#delete_modal">清空公告板<i class="material-icons right">close</i></a>
                                     </div>
                                     <div id="delete_modal" class="modal">
                                         <div class="modal-content">
@@ -358,6 +433,22 @@
     <style>
         @import url(https://fonts.googleapis.com/css?family=Roboto);
 
+        .full-screen {
+            background: white;
+            top: 0;
+            bottom: -20px;
+            left: 0;
+            right: 0;
+            position: absolute;
+            z-index: 1500;
+        }
+
+        .preloader-wrapper {
+            top: 50%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
         .msg {
             background-position: center center;
             background-repeat: no-repeat;
@@ -366,6 +457,7 @@
         }
 
         .msg blockquote {
+            margin: 5px 0;
             color: #0a0a0a;
             background-color: #ffebee;
             border-left: 4px solid #ac2925;
@@ -483,21 +575,11 @@
             $('#public-body').click(function () {
                 $("#sending_row").show();
             });
-            Materialize.showStaggeredList('#public-body');
-            Materialize.showStaggeredList('#chat-body');
-            if ("{{ AdminPermission }}" === "normal") {
+
+            {% if not AdminPermission %}
                 $('.manage').css('display', 'none');
-            }
-            {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    {% for message in messages %}
-                        if ($.cookie('toast_ctrl_index') !== '{{ message }}') {
-                            Materialize.toast('{{ message }}', 3000);
-                            $.cookie('toast_ctrl_index', '{{ message }}');
-                        }
-                    {% endfor %}
-                {% endif %}
-            {% endwith %}
+            {% endif %}
+
             {% if channel_branch == 'board' %}
                 $('ul.tabs').tabs('select_tab', 'public-body');
             {% elif channel_branch == 'public' %}
@@ -505,11 +587,21 @@
             {% elif channel_branch == 'apply_in' %}
                 $('ul.tabs').tabs('select_tab', 'manage-body');
             {% endif %}
-        });
 
-        function hideItem(object_id) {
-            $(object_id).css('display', 'none');
-        }
+            $('#preloader').fadeOut(500, function () {
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        {% for message in messages %}
+                            Materialize.toast('{{ message }}', 3000);
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                $('#preloader').css('display', 'none');
+                Materialize.showStaggeredList('#public-body');
+                Materialize.showStaggeredList('#chat-body');
+            });
+
+        });
 
         function manageMsg(msg_id, msg_title, msg_content) {
             $("#manageMsgID").val(msg_id);

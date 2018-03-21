@@ -43,4 +43,4 @@ app.debug = True
 
 from rx_sharh.states.message.ref import Group
 # Group.clear(group_id=all, channels=all)
-app.run()
+app.run(host='0.0.0.0')
