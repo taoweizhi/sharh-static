@@ -26,6 +26,13 @@ $(document).ready(function () {
   });
 });
 
+const defaultAction = (action) => (data) => {
+  if (data.status === 302)
+    location.href = data.location;
+  else
+    action(data);
+};
+
 const signinFormHandler = (result) => {
 };
 const loginFormHandler = (result) => {
@@ -69,7 +76,7 @@ const sendSms = () => {
 const deleteMsg = (msgIndex) => {
   const groupId=getId();
   $.post(
-      '/group/delete_msg%3Fgroup%3D'+groupId.toString()+'%3Fchannel%3Dboard%3Findex%3D'+msgIndex.toString(),
-      (result) => {}
+    '/group/delete_msg%3Fgroup%3D'+groupId.toString()+'%3Fchannel%3Dboard%3Findex%3D'+msgIndex.toString(),
+    defaultAction((result) => {})
   )
 };
