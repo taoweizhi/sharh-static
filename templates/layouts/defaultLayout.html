@@ -123,13 +123,13 @@
         <li></li>
         <li><a class="waves-effect" href="{{ url_for('index') }}"><i
                 class="material-icons">home</i>主页</a></li>
-        <li>
-            <div class="divider"></div>
-        </li>
         {% for option in side_options %}
             <li><a class="waves-effect" href="{{ option['href'] }}"><i
                     class="material-icons">{{ option['icon'] }}</i>{{ option['title'] }}</a></li>
         {% endfor %}
+        <li>
+            <div class="divider"></div>
+        </li>
         <li><a class="subheader">平台相关</a></li>
         <li><a class="waves-effect" href="">问题反馈</a></li>
         <li><a class="waves-effect" href="">关于</a></li>

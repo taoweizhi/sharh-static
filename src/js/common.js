@@ -87,7 +87,21 @@ const deleteMsg = (msgIndex) => {
 
 const leaveGroup = (groupId) => {
   $.post(
-    `/group/leave_group%3Fgroup%3D${groupId.toString()}`,
+    `/group/leave_group%3Fgroup%3D${groupId}`,
     defaultAction(showToast)
   )
+};
+
+const kickOut = (groupId, targetId) => {
+    $.post(
+        `/group/kick_out%3Fgroup%3D${groupId}%3Ftarget%3D${targetId}`,
+        defaultAction(showToast)
+    )
+};
+
+const switchRole = (groupId, targetId, role) => {
+    $.post(
+        `/group/switch_role%3Fgroup%3D${groupId}%3Ftarget%3D${targetId}%3Frole%3D${role}`,
+        defaultAction(showToast)
+    )
 };

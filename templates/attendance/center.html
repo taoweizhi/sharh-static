@@ -11,6 +11,10 @@
 -->
 
 {% extends "layouts/defaultLayout.html" %}
+{% block navbar_content %}
+{% endblock %}
+{% block navbar_tabs %}
+{% endblock %}
 {% block content %}
     <br>
     <div class="container">
@@ -65,41 +69,45 @@
                     <span class="flow-text">我管理的</span>
                 </div>
                 <div class="collapsible-body">
-                    {% if not (activity_ready and course_ready) %}
+                    {% if not activity_ready and not course_ready %}
                         <span class="flow-text">当前没有管理签到课程</span>
                     {% else %}
-                        {% for activity in activity_ready %}
-                            <div class="card-panel white z-depth-1">
-                                <div class="row valign-wrapper" style="margin-bottom: 0px">
-                                    <div class="col s2"><i class="material-icons">event</i></div>
-                                    <div class="col s7"><span class="flow-text">{{ activity.name }}</span></div>
-                                    <div class="col s3"><a href="#modal_act_{{ activity.id }}"
-                                                           class="btn btn-floating waves-effect waves-light modal-trigger orange">
-                                        <i class="material-icons">border_color</i></a></div>
-                                </div>
-                            </div>
-                            <div id="modal_act_{{ activity.id }}" class="modal">
-                             <div class="modal-content">
-                                    <h5>请设置签到码</h5>
-                                    <form id="codeSubmitForm">
-                                        <div class="input-field col s6">
-                                            <i class="material-icons prefix">chevron_right</i>
-                                            <input type="text" name="sign_code" id="sign_code">
-                                            <label for="sign_code"></label>
+                        {% for group, act_list in activity_ready %}
+                            {% for activity in act_list %}
+                                <div class="card-panel white z-depth-1">
+                                    <div class="row valign-wrapper" style="margin-bottom: 0px">
+                                        <div class="col s2"><i class="material-icons">event</i></div>
+                                        <div class="col s7"><span
+                                                class="flow-text">组{{ group.name }}的活动<br>{{ activity.name }}</span>
                                         </div>
-                                        <div class="modal-footer">
-                                            <div class="button col">
-                                                <a class="btn waves-effect waves-orange orange"
-                                                   onclick="random_code('modal_act_{{ activity.id }}')">随机
-                                                </a>
-                                                <button class="btn modal-action modal-close waves-effect waves-orange orange"
-                                                        type="submit">开始签到
-                                                </button>
+                                        <div class="col s3"><a href="#modal_act_{{ activity.id }}"
+                                                               class="btn btn-floating waves-effect waves-light modal-trigger orange">
+                                            <i class="material-icons">border_color</i></a></div>
+                                    </div>
+                                </div>
+                                <div id="modal_act_{{ activity.id }}" class="modal">
+                                    <div class="modal-content">
+                                        <h5>请设置签到码</h5>
+                                        <form id="codeSubmitForm">
+                                            <div class="input-field col s6">
+                                                <i class="material-icons prefix">chevron_right</i>
+                                                <input type="text" name="sign_code" id="sign_code">
+                                                <label for="sign_code"></label>
                                             </div>
-                                        </div>
-                                    </form>
+                                            <div class="modal-footer">
+                                                <div class="button col">
+                                                    <a class="btn waves-effect waves-orange orange"
+                                                       onclick="random_code('modal_act_{{ activity.id }}')">随机
+                                                    </a>
+                                                    <button class="btn modal-action modal-close waves-effect waves-orange orange"
+                                                            type="submit">开始签到
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
-                            </div>
+                            {% endfor %}
                         {% endfor %}
                         {% for course in course_ready %}
                             <div class="card-panel white z-depth-1">
