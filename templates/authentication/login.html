@@ -32,6 +32,10 @@
 <!--背景-->
 
 <div class="container">
+    <div id="modal-wechat" class="modal">
+        <div class="modal-content" id="wechat-content">
+        </div>
+    </div>
     <div class="card-panel white z-depth-3">
         <div class="container login">
             <a class="waves-effect waves-orange btn-flat" onclick="location.href='{{ url_for('index') }}'"
@@ -60,9 +64,13 @@
                     </div>
                 </div>
                 <div class="row">
+                    <a class="waves-effect waves-teal btn-flat modal-trigger left" href="#modal-wechat"><img
+                            style="height: 34px; width: 34px;"
+                            src="../../static/images/icon48_appwx_logo.png"><cos style="position: relative; bottom: 12px; margin-left: 5px">使用微信登陆</cos></a>
                     <button class="btn waves-effect waves-light #ef5350 orange right" type="submit">确定
                     </button>
                 </div>
+
                 {% with messages = get_flashed_messages(with_categories=true) %}
                     <div class="row">
                         {% if messages %}
@@ -211,6 +219,7 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $('ul.tabs').tabs();
+        $('.modal').modal();
         Materialize.showStaggeredList('#flashes');
     });
 </script>
