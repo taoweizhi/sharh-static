@@ -21,6 +21,8 @@ conf_spec = dict(
     access_key_secret="aC8rOMSLMxIU8lDwYhjblF7tCYlGZy",
     sign_name="智慧校园",
     template_code="SMS_117521047",
+    wechat_appid="wx34e35d6c38fed4b2",
+    wechat_secret="f17ed42c555e6872c01fd09489095c8d",
     logging_fmt=("message type:       %(levelname)s\n"
                  "Location:           %(pathname)s:%(lineno)d\n"
                  "Module:             %(module)s\n"
