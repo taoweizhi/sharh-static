@@ -8,6 +8,7 @@ conf_spec = dict(
     debug=True,
     testing=False,
     csrf_enabled=True,
+    server_name="lgd.shareh.com.cn",
     admins=['sdl.office.1997@gmail.com',  # 沈东来
             '1196494388@qq.com',  # 李高正
             '591486669@qq.com',  # 骆云鹏
