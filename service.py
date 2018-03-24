@@ -23,6 +23,8 @@ conf_spec = dict(
     template_code="SMS_117521047",
     wechat_appid="wx34e35d6c38fed4b2",
     wechat_secret="f17ed42c555e6872c01fd09489095c8d",
+    wechat_appid_mp="wxe6f4254759ae156c",
+    wechat_secret_mp="b6f47b37213953dd97231979f50d5028",
     logging_fmt=("message type:       %(levelname)s\n"
                  "Location:           %(pathname)s:%(lineno)d\n"
                  "Module:             %(module)s\n"
