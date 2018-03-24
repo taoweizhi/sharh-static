@@ -1,4 +1,5 @@
 import sys
+
 sys.path.append('..')
 from init import init
 from rx_sharh.states.config import Config
@@ -25,6 +26,8 @@ conf_spec = dict(
     wechat_secret="f17ed42c555e6872c01fd09489095c8d",
     wechat_appid_mp="wxe6f4254759ae156c",
     wechat_secret_mp="b6f47b37213953dd97231979f50d5028",
+    wechat_mp_signature_token="lgd",
+    wechat_mp_encodingaes_key="by2LLgYHE7SQSfliwl2azLMKO3CHP9VMpluJrNoSP7g",
     logging_fmt=("message type:       %(levelname)s\n"
                  "Location:           %(pathname)s:%(lineno)d\n"
                  "Module:             %(module)s\n"
@@ -46,5 +49,6 @@ app = Config.app
 app.debug = True
 
 from rx_sharh.states.message.ref import Group
+
 # Group.clear(group_id=all, channels=all)
 app.run(host='0.0.0.0', port=5050)
