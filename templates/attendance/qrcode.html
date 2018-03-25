@@ -94,7 +94,7 @@
       $(document).ready(function get_qrcode() {
         var container = $('#qrcode-container');
         var result = $.getJSON('/get_wechat_qrcode%3Fscence_str%3D' + "{{sign_name}}");
-        alert(result);
+        alert(result.qrcode_url);
           container.append($('<img src="' + result.qrcode_url + '"' + 'alt="' + result.qrcode_url + '"' + '/>'))
       })
 
