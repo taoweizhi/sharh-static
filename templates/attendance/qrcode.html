@@ -1,0 +1,93 @@
+{% extends "layouts/backLayout.html" %}
+{% block content %}
+    <img src="../../static/images/stop_background.jpg">
+    <div class="container">
+        {% if status %}
+            <div class="row center" style="padding-top: 20%">
+                <div id="qrcode-container">
+                </div>
+            </div>
+            <div class="row center">
+                <a class="btn btn-large waves-effect waves-light orange"
+                   href="{{ url_for('attendance.stop_sign',sign_name = sign_name) }}">
+                    <i class="material-icons left">do_not_disturb</i>
+                    <span class="flow-text">停止签到</span></a>
+            </div>
+        {% else %}
+            <script type="text/javascript">$("img").css("display", "none");</script>
+            <div class="container">
+                <br>
+                <div class="row center">
+                    <div class="col s6">
+                        <i class="material-icons left">group</i>
+                        <span class="flow-text left">应到人数<br>
+                            <font size="10"><strong>{{ need_sign_num }}</strong></font></span></div>
+                    <div class="col s6">
+                        <i class="material-icons left">group</i>
+                        <span class="flow-text left">实到人数<br>
+                            <font size="10"><strong>{{ actual_sign_num }}</strong></font></span></div>
+                    <div class="progress orange accent-1" style="height: 18px">
+                        <div class="determinate orange"
+                             style="width: {{ actual_sign_num/(need_sign_num or 1)*100 }}%;"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <ul class="collapsible" data-collapsible="accordion">
+                        <li>
+                            <div class="collapsible-header"><i class="material-icons">filter_drama</i>未签到用户</div>
+                            <div class="collapsible-body">
+                                <table>
+                                    <thead>
+                                    <tr>
+                                        <th data-field="id">姓名</th>
+                                        <th data-field="price">学号</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for user in not_sign_users %}
+                                        <tr>
+                                            <td><span
+                                                    class="red-text">{{ user.ref_students.first().student.name }}</span>
+                                            </td>
+                                            <td><span
+                                                    class="red-text">{{ user.ref_students.first().student.number }}</span>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="collapsible-header"><i class="material-icons">filter_drama</i>已签到用户</div>
+                            <div class="collapsible-body ">
+                                <table>
+                                    <thead>
+                                    <tr>
+                                        <th data-field="id">姓名</th>
+                                        <th data-field="price">学号</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for user in sign_users %}
+                                        <tr>
+                                            <td><span
+                                                    class="red-text">{{ user.ref_students.first().student.name }}</span>
+                                            </td>
+                                            <td><span
+                                                    class="red-text">{{ user.ref_students.first().student.number }}</span>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
+{% block sript_content %}
+{% endblock %}

@@ -282,6 +282,7 @@
                 </form>
             </div>
         </div>
+        <div class="col s12 m10 l9" id="activity-body"></div>
         {% if AdminPermission %}
             <div class="col s12 m10 l9" id="manage-body">
                 <div class="row">
@@ -579,7 +580,7 @@
             });
 
             $('#activityStartTime').mobiscroll().time({
-                timeFormat: 'hh:ii A',
+                timeFormat: 'HH:ii',
                 min: activityStartDate,
                 onClose: function (event, inst) {
                     activityStartDate = inst.getVal();
@@ -588,7 +589,7 @@
                 }
             });
             $('#activityEndTime').mobiscroll().time({
-                timeFormat: 'hh:ii A',
+                timeFormat: 'HH:ii',
                 min: activityStartDate
             });
 
