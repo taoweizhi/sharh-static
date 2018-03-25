@@ -179,6 +179,17 @@ const Form = {
       activityEndTime: field.require,
     },
     url: '/group/register_activity'
+  },
+    activityChangeForm: {
+    content: {
+      activityChangeName: field.title,
+      activityChangeContent: field.text,
+      activityChangeStartDate: field.require,
+      activityChangeStartTime: field.require,
+      activityChangeEndDate: field.require,
+      activityChangeEndTime: field.require,
+    },
+    url: '/group/mutate_activity'
   }
 };
 
@@ -347,6 +358,15 @@ $(document).ready(
       submitHandler: (form) => {
         const groupId = getId();
         $.post(`${Form.activityForm.url}%3Fgroup%3D${groupId}`, $(form).serializeArray(),
+          defaultAction(activityFormHandler));
+      },
+    });
+    $('#activityChangeForm').validate({
+       rules: Form.activityChangeForm.content,
+       errorPlacement: defaultErrorPlacement,
+      submitHandler: (form) => {
+        const groupId = getId();
+        $.post(`${Form.activityChangeForm.url}%3Fgroup%3D${groupId}%3Factivity%3D${$('#activityID').val()}`, $(form).serializeArray(),
           defaultAction(activityFormHandler));
       },
     });

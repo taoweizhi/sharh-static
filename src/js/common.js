@@ -111,4 +111,65 @@ const clearMsg = (channel) => {
   $.get(`/group/clear_msg%3Fgroup%3D${groupId}%3Fchannel%3D${channel}`,
       defaultAction(showToast)
   )
+};
+
+const getActInfo = (activityId) => {
+  const groupId = getId();
+  $.getJSON(`/group/query_activity%3Fgroup%3D${groupId}%3Factivity%3D${activityId}`,{},
+      (data) => {
+        if(data.length == 1){
+          showToast(data);
+        }
+        else {
+          $('#act_infoName').text(data.name);
+          $('#act_infoContent').text(data.info);
+          $('#act_infoTime').text(data.start+' 至 '+data.end);
+          $('#activity_info').modal('open');
+        }
+    }
+  )
+}
+
+const deleteAct = (activityId) => {
+  const groupId = getId();
+  $.get(`/group/delete_activity%3Fgroup%3D${groupId}%3Factivity%3D${activityId}`,
+      defaultAction(showToast)
+  )
+}
+
+const editAct = (activityId) => {
+  const groupId = getId();
+  $('#activityID').val(activityId);
+  $.getJSON(`/group/query_activity%3Fgroup%3D${groupId}%3Factivity%3D${activityId}`,{},
+      (data) => {
+        if(data.length == 1){
+          showToast(data);
+        } else {
+          var dateQuery = data.start.split(/[:-\s]/);
+          var di = [];
+          dateQuery.forEach((i, d) => { di.push(parseInt(i)); });
+
+          $('#activityChangeName').val(data.name);
+          $('#activityChangeContent').val(data.info);
+          $('#activityChangeStartTime').val(data.start.split(' ')[1]);
+          $('#activityChangeStartDate').val(data.start.split(' ')[0]);
+          $('#activityChangeEndTime').val(data.end.split(' ')[1]);
+          $('#activityChangeEndDate').val(data.end.split(' ')[0]);
+          Materialize.updateTextFields();
+          $('#activityChange').modal('open');
+        }
+    }
+  )
+  Materialize.updateTextFields();
+}
+
+const switchAct = (activityId, state) => {
+  const groupId = getId();
+  if(state) {
+    $.get(`/group/active_activity%3Fgroup%3D${groupId}%3Factivity%3D${activityId}`,
+        defaultAction(showToast));
+  } else {
+    $.get(`/group/deactive_activity%3Fgroup%3D${groupId}%3Factivity%3D${activityId}`,
+        defaultAction(showToast));
+  }
 }

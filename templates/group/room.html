@@ -146,6 +146,64 @@
                 </div>
             </form>
         </div>
+        <div id="activityChange" class="modal" style="max-height: 100%;">
+            <form class="col s12" id="activityChangeForm">
+                <div class="modal-content">
+                    <h5>活动信息修改</h5>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input disabled value="" id="activityID" type="text">
+                            <label class="active" for="activityID">活动ID</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input value="" id="activityChangeName" name="activityName" type="text">
+                            <label class="active" for="activityChangeName">活动名称</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <textarea id="activityChangeContent" name="activityContent"
+                                      class="materialize-textarea"></textarea>
+                            <label for="activityChangeContent">活动内容</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <input id="activityChangeStartDate" name="activityStartDate" type="text">
+                            <label for="activityChangeStartDate">开始日期</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <input id="activityChangeStartTime" name="activityStartTime" type="text">
+                            <label for="activityChangeStartTime">开始时间</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <input id="activityChangeEndDate" name="activityEndDate" type="text">
+                            <label for="activityChangeEndDate">结束日期</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <input id="activityChangeEndTime" name="activityEndTime" type="text">
+                            <label for="activityChangeEndTime">结束时间</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s4 l3 m4 right">
+                            <button class="btn waves-effect waves-light right" type="submit">
+                                修改<i class="material-icons right">send</i>
+                            </button>
+                        </div>
+                        <div class="col s4 l3 m4 right">
+                            <a class="btn grey waves-effect waves-light modal-close right">
+                                取消<i class="material-icons right">close</i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
         <div id="manage_msg" class="modal">
             <form class="col s12" id="manageMsgForm">
                 <div class="modal-content">
@@ -190,6 +248,29 @@
             </form>
         </div>
     {% endif %}
+    <div id="activity_info" class="modal" style="max-height: 88%">
+        <div class="modal-content">
+            <h5>活动信息</h5>
+            <div class="row">
+                <blockquote>
+                    活动名称
+                </blockquote>
+                <p id="act_infoName"></p>
+            </div>
+            <div class="row">
+                <blockquote>
+                    活动内容
+                </blockquote>
+                <p id="act_infoContent"></p>
+            </div>
+            <div class="row">
+                <blockquote>
+                    时间
+                </blockquote>
+                <p id="act_infoTime"></p>
+            </div>
+        </div>
+    </div>
     <br>
     <div class="container" style="width: 85%">
         <div class="col s12 m10 l9" id="public-body">
@@ -307,21 +388,56 @@
                 正进行的活动
             </blockquote>
             <ul class="collection">
-                <li class="collection-item">
-                    <div class="row">
-                        <div class="col l1 s2"><i class="material-icons left">event_available</i></div>
-                        <div class="col l5 s4"></div>
-                    </div>
-                </li>
-                <li class="collection-item">Alvin</li>
-                <li class="collection-item">Alvin</li>
-                <li class="collection-item">Alvin</li>
+                {% for activity in activated_acts %}
+                    <li class="collection-item">
+                        <div class="row" style="margin-bottom: 0">
+                            <div class="col l1 s1"><i class="material-icons left">event_available</i></div>
+                            <div class="col l5 s3">{{ activity.name }}</div>
+                            <div class="col l1 s2"><a onclick="getActInfo({{ activity.id }})"
+                                                      class="btn btn-floating waves-effect"><i class="material-icons">more_horiz</i></a>
+                            </div>
+                            <div class="col l1 s2 manage"><a onclick="deleteAct({{ activity.id }})"
+                                                      class="btn btn-floating waves-effect red darken-4"><i
+                                    class="material-icons">close</i></a>
+                            </div>
+                            <div class="col l1 s2 manage"><a onclick="editAct({{ activity.id }})"
+                                    class="btn btn-floating waves-effect"><i class="material-icons">create</i></a>
+                            </div>
+                            <div class="col l1 s2 manage"><a onclick="switchAct({{ activity.id }},0)"
+                                    class="btn btn-floating waves-effect"><i class="material-icons">assignment_late</i></a>
+                            </div>
+                        </div>
+                    </li>
+                {% endfor %}
             </ul>
             {% if AdminPermission %}
                 <blockquote>
                     未激活的活动
                 </blockquote>
-
+                <ul class="collection">
+                    {% for activity in deactivated_acts %}
+                        <li class="collection-item">
+                            <div class="row" style="margin-bottom: 0">
+                                <div class="col l1 s1"><i class="material-icons left">event_available</i></div>
+                                <div class="col l5 s3">{{ activity.name }}</div>
+                                <div class="col l1 s2"><a onclick="getActInfo({{ activity.id }})"
+                                                          class="btn btn-floating waves-effect"><i
+                                        class="material-icons">more_horiz</i></a>
+                                </div>
+                                <div class="col l1 s2"><a onclick="deleteAct({{ activity.id }})"
+                                                          class="btn btn-floating waves-effect red darken-4"><i
+                                        class="material-icons">close</i></a>
+                                </div>
+                                <div class="col l1 s2"><a onclick="editAct({{ activity.id }})" class="btn btn-floating waves-effect"><i
+                                        class="material-icons">create</i></a>
+                                </div>
+                                <div class="col l1 s2"><a onclick="switchAct({{ activity.id }},1)" class="btn btn-floating waves-effect"><i
+                                        class="material-icons">assignment_turned_in</i></a>
+                                </div>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
             {% endif %}
         </div>
         {% if AdminPermission %}
@@ -525,6 +641,14 @@
             border-radius: 32px;
         }
 
+        div#activityChange.modal.open {
+            top: 4% !important;
+        }
+
+        div#activityChange.modal.velocity-animating {
+            top: 4% !important;
+        }
+
         .msg {
             background-position: center center;
             background-repeat: no-repeat;
@@ -619,7 +743,6 @@
                     $('#activityEndTime').mobiscroll('option', {defaultValue: inst.getVal()});
                 }
             });
-
             $('#activityStartTime').mobiscroll().time({
                 timeFormat: 'HH:ii',
                 min: activityStartDate,
@@ -630,6 +753,37 @@
                 }
             });
             $('#activityEndTime').mobiscroll().time({
+                timeFormat: 'HH:ii',
+                min: activityStartDate
+            });
+
+            $('#activityChangeStartDate').mobiscroll().calendar({
+                dateFormat: "yy-mm-dd",
+                min: activityStartDate,
+                onClose: function (event, inst) {
+                    activityStartDate = inst.getVal();
+                    $('#activityChangeEndDate').mobiscroll('option', {min: activityChangeStartDate});
+                    $('#activityChangeEndTime').mobiscroll('option', {min: activityChangeStartDate});
+                    $('#activityChangeStartTime').mobiscroll('option', {defaultValue: activityChangeStartDate});
+                }
+            });
+            $('#activityChangeEndDate').mobiscroll().calendar({
+                dateFormat: "yy-mm-dd",
+                min: activityStartDate,
+                onClose: function (event, inst) {
+                    $('#activityChangeEndTime').mobiscroll('option', {defaultValue: inst.getVal()});
+                }
+            });
+            $('#activityChangeStartTime').mobiscroll().time({
+                timeFormat: 'HH:ii',
+                min: activityStartDate,
+                onClose: function (event, inst) {
+                    activityStartDate = inst.getVal();
+                    $('#activityChangeEndDate').mobiscroll('option', {min: activityStartDate});
+                    $('#activityChangeEndTime').mobiscroll('option', {min: activityStartDate});
+                }
+            });
+            $('#activityChangeEndTime').mobiscroll().time({
                 timeFormat: 'HH:ii',
                 min: activityStartDate
             });
@@ -662,6 +816,8 @@
                 $('ul.tabs').tabs('select_tab', 'chat-body');
             {% elif channel_branch == 'apply_in' %}
                 $('ul.tabs').tabs('select_tab', 'manage-body');
+            {% elif channel_branch == 'act' %}
+                $('ul.tabs').tabs('select_tab', 'activity-body');
             {% endif %}
 
             $('#preloader').fadeOut(500, function () {
@@ -676,6 +832,7 @@
                 Materialize.showStaggeredList('#public-body');
                 Materialize.showStaggeredList('#chat-body');
             });
+
 
         });
 
