@@ -1,6 +1,6 @@
 {% extends "layouts/backLayout.html" %}
 {% block content %}
-    <img src="../../static/images/stop_background.jpg">
+    <img class="bg-img" src="../../static/images/stop_background.jpg">
     <div class="container">
         {% if status %}
             <div class="row center" style="padding-top: 20%">
@@ -90,6 +90,35 @@
     </div>
 {% endblock %}
 {% block script_content %}
+    <style>
+        html, body {
+            overflow: hidden;
+            overflow-y: auto;
+        }
+
+        .bg-img {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-50%);
+            z-index: -1;
+            opacity: 0.75;
+        }
+
+        @media screen and (max-width: 740px) {
+            .bg-img {
+                height: 100%;
+            }
+        }
+
+        @media screen and (min-width: 740px) {
+            .bg-img {
+                width: 100%;
+            }
+        }
+
+
+    </style>
 <script>
       $(document).ready(function get_qrcode() {
         var container = $('#qrcode-container');

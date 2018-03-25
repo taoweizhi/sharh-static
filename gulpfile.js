@@ -14,7 +14,11 @@ const addMinToFileName = (path) => {
     path.basename += '.min'
 };
 
-gulp.task('CompressJS', () => {
+gulp.task('ToES5&CompressJS', () => {
+  gulp.src('src/js/*.js')
+    .pipe(babel())
+    .on('error', defaultLog)
+    .pipe(gulp.dest('dist/src/js/'));
   gulp.src('dist/src/js/*.js')
     .pipe(uglify())
     .on('error', defaultLog)
@@ -28,11 +32,4 @@ gulp.task('CompressCSS', () => {
     .on('error', defaultLog)
     .pipe(rename(addMinToFileName))
     .pipe(gulp.dest('static/css/'))
-});
-
-gulp.task('ToES5', () => {
-  gulp.src('src/js/*.js')
-    .pipe(babel())
-    .on('error', defaultLog)
-    .pipe(gulp.dest('dist/src/js/'))
 });

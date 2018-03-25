@@ -18,11 +18,30 @@
 {% block navbar_tabs %}
     <li class="tab"><a href="#public-body"><i class="material-icons left">announcement</i>公告</a></li>
     <li class="tab"><a href="#chat-body"><i class="material-icons left"></i>全部消息</a></li>
+    <li class="tab"><a href="#activity-body"><i class="material-icons left"></i>活动</a></li>
     {% if AdminPermission %}
         <li class="tab manage"><a href="#manage-body"><i class="material-icons left"></i>管理</a></li>
     {% endif %}
 {% endblock %}
 {% block content %}
+    <style>
+        .full-screen {
+            background: white;
+            top: 0;
+            bottom: -20px;
+            left: 0;
+            right: 0;
+            position: absolute;
+            z-index: 1500;
+        }
+
+        .preloader-wrapper {
+            position: relative;
+            top: 50%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+    </style>
     <div class="full-screen" id="preloader">
         <div class="preloader-wrapper small active">
             <div class="spinner-layer spinner-blue">
@@ -181,7 +200,8 @@
                             <div class="card">
                                 <div class="card-content msg">
                                     <span class="card-title right" style="text-shadow: 0px 0px 7px #ffffff">
-                                        <font size="4">来自</font> <font size="4.2">{{ msg.username }}</font> <font size="4">的公告:</font></span>
+                                        <font size="4">来自</font> <font size="4.2">{{ msg.username }}</font> <font
+                                            size="4">的公告:</font></span>
                                     <br><br>
                                     <blockquote>
                                         <span style="font-size: 20px">{{ msg.title }}</span>
@@ -262,7 +282,7 @@
                 <form class="col s12" id="sendMsg">
                     <div class="modal-content">
                         <h5>发送消息</h5>
-                        <div class="row">
+                        <div class="row" style="display: none">
                             <div class="input-field col s12">
                                 <input value="" id="msgTitle" type="text" name="title">
                                 <label class="active" for="msgTitle">消息标题</label>
@@ -282,7 +302,28 @@
                 </form>
             </div>
         </div>
-        <div class="col s12 m10 l9" id="activity-body"></div>
+        <div class="col s12 m10 l9" id="activity-body">
+            <blockquote>
+                正进行的活动
+            </blockquote>
+            <ul class="collection">
+                <li class="collection-item">
+                    <div class="row">
+                        <div class="col l1 s2"><i class="material-icons left">event_available</i></div>
+                        <div class="col l5 s4"></div>
+                    </div>
+                </li>
+                <li class="collection-item">Alvin</li>
+                <li class="collection-item">Alvin</li>
+                <li class="collection-item">Alvin</li>
+            </ul>
+            {% if AdminPermission %}
+                <blockquote>
+                    未激活的活动
+                </blockquote>
+
+            {% endif %}
+        </div>
         {% if AdminPermission %}
             <div class="col s12 m10 l9" id="manage-body">
                 <div class="row">
@@ -326,16 +367,21 @@
                                                 </div>
                                             {% elif member_ref.user_cls == db.Role.admin %}
                                                 <div class="row" style="margin-bottom: 0">
-                                                    <div class="col s1"><i class="material-icons">assignment_ind</i></div>
+                                                    <div class="col s1"><i class="material-icons">assignment_ind</i>
+                                                    </div>
                                                     <div class="col s5"
                                                          style="margin-top: 3px">{{ member_ref.user.nickname or member_ref.user.account }}</div>
-                                                    <a href="#" onclick="kickOut({{ group.id }},{{ member_ref.user.id }})" class="secondary-content red-text">
+                                                    <a href="#"
+                                                       onclick="kickOut({{ group.id }},{{ member_ref.user.id }})"
+                                                       class="secondary-content red-text">
                                                         <i class="material-icons left">close</i>
                                                         <span>删除成员</span>
                                                     </a>
                                                 </div>
                                                 <div class="row" style="margin-bottom: 0">
-                                                    <a href="#" onclick="switchRole({{ group.id }},{{ member_ref.user.id }},'normal')" class="secondary-content">
+                                                    <a href="#"
+                                                       onclick="switchRole({{ group.id }},{{ member_ref.user.id }},'normal')"
+                                                       class="secondary-content">
                                                         <i class="material-icons left">not_interested</i>
                                                         <span>删除管理员</span>
                                                     </a>
@@ -345,13 +391,17 @@
                                                     <div class="col s1"><i class="material-icons">book</i></div>
                                                     <div class="col s5"
                                                          style="margin-top: 3px">{{ member_ref.user.nickname or member_ref.user.account }}</div>
-                                                    <a href="#" onclick="kickOut({{ group.id }},{{ member_ref.user.id }})" class="secondary-content red-text">
+                                                    <a href="#"
+                                                       onclick="kickOut({{ group.id }},{{ member_ref.user.id }})"
+                                                       class="secondary-content red-text">
                                                         <i class="material-icons left">close</i>
                                                         <span>删除成员</span>
                                                     </a>
                                                 </div>
                                                 <div class="row" style="margin-bottom: 0">
-                                                    <a href="#" onclick="switchRole({{ group.id }},{{ member_ref.user.id }},'admin')" class="secondary-content">
+                                                    <a href="#"
+                                                       onclick="switchRole({{ group.id }},{{ member_ref.user.id }},'admin')"
+                                                       class="secondary-content">
                                                         <i class="material-icons left">assignment_turned_in</i>
                                                         <span>设置管理员</span>
                                                     </a>
@@ -404,21 +454,20 @@
                                         关键操作
                                     </blockquote>
                                     <div class="row">
-                                        <div class="col s6">
+                                        <div class="col s6 l12 col-btn">
                                             <a class="waves-effect waves-light btn red modal-trigger"
                                                href="#delete_modal">删除群<i class="material-icons right">close</i></a>
                                         </div>
-                                        <div class="col s6">
+                                        <div class="col s6 l12 col-btn">
                                             <a class="waves-effect waves-light btn red modal-trigger"
                                                href="#delete_board_msg">清空公告板<i class="material-icons right">delete_forever</i></a>
                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col s6">
+                                        <div class="col s6 l12 col-btn">
                                             <a class="waves-effect waves-light btn red modal-trigger"
                                                href="#delete_public_msg">清空聊天室<i class="material-icons right">delete_forever</i></a>
                                         </div>
                                     </div>
+
                                     <div id="delete_modal" class="modal">
                                         <div class="modal-content">
                                             <h5><i class="material-icons left">report_problem</i>注意</h5>
@@ -437,7 +486,7 @@
                                             <p>正在清空公告板，该操作不可逆，确认？</p>
                                         </div>
                                         <div class="modal-footer">
-                                            <a href=""
+                                            <a onclick="clearMsg('board')"
                                                class="modal-action modal-close waves-effect waves-red btn-flat">确认</a>
                                             <a href="#!"
                                                class="modal-action modal-close waves-effect waves-green btn-flat">取消</a>
@@ -449,7 +498,7 @@
                                             <p>正在清空聊天内容，该操作不可逆，确认？</p>
                                         </div>
                                         <div class="modal-footer">
-                                            <a href=""
+                                            <a onclick="clearMsg('public')"
                                                class="modal-action modal-close waves-effect waves-red btn-flat">确认</a>
                                             <a href="#!"
                                                class="modal-action modal-close waves-effect waves-green btn-flat">取消</a>
@@ -468,20 +517,12 @@
     <style>
         @import url(https://fonts.googleapis.com/css?family=Roboto);
 
-        .full-screen {
-            background: white;
-            top: 0;
-            bottom: -20px;
-            left: 0;
-            right: 0;
-            position: absolute;
-            z-index: 1500;
+        .col-btn {
+            margin-bottom: 10px;
         }
 
-        .preloader-wrapper {
-            top: 50%;
-            left: 50%;
-            transform: translateX(-50%);
+        .round {
+            border-radius: 32px;
         }
 
         .msg {

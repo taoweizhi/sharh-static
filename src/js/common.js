@@ -105,3 +105,10 @@ const switchRole = (groupId, targetId, role) => {
         defaultAction(showToast)
     )
 };
+
+const clearMsg = (channel) => {
+  const groupId = getId();
+  $.get(`/group/clear_msg%3Fgroup%3D${groupId}%3Fchannel%3D${channel}`,
+      defaultAction(showToast)
+  )
+}
