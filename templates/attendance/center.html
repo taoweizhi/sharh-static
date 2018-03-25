@@ -84,7 +84,7 @@
                                         <div class="col s4 l3"><a href="#modal_act_{{ activity.id }}"
                                                                class="btn round waves-effect waves-light modal-trigger orange">
                                             签到码</a></div>
-                                        <div class="col s4 l3"><a href="#"
+                                        <div class="col s4 l3"><a href="{{url_for('attendance.register', cls='c', instance_id=activity.id, qrcode=1)}}"
                                                                class="btn round waves-effect waves-light orange">
                                             二维码</a></div>
                                     </div>
@@ -116,11 +116,14 @@
                         {% for course in course_ready %}
                             <div class="card-panel white z-depth-1">
                                 <div class="row valign-wrapper" style="margin-bottom: 0px">
-                                    <div class="col s2"><i class="material-icons">event</i></div>
-                                    <div class="col s7"><span class="">{{ course.name }}</span></div>
-                                    <div class="col s3"><a href="#modal_cou_{{ course.id }}"
-                                                           class="btn btn-floating waves-effect waves-light modal-trigger orange">
-                                        <i class="material-icons">border_color</i></a></div>
+                                    <div class="col s1 l1"><i class="material-icons">event</i></div>
+                                    <div class="col s3 l5"><span class="">{{ course.name }}</span></div>
+                                    <div class="col s4 l3"><a href="#modal_cou_{{ course.id }}"
+                                                              class="btn round waves-effect waves-light modal-trigger orange">
+                                        签到码</a></div>
+                                    <div class="col s4 l3"><a href="{{url_for('attendance.register', cls='c', instance_id=course.id, qrcode=1)}}"
+                                                              class="btn round waves-effect waves-light orange">
+                                        二维码</a></div>
                                 </div>
                             </div>
                             <div id="modal_cou_{{ course.id }}" class="modal">

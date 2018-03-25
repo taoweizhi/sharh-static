@@ -267,7 +267,7 @@ $(document).ready(
         const instance = $(form).closest('.modal').attr('id');
         const id = instance.slice(10);
         const cls = instance.substring(6, 7);
-        $.post(`/attendance/register%3Fclass%3D${cls}%3Fid%3D${id}`, $(form).serializeArray(),
+        $.post(`/attendance/register%3Fclass%3D${cls}%3Fid%3D${id}%3Fqrcode%3D0`, $(form).serializeArray(),
           defaultAction(codeSubmitFormHandler))
       }
     });
