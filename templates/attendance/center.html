@@ -26,20 +26,20 @@
             <li>
                 <div class="collapsible-header">
                     <i class="large material-icons">assignment_late</i>
-                    <span class="flow-text">正在进行</span>
+                    <span class="">正在进行</span>
                 </div>
                 <div class="collapsible-body">
                     {% if not sign_on %}
-                        <span class="flow-text">当前没有待签到课程</span>
+                        <span class="">当前没有待签到课程</span>
                     {% endif %}
                     {% for sign in sign_on %}
                         <div class="card-panel white z-depth-1">
                             <div class="row valign-wrapper" style="margin-bottom: 0px">
                                 <div class="col s2"><i class="material-icons">event</i></div>
-                                <div class="col s7"><span id="signName" class="flow-text">{{ sign.name }}</span></div>
-                                <div class="col s3"><a href="#modal_{{ sign.id }}"
-                                                       class="btn btn-floating waves-effect waves-light modal-trigger orange">
-                                    <i class="material-icons">border_color</i></a></div>
+                                <div class="col s6"><span id="signName" class="">{{ sign.name }}</span></div>
+                                <div class="col s4"><a href="#modal_{{ sign.id }}"
+                                                       class="btn round waves-effect waves-light modal-trigger orange">
+                                    签到</a></div>
                             </div>
                         </div>
                         <div id="modal_{{ sign.id }}" class="modal">
@@ -67,23 +67,26 @@
             <li>
                 <div class="collapsible-header">
                     <i class="material-icons medium">assignment</i>
-                    <span class="flow-text">我管理的</span>
+                    <span class="">我管理的</span>
                 </div>
                 <div class="collapsible-body">
                     {% if not activity_ready and not course_ready %}
-                        <span class="flow-text">当前没有管理签到课程</span>
+                        <span class="">当前没有管理签到课程</span>
                     {% else %}
                         {% for group, act_list in activity_ready %}
                             {% for activity in act_list %}
                                 <div class="card-panel white z-depth-1">
                                     <div class="row valign-wrapper" style="margin-bottom: 0px">
-                                        <div class="col s2"><i class="material-icons">event</i></div>
-                                        <div class="col s7"><span
-                                                class="flow-text">组{{ group.name }}的活动<br>{{ activity.name }}</span>
+                                        <div class="col s1 l1"><i class="material-icons">event</i></div>
+                                        <div class="col s3 l5"><span
+                                                class="">组{{ group.name }}的活动<br>{{ activity.name }}</span>
                                         </div>
-                                        <div class="col s3"><a href="#modal_act_{{ activity.id }}"
-                                                               class="btn btn-floating waves-effect waves-light modal-trigger orange">
-                                            <i class="material-icons">border_color</i></a></div>
+                                        <div class="col s4 l3"><a href="#modal_act_{{ activity.id }}"
+                                                               class="btn round waves-effect waves-light modal-trigger orange">
+                                            签到码</a></div>
+                                        <div class="col s4 l3"><a href="#"
+                                                               class="btn round waves-effect waves-light orange">
+                                            二维码</a></div>
                                     </div>
                                 </div>
                                 <div id="modal_act_{{ activity.id }}" class="modal">
@@ -114,7 +117,7 @@
                             <div class="card-panel white z-depth-1">
                                 <div class="row valign-wrapper" style="margin-bottom: 0px">
                                     <div class="col s2"><i class="material-icons">event</i></div>
-                                    <div class="col s7"><span class="flow-text">{{ course.name }}</span></div>
+                                    <div class="col s7"><span class="">{{ course.name }}</span></div>
                                     <div class="col s3"><a href="#modal_cou_{{ course.id }}"
                                                            class="btn btn-floating waves-effect waves-light modal-trigger orange">
                                         <i class="material-icons">border_color</i></a></div>
@@ -150,14 +153,14 @@
             <li>
                 <div class="collapsible-header">
                     <i class="large material-icons">assignment_turned_in</i>
-                    <span class="flow-text">已完成</span>
+                    <span class="">已完成</span>
                 </div>
                 <div class="collapsible-body">
                     {% for leader_id, sign in sign_completed %}
                         <div class="card-panel white z-depth-1">
                             <div class="row valign-wrapper" style="margin-bottom: 0px">
                                 <div class="col s6"><i class="material-icons left">event</i><span
-                                        class="flow-text">{{ sign.name.split('(')[0] }}</span></div>
+                                        class="">{{ sign.name.split('(')[0] }}</span></div>
                                 {% if leader_id == user.id %}
                                     <div class="col s3 center"><a href="#modal_{{ sign.id }}"
                                                                   class="btn btn-floating waves-effect waves-light modal-trigger brown lighten-2">
@@ -207,6 +210,10 @@
 {% endblock %}
 {% block script_content %}
     <style>
+        .round {
+            border-radius: 32px;
+        }
+
         .input-field .prefix {
             bottom: 45%
         }
