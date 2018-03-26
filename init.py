@@ -6,6 +6,7 @@ from flask_login import current_user, login_required
 from flask_login.login_manager import LoginManager
 from flask import Flask, g, request, session, make_response, render_template, redirect, url_for, Response
 import logging
+from rx_sharh.ip_ban.dangerous import Dangerous
 
 
 def init(**kwargs):
@@ -44,7 +45,13 @@ def init(**kwargs):
 
     @app.errorhandler(404)
     def not_found(error):
+        Dangerous.add()
         return render_template("404.html"), 404
+
+    @app.errorhandler(400)
+    def not_found(error):
+        Dangerous.add()
+        return "贪玩", 400
 
     @app.before_request
     def load_current_user():
