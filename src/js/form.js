@@ -143,7 +143,7 @@ const Form = {
   },
   subscribeGroupForm: {
     content: {
-      groupNumber: field.number,
+      groupNumber: field.require,
     },
     url: '/group/search'
   },
