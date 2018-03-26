@@ -17,7 +17,7 @@ conf_spec = dict(
     database_connect_options={},
     secret_key=r'7\xe6\xad%\x9e3\xe6\x93#\x1cD}\xf3\xef\xb6\x83s\x86b\x81rX\xf2\x1f\xd4',
     logging_path='sharh.log',
-    database_url='mysql+pymysql://root:njlgd@2017$#@localhost/dev?charset=utf8',
+    database_url='mysql+pymysql://root:12345@localhost/dev2?charset=utf8',
     access_key_id="LTAI2t84jhtJ69vY",
     access_key_secret="aC8rOMSLMxIU8lDwYhjblF7tCYlGZy",
     sign_name="智慧校园",
@@ -51,4 +51,4 @@ app.debug = True
 from rx_sharh.states.message.ref import Group
 
 # Group.clear(group_id=all, channels=all)
-app.run(host='0.0.0.0', port=5050)
+app.run(host='0.0.0.0', port=5000)
