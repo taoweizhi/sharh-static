@@ -50,7 +50,7 @@ conf_spec = dict(
 init(**conf_spec)
 app = Config.app
 
-sys.setrecursionlimit(10000)
+# sys.setrecursionlimit(2000)
 
 # Group.clear(group_id=all, channels=all)
 http_server = HTTPServer(WSGIContainer(app))
