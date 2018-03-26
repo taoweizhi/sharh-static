@@ -34,7 +34,7 @@ def init(**kwargs):
 
     file_handle = logging.FileHandler(Config.logging_path)
     file_handle.setFormatter(logging.Formatter(Config.logging_fmt))
-    file_handle.setLevel(logging.INFO)
+    file_handle.setLevel(logging.WARNING)
 
     app.logger.addHandler(file_handle)
 
