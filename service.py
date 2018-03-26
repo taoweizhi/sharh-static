@@ -1,6 +1,7 @@
 import sys
-from gevent import monkey, wsgi
-
+from tornado.wsgi import WSGIContainer
+from tornado.httpserver import HTTPServer
+from tornado.ioloop import IOLoop
 
 sys.path.append('..')
 from init import init
@@ -49,9 +50,9 @@ conf_spec = dict(
 init(**conf_spec)
 app = Config.app
 
-monkey.patch_all()
-sys.setrecursionlimit(2000)
+sys.setrecursionlimit(10000)
 
 # Group.clear(group_id=all, channels=all)
-shareh = wsgi.WSGIServer(('0.0.0.0', 5050), app)
-shareh.serve_forever()
+http_server = HTTPServer(WSGIContainer(app))
+http_server.listen(5050)
+IOLoop.instance().start()
