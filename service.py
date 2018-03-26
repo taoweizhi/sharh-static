@@ -50,6 +50,7 @@ init(**conf_spec)
 app = Config.app
 
 monkey.patch_all()
+sys.setrecursionlimit(2000)
 
 # Group.clear(group_id=all, channels=all)
 shareh = wsgi.WSGIServer(('0.0.0.0', 5050), app)
