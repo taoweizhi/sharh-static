@@ -7,6 +7,7 @@ from flask_login.login_manager import LoginManager
 from flask import Flask, g, request, session, make_response, render_template, redirect, url_for, Response
 import logging
 from rx_sharh.ip_ban.dangerous import Dangerous
+from rx_sharh.ip_ban.monitor import monitor
 
 
 def init(**kwargs):
@@ -49,8 +50,10 @@ def init(**kwargs):
         return render_template("404.html"), 404
 
     @app.errorhandler(400)
+    @monitor
     def not_found(error):
         Dangerous.add()
+
         return "贪玩", 400
 
     @app.before_request
