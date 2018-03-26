@@ -51,8 +51,8 @@ init(**conf_spec)
 app = Config.app
 
 # sys.setrecursionlimit(2000)
-
-# Group.clear(group_id=all, channels=all)
+from rx_sharh.command import Group
+Group.clear(group_id=all, channels=all)
 http_server = HTTPServer(WSGIContainer(app))
 http_server.listen(5050)
 IOLoop.instance().start()
