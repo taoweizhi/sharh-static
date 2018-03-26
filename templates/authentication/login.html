@@ -242,7 +242,7 @@
     });
     $('#wechat-login-caller').click(function () {
         if (/MicroMessenger/.test(window.navigator.userAgent)) {
-        location.href =  "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxe6f4254759ae156c&redirect_uri=http%3A%2F%2Flgd.shareh.com.cn%2Fwechat_login&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect"
+        location.href =  "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxe6f4254759ae156c&redirect_uri=http%3A%2F%2Flgd.shareh.com.cn%2Fwechat_login&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect"
         } else {
             $('#main-login').fadeOut(500, function () {
                 $('#wechat-login').fadeIn();
