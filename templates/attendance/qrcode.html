@@ -126,6 +126,16 @@
           container.append($('<img src="' + result.qrcode_url + '"' + 'alt="' + result.qrcode_url + '"' + '/>'))
         });
       })
+      {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    if ($.cookie('toast_ctrl_index') !== '{{ message }}') {
+                        Materialize.toast('{{ message }}', 3000);
+                        $.cookie('toast_ctrl_index', '{{ message }}');
+                    }
+                {% endfor %}
+            {% endif %}
+      {% endwith %}
 
 </script>
 {% endblock %}
