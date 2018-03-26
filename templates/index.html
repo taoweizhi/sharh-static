@@ -135,8 +135,11 @@
             var sh = document.body.clientHeight-60;
             if (sw <= 992)
                 sh = sw * 0.618;
-
-            $('.collapsible').collapsible('open', 1);
+            if ($('#index_activity').children().length > $('#index_course').children().length) {
+                $('.collapsible').collapsible('open', 0);
+            } else {
+                $('.collapsible').collapsible('open', 1);
+            }
             $('.slider').slider({
                 interval: 5000,
                 height: sh
