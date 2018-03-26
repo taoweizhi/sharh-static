@@ -1,4 +1,6 @@
 import sys
+from gevent import monkey, wsgi
+
 
 sys.path.append('..')
 from init import init
@@ -46,9 +48,9 @@ conf_spec = dict(
 
 init(**conf_spec)
 app = Config.app
-app.debug = True
 
-from rx_sharh.states.message.ref import Group
+monkey.patch_all()
 
 # Group.clear(group_id=all, channels=all)
-app.run(host='0.0.0.0', port=5000)
+shareh = wsgi.WSGIServer(('0.0.0.0', 5050), app)
+shareh.serve_forever()
