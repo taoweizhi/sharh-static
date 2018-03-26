@@ -49,6 +49,7 @@ conf_spec = dict(
 
 init(**conf_spec)
 app = Config.app
+app.debug = True
 
 # sys.setrecursionlimit(2000)
 from rx_sharh.command import Group
