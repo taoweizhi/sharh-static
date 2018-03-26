@@ -10,9 +10,10 @@ $(document).ready(function () {
 
     if ($(window).width() < 992) {
       $('footer').addClass('scrolled-footer');
-    } else if (scrollTop + windowHeight > scrollHeight -80) {
+    }
+    if (scrollTop + windowHeight > scrollHeight -60) {
       $('footer').addClass('scrolled-footer');
-    } else if (scrollTop + windowHeight <= scrollHeight-80) {
+    } else if (scrollTop + windowHeight <= scrollHeight-60) {
       $('footer').removeClass('scrolled-footer');
     }
 
