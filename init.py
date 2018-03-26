@@ -45,6 +45,7 @@ def init(**kwargs):
         return db.User.query.filter_by(id=int(user_id)).first()
 
     @app.errorhandler(404)
+    @monitor
     def not_found(error):
         Dangerous.add()
         return render_template("404.html"), 404
