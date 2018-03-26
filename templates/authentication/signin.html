@@ -8,7 +8,7 @@
   <link type="text/css" rel="stylesheet" href="../../static/css/materialize.min.css"
         media="screen,projection"/>
   <!--Let browser know website is optimized for mobile-->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
   <meta charset="utf-8">
   <title>{{ title }}</title>
 </head>
@@ -103,6 +103,10 @@
 </div>
 </body>
 <style>
+    html, body {
+            overflow: hidden;
+            overflow-y: auto;
+        }
   .login .photo {
     position: relative;
     width: 100px;
@@ -203,7 +207,7 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    min-width: 420px;
+    min-width: 380px;
     min-height: 540px;
     transform: translateY(-50%) translateX(-50%);
   }

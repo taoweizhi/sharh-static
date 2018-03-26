@@ -1,4 +1,7 @@
 import sys
+from tornado.wsgi import WSGIContainer
+from tornado.httpserver import HTTPServer
+from tornado.ioloop import IOLoop
 
 sys.path.append('..')
 from init import init
@@ -48,7 +51,9 @@ init(**conf_spec)
 app = Config.app
 app.debug = True
 
-from rx_sharh.states.message.ref import Group
-
-# Group.clear(group_id=all, channels=all)
-app.run(host='0.0.0.0', port=5000)
+# sys.setrecursionlimit(2000)
+from rx_sharh.command import Group
+Group.clear(group_id=all, channels=all)
+http_server = HTTPServer(WSGIContainer(app))
+http_server.listen(5050)
+IOLoop.instance().start()

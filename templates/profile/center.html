@@ -146,7 +146,7 @@
         }
     </style>
     <script type="text/javascript">
-        $('#info').val('{{ user.info }}').trigger('autoresize');
+        $('#info').val('{{ user.info or '' }}').trigger('autoresize');
         $('#back_button').click(function () {
             location.href = "{{ url_for('index') }}";
         })

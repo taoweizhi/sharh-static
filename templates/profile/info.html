@@ -13,7 +13,7 @@
                 <form id="profileForm">
                     <div class="input-field s10 m=8 l=6">
                         <i class="material-icons prefix"><i class="material-icons ">person</i></i>
-                        <input value="{{ user.nickname }}" type="text" id="nickname" name="nickname">
+                        <input value="{{ user.nickname or '' }}" type="text" id="nickname" name="nickname">
                         <label for="nickname">昵称</label>
                     </div>
                     <div class="input-field s10 m8 l6">
@@ -29,7 +29,7 @@
                     </div>
                     <div class="input-field s10 m=8 l=6">
                         <i class="material-icons prefix"><i class="material-icons ">mail</i></i>
-                        <input value="{{ user.email }}" type="text" id="email" name="email">
+                        <input value="{{ user.email or '' }}" type="text" id="email" name="email">
                         <label for="email">邮箱</label>
                     </div>
                     <div class="input-field s10 m=8 l=6">

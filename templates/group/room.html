@@ -9,7 +9,6 @@
 
 
 {% extends "layouts/defaultLayout.html" %}
-{% set AdminPermission = not (db.UserGroup.query.filter(db.UserGroup.user_id == user.id).first().user_cls == db.Role.normal) %}
 {% block navbar_content %}
     {% if AdminPermission %}
         <a class="modal-trigger" href="#activity"><i class="material-icons left">add</i>发起活动</a>
@@ -280,10 +279,10 @@
                         <div class="col s12 m7">
                             <div class="card">
                                 <div class="card-content msg">
-                                    <span class="card-title right" style="text-shadow: 0px 0px 7px #ffffff">
+                                    <div class="row">
+                                    <span class="card-title left" style="text-shadow: 0px 0px 7px #ffffff">
                                         <font size="4">来自</font> <font size="4.2">{{ msg.username }}</font> <font
-                                            size="4">的公告:</font></span>
-                                    <br><br>
+                                            size="4">的公告:</font></span></div>
                                     <blockquote>
                                         <span style="font-size: 20px">{{ msg.title }}</span>
                                         <br>
@@ -393,18 +392,22 @@
                         <div class="row" style="margin-bottom: 0">
                             <div class="col l1 s1"><i class="material-icons left">event_available</i></div>
                             <div class="col l5 s3">{{ activity.name }}</div>
-                            <div class="col l1 s2"><a onclick="getActInfo({{ activity.id }})"
+                            <div class="col l1 s2 center"><a onclick="getActInfo({{ activity.id }})"
                                                       class="btn btn-floating waves-effect"><i class="material-icons">more_horiz</i></a>
+                                <br><span>更多</span>
                             </div>
-                            <div class="col l1 s2 manage"><a onclick="deleteAct({{ activity.id }})"
+                            <div class="col l1 s2 manage center"><a onclick="deleteAct({{ activity.id }})"
                                                       class="btn btn-floating waves-effect red darken-4"><i
                                     class="material-icons">close</i></a>
+                                <br><span>删除</span>
                             </div>
-                            <div class="col l1 s2 manage"><a onclick="editAct({{ activity.id }})"
+                            <div class="col l1 s2 manage center"><a onclick="editAct({{ activity.id }})"
                                     class="btn btn-floating waves-effect"><i class="material-icons">create</i></a>
+                                <br><span>修改</span>
                             </div>
-                            <div class="col l1 s2 manage"><a onclick="switchAct({{ activity.id }},0)"
+                            <div class="col l1 s2 manage center"><a onclick="switchAct({{ activity.id }},0)"
                                     class="btn btn-floating waves-effect"><i class="material-icons">assignment_late</i></a>
+                                <br><span>停用</span>
                             </div>
                         </div>
                     </li>
@@ -420,19 +423,23 @@
                             <div class="row" style="margin-bottom: 0">
                                 <div class="col l1 s1"><i class="material-icons left">event_available</i></div>
                                 <div class="col l5 s3">{{ activity.name }}</div>
-                                <div class="col l1 s2"><a onclick="getActInfo({{ activity.id }})"
+                                <div class="col l1 s2 center"><a onclick="getActInfo({{ activity.id }})"
                                                           class="btn btn-floating waves-effect"><i
                                         class="material-icons">more_horiz</i></a>
+                                    <br><span>更多</span>
                                 </div>
-                                <div class="col l1 s2"><a onclick="deleteAct({{ activity.id }})"
+                                <div class="col l1 s2 center"><a onclick="deleteAct({{ activity.id }})"
                                                           class="btn btn-floating waves-effect red darken-4"><i
                                         class="material-icons">close</i></a>
+                                    <br><span>删除</span>
                                 </div>
-                                <div class="col l1 s2"><a onclick="editAct({{ activity.id }})" class="btn btn-floating waves-effect"><i
+                                <div class="col l1 s2 center"><a onclick="editAct({{ activity.id }})" class="btn btn-floating waves-effect"><i
                                         class="material-icons">create</i></a>
+                                    <br><span>修改</span>
                                 </div>
-                                <div class="col l1 s2"><a onclick="switchAct({{ activity.id }},1)" class="btn btn-floating waves-effect"><i
+                                <div class="col l1 s2 center"><a onclick="switchAct({{ activity.id }},1)" class="btn btn-floating waves-effect"><i
                                         class="material-icons">assignment_turned_in</i></a>
+                                    <br><span>激活</span>
                                 </div>
                             </div>
                         </li>
@@ -647,6 +654,11 @@
 
         div#activityChange.modal.velocity-animating {
             top: 4% !important;
+        }
+
+        .card .card-content .card-title {
+            margin-left: 10px;
+            margin-bottom: 0;
         }
 
         .msg {
