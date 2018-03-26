@@ -241,6 +241,9 @@
         Materialize.showStaggeredList('#flashes');
     });
     $('#wechat-login-caller').click(function () {
+        if (/MicroMessenger/.test(window.navigator.userAgent)) {
+        location.href =  "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx34e35d6c38fed4b2&redirect_uri=http://lgd.shareh.com.cn/wechat_login&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect"
+        }
         $('#main-login').fadeOut(500, function () {
             $('#wechat-login').fadeIn();
         });
@@ -252,11 +255,12 @@
         });
 
     });
+
     var obj = new WxLogin({
       self_redirect:false,
       id:"login_container",
       appid: "wx34e35d6c38fed4b2",
-      scope: "snsapi_userinfo",
+      scope: "snsapi_login",
       redirect_uri: "http://lgd.shareh.com.cn/wechat_login",
       state: "",
       style: "",
