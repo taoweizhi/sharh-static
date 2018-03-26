@@ -63,6 +63,9 @@
         </div>
     </div>
     <div class="container">
+        {% autoescape false %}
+            {{preview}}
+        {% endautoescape  %}
         <div class="row">
             <blockquote>常用功能</blockquote>
             {% for func in funclist_ess %}
@@ -132,7 +135,7 @@
             if (sw <= 992)
                 sh = sw * 0.618;
 
-            $('.collapsible').collapsible();
+            $('.collapsible').collapsible('open', 1);
             $('.slider').slider({
                 interval: 5000,
                 height: sh
