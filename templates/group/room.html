@@ -894,8 +894,8 @@
         }
 
         function trans_group(){
-            var userID = $('#trans_select select').val();
-            $.get('/group/trans_group%3Fgroup%3D'+userID+'%3Fuser%3D'+'{{ group.id }}');
+            var userID = $('#trans_select').val();
+            $.get('/group/trans_group%3Fgroup%3D'+'{{ group.id }}'+'%3Fuser%3D'+userID);
         }
     </script>
 {% endblock %}
