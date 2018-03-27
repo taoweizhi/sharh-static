@@ -13,8 +13,10 @@
             <li><a href="{{ url_for('profile.profile') }}">
                 {% if user.permission.name == "student" %}
                     {{ user.ref_students.first().student.name }}
-                {% else %}
+                {% elif user.permission.name == "teacher" %}
                     {{ user.ref_teachers.first().teacher.name }}
+                {% else %}
+                    {{ user.nickname or '用户'+user.account }}
                 {% endif %}
             </a></li>
             <li><a id="logout" href={{ url_for('authentication.logout') }}>登出</a></li>
