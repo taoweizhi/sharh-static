@@ -12,9 +12,17 @@
         {% if user.is_authenticated %}
             <li><a href="{{ url_for('profile.profile') }}">
                 {% if user.permission.name == "student" %}
-                    {{ user.ref_students.first().student.name }}
+                    {% if user.ref_students %}
+                        {{ user.ref_students.first().student.name }}
+                    {% else %}
+                        {{ user.nickname or '用户'+user.account }}
+                    {% endif %}
                 {% elif user.permission.name == "teacher" %}
-                    {{ user.ref_teachers.first().teacher.name }}
+                    {% if user.ref_teachers %}
+                        {{ user.ref_teachers.first().teacher.name }}
+                    {% else %}
+                        {{ user.nickname or '用户'+user.account }}
+                    {% endif %}
                 {% else %}
                     {{ user.nickname or '用户'+user.account }}
                 {% endif %}
@@ -30,73 +38,73 @@
     <li class="tab"><a href="" class="active" style="display: none"><i class="material-icons left">home</i>主页</a></li>
 {% endblock %}
 {% block content %}
+<div class="row">
+    <div class="slider">
+        <ul class="slides">
+            <li>
+                <img src="../static/images/index1.jpg"> <!-- random image -->
+                <div class="caption center-align">
+                    <h4>欢迎回来</h4>
+                    <h5 class="light grey-text text-lighten-3"></h5>
+                </div>
+            </li>
+            <li>
+                <img src="../static/images/index2.jpg"> <!-- random image -->
+                <div class="caption left-align">
+                    <h4>Stay hungry, Stay foolish</h4>
+                    <h5 class="light grey-text text-lighten-3">Steve Jobs.</h5>
+                </div>
+            </li>
+            <li>
+                <img src="../static/images/index3.jpg"> <!-- random image -->
+                <div class="caption right-align">
+                    <h4>不积跬步，无以至千里。不积小流，无以成江河。</h4>
+                    <h5 class="light grey-text text-lighten-3">荀子</h5>
+                </div>
+            </li>
+            <li>
+                <img src="../static/images/index4.jpg"> <!-- random image -->
+                <div class="caption center-align">
+                    <h4>科学赐于人类最大的礼物是什么呢？是使人类相信真理的力量。</h4>
+                    <h5 class="light grey-text text-lighten-3">康普顿</h5>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="container">
+    {% autoescape false %}
+    {{ preview }}
+    {% endautoescape %}
     <div class="row">
-        <div class="slider">
-            <ul class="slides">
-                <li>
-                    <img src="../static/images/index1.jpg"> <!-- random image -->
-                    <div class="caption center-align">
-                        <h4>欢迎回来</h4>
-                        <h5 class="light grey-text text-lighten-3"></h5>
-                    </div>
-                </li>
-                <li>
-                    <img src="../static/images/index2.jpg"> <!-- random image -->
-                    <div class="caption left-align">
-                        <h4>Stay hungry, Stay foolish</h4>
-                        <h5 class="light grey-text text-lighten-3">Steve Jobs.</h5>
-                    </div>
-                </li>
-                <li>
-                    <img src="../static/images/index3.jpg"> <!-- random image -->
-                    <div class="caption right-align">
-                        <h4>不积跬步，无以至千里。不积小流，无以成江河。</h4>
-                        <h5 class="light grey-text text-lighten-3">荀子</h5>
-                    </div>
-                </li>
-                <li>
-                    <img src="../static/images/index4.jpg"> <!-- random image -->
-                    <div class="caption center-align">
-                        <h4>科学赐于人类最大的礼物是什么呢？是使人类相信真理的力量。</h4>
-                        <h5 class="light grey-text text-lighten-3">康普顿</h5>
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </div>
-    <div class="container">
-        {% autoescape false %}
-            {{preview}}
-        {% endautoescape  %}
-        <div class="row">
-            <blockquote>常用功能</blockquote>
-            {% for func in funclist_ess %}
-                <div class="col s3 m2 l2 center">
-                    <a class="btn-floating btn-large waves-effect waves-light orange lighten-4
+        <blockquote>常用功能</blockquote>
+        {% for func in funclist_ess %}
+            <div class="col s3 m2 l2 center">
+                <a class="btn-floating btn-large waves-effect waves-light orange lighten-4
                       {% if func[3] %}pulse{% endif %}" href="{{ func[2] }}">
-                        <img src="{{ func[1] }}" alt=""
-                             class="circle responsive-img"></a>
-                    <br>
-                    <br>
-                    <span class="" style="white-space: nowrap">{{ func[0] }}</span>
-                </div>
-            {% endfor %}
-        </div>
-        <div class="row">
-            <blockquote>其他功能</blockquote>
-            {% for func in funclist %}
-                <div class="col s3 m2 l2 center">
-                    <a class="btn-floating btn-large waves-effect waves-light orange lighten-4
-                      {% if func[3] %}pulse{% endif %}" href="{{ func[2] }}">
-                        <img src="{{ func[1] }}" alt=""
-                             class="circle responsive-img"></a>
-                    <br>
-                    <br>
-                    <span class="">{{ func[0] }}</span>
-                </div>
-            {% endfor %}
-        </div>
+                    <img src="{{ func[1] }}" alt=""
+                         class="circle responsive-img"></a>
+                <br>
+                <br>
+                <span class="" style="white-space: nowrap">{{ func[0] }}</span>
+            </div>
+        {% endfor %}
     </div>
+    <div class="row">
+        <blockquote>其他功能</blockquote>
+        {% for func in funclist %}
+            <div class="col s3 m2 l2 center">
+                <a class="btn-floating btn-large waves-effect waves-light orange lighten-4
+                      {% if func[3] %}pulse{% endif %}" href="{{ func[2] }}">
+                    <img src="{{ func[1] }}" alt=""
+                         class="circle responsive-img"></a>
+                <br>
+                <br>
+                <span class="">{{ func[0] }}</span>
+            </div>
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}
 {% block script_content %}
     <style>
@@ -134,7 +142,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
             var sw = document.body.clientWidth;
-            var sh = document.body.clientHeight-60;
+            var sh = document.body.clientHeight - 60;
             if (sw <= 992)
                 sh = sw * 0.618;
             if ($('#index_activity').children().length > $('#index_course').children().length) {
@@ -149,7 +157,7 @@
 
             $(window).resize(function () {
                 sw = document.body.clientWidth;
-                sh = document.body.clientHeight -60;
+                sh = document.body.clientHeight - 60;
                 if (sw <= 992)
                     sh = sw * 0.618;
 
@@ -171,6 +179,7 @@
                 {% endif %}
             {% endwith %}
         });
+
         function back_to(href) {
             window.location.href = href;
         }
