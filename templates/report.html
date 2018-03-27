@@ -5,8 +5,6 @@
 
 {% block script_content %}
     <script type="text/javascript">
-        $('#back_button').attr('onclick', 'back_to("{{ url_for('attendance.center') }}")');
-
-
+        $('#back_button').attr('onclick', 'back_to("{{ url_for('index') }}")');
     </script>
 {% endblock %}

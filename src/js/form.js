@@ -87,6 +87,7 @@ const Form = {
     content: {
       phoneNumber: field.phoneNumber,
       code: field.number,
+      name: field.require,
     },
     url: '/profile/validate_phone',
   },
