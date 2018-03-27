@@ -256,9 +256,8 @@ $(document).ready(
       rules: Form.attendanceForm.content,
       errorPlacement: defaultErrorPlacement,
       submitHandler: (form) => {
-        const signName = $('#signName').text();
-        $.post(`/attendance/validate%3Fsign_name%3D${signName}`, $(form).serializeArray(),
-          defaultAction(attendanceFormHandler))
+        $.post(`/attendance/validate%3Fsign_name%3D${currentSignName}`, $(form).serializeArray(),
+          defaultAction(attendanceFormHandler));
       },
     });
     $('#reAttendanceForm').validate({
@@ -275,11 +274,8 @@ $(document).ready(
       rules: Form.codeSubmitForm.content,
       errorPlacement: defaultErrorPlacement,
       submitHandler: (form) => {
-        const instance = $(form).closest('.modal').attr('id');
-        const id = instance.slice(10);
-        const cls = instance.substring(6, 7);
-        $.post(`/attendance/register%3Fclass%3D${cls}%3Fid%3D${id}%3Fqrcode%3D0`, $(form).serializeArray(),
-          defaultAction(codeSubmitFormHandler))
+        $.post(`/attendance/register%3Fclass%3D${currentAttdCls}%3Fid%3D${currentAttdID}%3Fqrcode%3D0`, $(form).serializeArray(),
+          defaultAction(codeSubmitFormHandler));
       }
     });
     $('#manageMsgForm').validate({
