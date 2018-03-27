@@ -314,14 +314,14 @@ $(document).ready(
       submitHandler: (form) => {
         $.post(Form.subscribeGroupForm.url, $(form).serializeArray(), (result) => {
           const gen = (x) => {
-            return $(`<li class="collection-item" style="opacity: 0;"><div>${x}<a href="#" onclick="insertAIGForm()" class="secondary-content">申请入群<i class="material-icons right">send</i></a></div></li>`);
+            return $(`<li class="collection-item" style="opacity: 0;"><div>${x.name}<a href="#" onclick="insertAIGForm(${x.id})" class="secondary-content">申请入群<i class="material-icons right">send</i></a></div></li>`);
           };
           const insertBar = $('#exist');
           if (insertBar) insertBar.remove();
           const searchBar = $('<ul id="exist" class="collection"></ul>');
           if (result.found) {
-            const groupIDs = result.groups;
-            groupIDs.map(gen).forEach(x => searchBar.append(x));
+            const groups = result.groups;
+            groups.map(gen).forEach(x => searchBar.append(x));
           } else {
             searchBar.append($('<li class="collection-item red-text"><i class="material-icons left">close</i>没有找到</li>'));
           }
