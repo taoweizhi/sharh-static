@@ -13,15 +13,8 @@
                         <label for="phoneNumber">手机号</label>
                     </div>
                     <div class="col s5">
-                        <a id="sendSms" class="btn waves-effect waves-teal orange" style="margin-top:15px"
+                        <a id="sendSms" class="btn waves-effect waves-teal orange" style="margin-top:15px; padding: 0 15%;"
                            onclick="sendSms()">获取验证码</a>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="input-field col s10">
-                        <i class="material-icons prefix">person</i>
-                        <input id="name" name="name" type="tel" value="">
-                        <label for="name">姓名验证</label>
                     </div>
                 </div>
                 <div id="section2" class="row">
@@ -32,10 +25,18 @@
                     </div>
                 </div>
                 <div class="row">
-                    <button class="btn right waves-effect waves-light orange" style="margin-right: 20px" type="submit">
-                        提交
-                        <i class="material-icons right">send</i>
-                    </button>
+                    <div class="input-field col s7">
+                        <i class="material-icons prefix">person</i>
+                        <input id="name" name="name" type="tel" value="">
+                        <label for="name">姓名验证</label>
+                    </div>
+                    <div class="col s5">
+                        <button class="btn right waves-effect waves-light orange" style="margin-right: 20px"
+                                type="submit">
+                            提交
+                            <i class="material-icons right">send</i>
+                        </button>
+                    </div>
                 </div>
                 {% with messages = get_flashed_messages(with_categories=true) %}
                     {% if messages %}
