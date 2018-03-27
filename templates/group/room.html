@@ -463,7 +463,7 @@
                                         </div>
                                         <div class="col s8 m8 l6">{{ req.username }}:<br>{{ req.content }}</div>
                                         <div class="col s3 m3 l4">
-                                            <a href="{{ url_for('group.delete_msg', group_id=group.id,invited_user_id=req.user_id,msg_index=_idx) }}" class="red-text"><i class="material-icons">close</i></a>
+                                            <a href="{{ url_for('group.delete_msg', group_id=group.id,channel='apply_in',index=_idx) }}" class="red-text"><i class="material-icons">close</i></a>
                                             <a href="{{ url_for('group.enter_group',group_id=group.id,invited_user_id=req.user_id,msg_index=_idx) }}"
                                                class="secondary-content"><i class="material-icons">check</i></a>
                                         </div>
