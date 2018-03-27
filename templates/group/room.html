@@ -392,10 +392,6 @@
                         <div class="row" style="margin-bottom: 0">
                             <div class="col l1 s1"><i class="material-icons left">event_available</i></div>
                             <div class="col l5 s3">{{ activity.name }}</div>
-                            <div class="col l1 s2 center"><a onclick="getActInfo({{ activity.id }})"
-                                                      class="btn btn-floating waves-effect"><i class="material-icons">more_horiz</i></a>
-                                <br><span>更多</span>
-                            </div>
                             <div class="col l1 s2 manage center"><a onclick="deleteAct({{ activity.id }})"
                                                       class="btn btn-floating waves-effect red darken-4"><i
                                     class="material-icons">close</i></a>
@@ -408,6 +404,10 @@
                             <div class="col l1 s2 manage center"><a onclick="switchAct({{ activity.id }},0)"
                                     class="btn btn-floating waves-effect"><i class="material-icons">assignment_late</i></a>
                                 <br><span>停用</span>
+                            </div>
+                            <div class="col l1 s2 center"><a onclick="getActInfo({{ activity.id }})"
+                                                      class="btn btn-floating waves-effect"><i class="material-icons">more_horiz</i></a>
+                                <br><span>更多</span>
                             </div>
                         </div>
                     </li>
@@ -423,11 +423,6 @@
                             <div class="row" style="margin-bottom: 0">
                                 <div class="col l1 s1"><i class="material-icons left">event_available</i></div>
                                 <div class="col l5 s3">{{ activity.name }}</div>
-                                <div class="col l1 s2 center"><a onclick="getActInfo({{ activity.id }})"
-                                                          class="btn btn-floating waves-effect"><i
-                                        class="material-icons">more_horiz</i></a>
-                                    <br><span>更多</span>
-                                </div>
                                 <div class="col l1 s2 center"><a onclick="deleteAct({{ activity.id }})"
                                                           class="btn btn-floating waves-effect red darken-4"><i
                                         class="material-icons">close</i></a>
@@ -440,6 +435,11 @@
                                 <div class="col l1 s2 center"><a onclick="switchAct({{ activity.id }},1)" class="btn btn-floating waves-effect"><i
                                         class="material-icons">assignment_turned_in</i></a>
                                     <br><span>激活</span>
+                                </div>
+                                <div class="col l1 s2 center"><a onclick="getActInfo({{ activity.id }})"
+                                                          class="btn btn-floating waves-effect"><i
+                                        class="material-icons">more_horiz</i></a>
+                                    <br><span>更多</span>
                                 </div>
                             </div>
                         </li>
