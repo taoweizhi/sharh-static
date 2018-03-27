@@ -12,13 +12,13 @@
         {% if user.is_authenticated %}
             <li><a href="{{ url_for('profile.profile') }}">
                 {% if user.permission.name == "student" %}
-                    {% if user.ref_students %}
+                    {% if user.ref_students.first() %}
                         {{ user.ref_students.first().student.name }}
                     {% else %}
                         {{ user.nickname or '用户'+user.account }}
                     {% endif %}
                 {% elif user.permission.name == "teacher" %}
-                    {% if user.ref_teachers %}
+                    {% if user.ref_teachers.first() %}
                         {{ user.ref_teachers.first().teacher.name }}
                     {% else %}
                         {{ user.nickname or '用户'+user.account }}
