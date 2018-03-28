@@ -1,0 +1,81 @@
+{% extends "layouts/backLayout.html" %}
+{% block content %}
+    <div class="container">
+        <blockquote>
+            手机绑定
+        </blockquote>
+        <div class="card-panel">
+            <form id="confirmForm">
+                <div class="row">
+                    <div class="input-field col s8 l6">
+                        <i class="material-icons prefix">phone</i>
+                        <input id="newPassword" name="newPassword" type="tel" value="">
+                        <label for="newPassword">新密码</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s8 l6">
+                        <i class="material-icons prefix"><i class="material-icons ">confirmation_number</i></i>
+                        <input type="text" id="confirmPassword">
+                        <label for="confirmPassword">验证密码</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s7">
+                        <i class="material-icons prefix">person</i>
+                        <input id="name" name="name" type="tel" value="">
+                        <label for="name">姓名验证（仅用于验证登陆者身份）</label>
+                    </div>
+                    <div class="col s5">
+                        <button class="btn right waves-effect waves-light orange"
+                                style="margin-top: 15px;padding: 0 20%;"
+                                type="submit">
+                            提交
+                            <i class="material-icons right">send</i>
+                        </button>
+                    </div>
+                </div>
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        <div class="row">
+                            <ul id="flashes">
+                                {% for message in messages %}
+                                    {% if message[0] == 'message' %}
+                                        <li class="blue-grey-text" style="opacity: 0">
+                                            <i class="material-icons left">warning</i>
+                                            <span class="flow-text">{{ message[1] }}</span>
+                                        </li>
+                                    {% elif message[0] == '错误' %}
+                                        <li class="red-text" style="opacity: 0">
+                                            <i class="material-icons left">clear</i>
+                                            <span class="flow-text">{{ message[1] }}</span>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
+                {% endwith %}
+            </form>
+        </div>
+    </div>
+{% endblock %}
+{% block script_content %}
+    <script type="text/javascript">
+        var remindTime = 0;
+        var timerHandler;
+        $(document).ready(
+        );
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    if ($.cookie('toast_ctrl_index') !== '{{ message }}') {
+                        Materialize.toast('{{ message }}', 3000);
+                        $.cookie('toast_ctrl_index', '{{ message }}');
+                    }
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </script>
+{% endblock %}

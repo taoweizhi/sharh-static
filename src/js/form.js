@@ -67,6 +67,14 @@ const field = {
 
 
 const Form = {
+  confirmForm: {
+    content: {
+      newPassword: field.password,
+      confirmPassword: field.confimPassword,
+      name: field.text,
+    },
+    url: '/profile/validate_phone',
+  },
   signinForm: {
     content: {
       account: field.username,
@@ -243,10 +251,10 @@ $(document).ready(
       errorPlacement: defaultErrorPlacement,
       submitHandler: $.afterPOST(loginFormHandler)(Form.loginForm.url),
     });
-    $('#phoneForm').validate({
-      rules: Form.phoneForm.content,
+    $('#confirmForm').validate({
+      rules: Form.confirmForm.content,
       errorPlacement: defaultErrorPlacement,
-      submitHandler: $.afterPOST(phoneFormHandler)(Form.phoneForm.url),
+      submitHandler: $.afterPOST(phoneFormHandler)(Form.confirmForm.url),
     });
     $('#profileForm').validate({
       rules: Form.profileForm.content,

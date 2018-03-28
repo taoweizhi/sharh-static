@@ -117,15 +117,22 @@
             }
         }
 
+        #qrcode-container {
+            width: 100% !important;
+        }
+
+        #wechat_qrcode {
+            width: 95% !important;
+        }
 
     </style>
 <script>
       $(document).ready(function get_qrcode() {
         var container = $('#qrcode-container');
         $.get('/get_wechat_qrcode%3Fscence_str%3D' + "{{sign_name}}", function(result) {
-          container.append($('<img src="' + result.qrcode_url + '"' + 'alt="' + result.qrcode_url + '"' + '/>'))
+          container.append($('<img id="wechat_qrcode" src="' + result.qrcode_url + '"' + 'alt="' + result.qrcode_url + '"' + '/>'))
         });
-      })
+      });
       {% with messages = get_flashed_messages() %}
             {% if messages %}
                 {% for message in messages %}
