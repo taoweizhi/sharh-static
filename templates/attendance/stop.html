@@ -58,10 +58,10 @@
                                     {% for user in not_sign_users %}
                                         <tr>
                                             <td><span
-                                                    class="red-text">{{ user.ref_students.first().student.name }}</span>
+                                                    class="red-text">{{ user[0]}}</span>
                                             </td>
                                             <td><span
-                                                    class="red-text">{{ user.ref_students.first().student.number }}</span>
+                                                    class="red-text">{{ user[1]}}</span>
                                             </td>
                                         </tr>
                                     {% endfor %}
@@ -83,10 +83,10 @@
                                     {% for user in sign_users %}
                                         <tr>
                                             <td><span
-                                                    class="red-text">{{ user.ref_students.first().student.name }}</span>
+                                                    class="red-text">{{ user[0] }}</span>
                                             </td>
                                             <td><span
-                                                    class="red-text">{{ user.ref_students.first().student.number }}</span>
+                                                    class="red-text">{{ user[1] }}</span>
                                             </td>
                                         </tr>
                                     {% endfor %}
