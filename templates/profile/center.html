@@ -17,7 +17,7 @@
             <div class="col s6" style="padding: 0 .2rem">
                 <div class="card-panel z-depth-1 center" style="height: 192px">
                     <div class="row">
-                        <img src="../../static/images/avatar.jpg" class="circle avatar"
+                        <img src='{{ user.avatar or "../../static/images/avatar.jpg" }}' class="circle avatar"
                              style="height: 64px; width:64px;">
                     </div>
                     <span class="">头像</span>

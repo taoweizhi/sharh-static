@@ -17,9 +17,6 @@ const addMinToFileName = (path) => {
 gulp.task('ToES5&CompressJS', () => {
   gulp.src('src/js/*.js')
     .pipe(babel())
-    .on('error', defaultLog)
-    .pipe(gulp.dest('dist/src/js/'));
-  gulp.src('dist/src/js/*.js')
     .pipe(uglify())
     .on('error', defaultLog)
     .pipe(rename(addMinToFileName))
