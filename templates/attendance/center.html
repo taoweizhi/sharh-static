@@ -114,6 +114,9 @@
                                 </div>
                             {% endfor %}
                         {% endfor %}
+                        {% autoescape false %}
+                        {{ sign_stats }}
+                        {% endautoescape %}
                         {% for course in course_ready %}
                             <div class="card-panel white z-depth-1">
                                 <div class="row valign-wrapper" style="margin-bottom: 0">
