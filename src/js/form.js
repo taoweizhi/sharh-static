@@ -199,7 +199,14 @@ const Form = {
       activityChangeEndTime: field.require,
     },
     url: '/group/mutate_activity'
-  }
+  },
+    issueForm: {
+      content: {
+        issueType: field.require,
+        issueContent: field.text
+      },
+      url: '/issue'
+    }
 };
 
 const defaultErrorPlacement = (error, elem) => {
@@ -374,6 +381,11 @@ $(document).ready(
         $.post(`${Form.activityChangeForm.url}%3Fgroup%3D${groupId}%3Factivity%3D${$('#activityID').val()}`, $(form).serializeArray(),
           defaultAction(activityFormHandler));
       },
+    });
+    $('#issueForm').validate({
+       rules: Form.issueForm.content,
+       errorPlacement: defaultErrorPlacement,
+       submitHandler: $.afterPOST(issueFormHandler)(Form.issueForm.url)
     });
     $("title").append(style);
 

@@ -67,7 +67,10 @@ const activityFormHandler = (result) => {
   if(result)
       Materialize.toast(result, 3000);
 };
-
+const issueFormHandler = (result) => {
+  if(result)
+      Materialize.toast(result, 3000);
+};
 const sendSms = () => {
   const section = $('#section1');
   const f = $('<form></form>');
