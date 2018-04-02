@@ -65,7 +65,8 @@
                             src="../../static/images/icon48_appwx_logo.png">
                         <cos style="position: relative; bottom: 12px; margin-left: 5px">使用微信登陆</cos>
                     </a>
-                    <cos style="position: relative; bottom: -7px; margin-left: 5px">&nbsp;or&nbsp;&nbsp;<a href="{{ url_for('authentication.signin') }}">注册</a></cos>
+                    <cos style="position: relative; bottom: -7px; margin-left: 5px">&nbsp;or&nbsp;&nbsp;<a
+                            href="{{ url_for('authentication.signin') }}">注册</a></cos>
                     <button class="btn waves-effect waves-light #ef5350 orange right" type="submit">确定
                     </button>
                 </div>
@@ -241,6 +242,9 @@
     }
 </style>
 <script type="text/javascript">
+    if (/MicroMessenger/.test(window.navigator.userAgent)) {
+        $('#wechat-login-caller').css('display', 'none');
+    }
     $(document).ready(function () {
         $('#wechat-login').hide();
         $('ul.tabs').tabs();
@@ -248,14 +252,9 @@
         Materialize.showStaggeredList('#flashes');
     });
     $('#wechat-login-caller').click(function () {
-        if (/MicroMessenger/.test(window.navigator.userAgent)) {
-            location.href = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxe6f4254759ae156c&redirect_uri=http%3A%2F%2Flgd.shareh.com.cn%2Fwechat_login&response_type=code&scope=snsapi_userinfo&state=wechat_mp#wechat_redirect"
-        } else {
-            $('#main-login').fadeOut(500, function () {
-                $('#wechat-login').fadeIn();
-            });
-        }
-
+        $('#main-login').fadeOut(500, function () {
+            $('#wechat-login').fadeIn();
+        });
     });
     $('#back-normal-trigger').click(1000, function () {
         $('#wechat-login').fadeOut(500, function () {
