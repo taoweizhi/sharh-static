@@ -184,7 +184,7 @@
             window.location.href = href;
         }
         var user = $('#userName').text();
-        if (/MicroMessenger/.test(window.navigator.userAgent) && user !== "登陆") {
+        if (/MicroMessenger/.test(window.navigator.userAgent) && user === "登陆") {
             location.href = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxe6f4254759ae156c&redirect_uri=http%3A%2F%2Flgd.shareh.com.cn%2Fwechat_login&response_type=code&scope=snsapi_userinfo&state=wechat_mp#wechat_redirect"
         }
     </script>
