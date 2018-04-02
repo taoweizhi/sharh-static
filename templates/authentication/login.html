@@ -49,14 +49,14 @@
                     <div class="input-field s10 m=8 l=6">
                         <i class="material-icons prefix"><i class="material-icons ">account_circle</i></i>
                         <input type="text" id="account" name="account">
-                        <label for="account">账号</label>
+                        <label for="account">账号/学号/工号</label>
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-field s10 m=8 l=6">
                         <i class="material-icons prefix"><i class="material-icons ">mode_edit</i></i>
                         <input type="password" id="password" name="password">
-                        <label for="password">密码</label>
+                        <label for="password">密码(初始同上)</label>
                     </div>
                 </div>
                 <div class="row">
@@ -65,8 +65,9 @@
                             src="../../static/images/icon48_appwx_logo.png">
                         <cos style="position: relative; bottom: 12px; margin-left: 5px">使用微信登陆</cos>
                     </a>
-                    <cos style="position: relative; bottom: -7px; margin-left: 5px">&nbsp;or&nbsp;&nbsp;<a
-                            href="{{ url_for('authentication.signin') }}">注册</a></cos>
+                    <cos style="position: relative; bottom: -7px; margin-left: 5px">&nbsp;<coa id="or_display">or</coa>
+                        >&nbsp;&nbsp;<a
+                                href="{{ url_for('authentication.signin') }}">注册</a></cos>
                     <button class="btn waves-effect waves-light #ef5350 orange right" type="submit">确定
                     </button>
                 </div>
@@ -80,12 +81,12 @@
                                         {% if message[0] == 'message' %}
                                             <li class="blue-grey-text" style="opacity: 0">
                                                 <i class="material-icons left">warning</i>
-                                                <span>{{ message[1] }}</span>
+                                                <span id="msgGet">{{ message[1] }}</span>
                                             </li>
                                         {% elif message[0] == '错误' %}
                                             <li class="red-text" style="opacity: 0">
                                                 <i class="material-icons left">clear</i>
-                                                <span>{{ message[1] }}</span>
+                                                <span id="msgGet">{{ message[1] }}</span>
                                             </li>
                                         {% endif %}
                                     {% endfor %}
@@ -244,7 +245,13 @@
 <script type="text/javascript">
     if (/MicroMessenger/.test(window.navigator.userAgent)) {
         $('#wechat-login-caller').css('display', 'none');
+        $('#or_display').css('display', 'none');
     }
+
+    if ($('#msgGet').text() === '请绑定账号') {
+        $('cos').css('display', 'none');
+    }
+
     $(document).ready(function () {
         $('#wechat-login').hide();
         $('ul.tabs').tabs();
