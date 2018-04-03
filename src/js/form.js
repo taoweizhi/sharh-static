@@ -92,7 +92,7 @@ const Form = {
   },
   phoneForm: {
     content: {
-      smsCode: field.phoneNumber,
+      smsCode: field.number,
       newPassword: field.password
     },
     url: '/profile/validate_phone',
