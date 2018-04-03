@@ -102,7 +102,7 @@
             $('#confirmForm').hide();
             $('#sendSms').bind('click', function () {
                 if (/^[1][3,4,5,7,8][0-9]{9}$/.test($('#sendSms').text())) {
-                    $.post('{{ url_for('profile.send_sms') }}',
+                    $.getJSON('{{ url_for('profile.send_sms') }}',
                         {phoneNumber: $('#phoneNumber').val()},
                         function (data) {
                             if (data.state) {
