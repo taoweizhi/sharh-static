@@ -42,6 +42,12 @@ const signinFormHandler = (result) => {
 const loginFormHandler = (result) => {
 };
 const phoneFormHandler = (result) => {
+  if(!result.status)
+    Materialize.toast(result.msg, 4000);
+  else {
+    $('#currentText').text('绑定信息（用于课程查询等）');
+    $('#phoneForm').fadeOut(300, () => {$('#confirmForm').fadeIn(300);});
+  }
 };
 const profileFormHandler = (result) => {
 };
@@ -70,6 +76,10 @@ const activityFormHandler = (result) => {
 const issueFormHandler = (result) => {
   if(result)
       Materialize.toast(result, 3000);
+};
+const confirmFormHandler = () => {
+  if(!result.status)
+    Materialize.toast(result.msg, 4000);
 };
 const sendSms = () => {
   const section = $('#section1');

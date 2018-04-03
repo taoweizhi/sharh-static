@@ -69,11 +69,10 @@ const field = {
 const Form = {
   confirmForm: {
     content: {
-      newPassword: field.password,
-      confirmPassword: field.confimPassword,
+      number: field.number,
       name: field.text,
     },
-    url: '/profile/validate_phone',
+    url: '/profile/bind_info'
   },
   signinForm: {
     content: {
@@ -93,9 +92,8 @@ const Form = {
   },
   phoneForm: {
     content: {
-      phoneNumber: field.phoneNumber,
-      code: field.number,
-      name: field.require,
+      smsCode: field.phoneNumber,
+      newPassword: field.password
     },
     url: '/profile/validate_phone',
   },
@@ -258,10 +256,17 @@ $(document).ready(
       errorPlacement: defaultErrorPlacement,
       submitHandler: $.afterPOST(loginFormHandler)(Form.loginForm.url),
     });
+    // 手机验证部分
+    $('#phoneForm').validate({
+      rules: Form.phoneForm.content,
+      errorPlacement: defaultErrorPlacement,
+      submitHandler: $.afterPOST(phoneFormHandler)(Form.phoneForm.url),
+    });
+    // 剩余绑定部分
     $('#confirmForm').validate({
       rules: Form.confirmForm.content,
       errorPlacement: defaultErrorPlacement,
-      submitHandler: $.afterPOST(phoneFormHandler)(Form.confirmForm.url),
+      submitHandler: $.afterPOST(confirmFormHandler)(Form.confirmForm.url),
     });
     $('#profileForm').validate({
       rules: Form.profileForm.content,
