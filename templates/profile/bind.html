@@ -53,7 +53,7 @@
                 <div class="row">
                     <div class="input-field col s8">
                         <i class="material-icons prefix">person</i>
-                        <input id="number" name="number" type="number">
+                        <input id="number" name="number" type="tel">
                         <label for="number">学号/工号</label>
                     </div>
                 </div>
@@ -115,6 +115,13 @@
                 }
 
             });
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        Materialize.toast('{{ message }}', 3000);
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
         });
 
         function UpdateTimer() {
