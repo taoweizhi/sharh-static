@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <title>关于ShareH</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:100,400,700" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../static/css/about.min.css"/>
+    <script>document.documentElement.className = "js";
+    var supportsCssVars = function () {
+        var e, t = document.createElement("style");
+        return t.innerHTML = "root: { --tmp-var: bold; }",
+            document.head.appendChild(t),
+            e = !!(window.CSS && window.CSS.supports && window.CSS.supports("font-weight", "var(--tmp-var)")),
+            t.parentNode.removeChild(t),
+            e
+    };
+    supportsCssVars() || alert("Please view this demo in a modern browser that supports CSS Variables.");</script>
+    <script type="text/javascript" src="../static/js/jquery-3.2.1.min.js"></script>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+<h3 align="right">
+    ShareH v0.99 Alpha
+</h3>
+<h3 align="left" style="bottom: 10px; left: 8%">
+    <font size="2">Contributor:</font>
+    <br>
+    <font size="2">© 2017-2018 ShareH NJUST, All rights reserved.</font>
+</h3>
+<main>
+    <div class="content content--fixed">
+        <div class="debug">
+            <svg class="icon icon--debug" title="Toggle Debug Mode">
+                <use xlink:href="#icon-debug"></use>
+            </svg>
+            <div class="timescale-wrap">
+                <label class="timescale-label">
+                    <span class="timescale-title">Timescale:</span>
+                    <span class="timescale-value">0.2</span>
+                    <input class="timescale-range" type="range" min="0" max="3" step="0.1" value="0.2">
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="loader"></div>
+    <div class="content-outer" style="display: none">
+        <div class="content-inner">
+            <a href="#" class="replay-animation"></a>
+        </div>
+    </div>
+</main>
+<style>
+
+    canvas {
+        position: absolute;
+        z-index: 0;
+        left: 0;
+        top: 0;
+    }
+
+    h3 {
+        position: absolute;
+        right: 8%;
+        opacity: 1;
+        color: white;
+    }
+
+</style>
+<script src="../static/js/about.demo.js"></script>
+<script src="../static/js/vendor/three.min.js"></script>
+<script src="../static/js/vendor/OrbitControls.js"></script>
+<script src="../static/js/vendor/fast-simplex-noise.js"></script>
+<script src="../static/js/about.bundle.js"></script>
+<script type="text/javascript">
+    "use strict";
+
+    var canvas = document.getElementById('canvas'),
+        ctx = canvas.getContext('2d'),
+
+        w = canvas.width = document.body.clientWidth,
+        h = canvas.height = document.body.clientHeight,
+
+        hue = 217,
+        stars = [],
+        count = 0,
+        maxStars = 1400;
+
+    // Thanks @jackrugile for the performance tip! http://codepen.io/jackrugile/pen/BjBGoM
+    // Cache gradient
+    var canvas2 = document.createElement('canvas'),
+        ctx2 = canvas2.getContext('2d');
+    canvas2.width = 100;
+    canvas2.height = 100;
+    var half = canvas2.width / 2,
+        gradient2 = ctx2.createRadialGradient(half, half, 0, half, half, half);
+    gradient2.addColorStop(0.025, '#fff');
+    gradient2.addColorStop(0.1, 'hsl(' + hue + ', 61%, 33%)');
+    gradient2.addColorStop(0.25, 'hsl(' + hue + ', 64%, 6%)');
+    gradient2.addColorStop(1, 'transparent');
+
+    ctx2.fillStyle = gradient2;
+    ctx2.beginPath();
+    ctx2.arc(half, half, half, 0, Math.PI * 2);
+    ctx2.fill();
+
+    // End cache
+
+    function random(min, max) {
+        if (arguments.length < 2) {
+            max = min;
+            min = 0;
+        }
+
+        if (min > max) {
+            var hold = max;
+            max = min;
+            min = hold;
+        }
+
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    var Star = function () {
+
+        this.orbitRadius = random(w * 2);
+        this.radius = random(100, this.orbitRadius) / 10;
+        this.orbitX = w / 2;
+        this.orbitY = h / 2;
+        this.timePassed = random(0, maxStars);
+        this.speed = random(this.orbitRadius) / 1000000;
+        this.alpha = random(2, 10) / 10;
+
+        count++;
+        stars[count] = this;
+    };
+
+    Star.prototype.draw = function () {
+        var x = Math.sin(this.timePassed + 1) * this.orbitRadius + this.orbitX,
+            y = Math.cos(this.timePassed) * this.orbitRadius / 2 + this.orbitY,
+            twinkle = random(10);
+
+        if (twinkle === 1 && this.alpha > 0) {
+            this.alpha -= 0.05;
+        } else if (twinkle === 2 && this.alpha < 1) {
+            this.alpha += 0.05;
+        }
+
+        ctx.globalAlpha = this.alpha;
+        ctx.drawImage(canvas2, x - this.radius / 2, y - this.radius / 2, this.radius, this.radius);
+        this.timePassed += this.speed;
+    };
+
+    for (var i = 0; i < maxStars; i++) {
+        new Star();
+    }
+
+    function animation() {
+        ctx.globalCompositeOperation = 'source-over';
+        ctx.globalAlpha = 0.8;
+        ctx.fillStyle = 'hsla(' + hue + ', 64%, 6%, 1)';
+        ctx.fillRect(0, 0, w, h);
+
+        ctx.globalCompositeOperation = 'lighter';
+        for (var i = 1, l = stars.length; i < l; i++) {
+            stars[i].draw();
+        }
+
+        window.requestAnimationFrame(animation);
+    }
+
+    $(document).ready(function () {
+        animation()
+    });
+</script>
+</body>
+</html>

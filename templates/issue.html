@@ -1,0 +1,76 @@
+{% extends "layouts/backLayout.html" %}
+{% block navbar_content %}
+    <ul class="right">
+        <li>
+            <a class="modal-trigger" href="#issueModal"><i class="material-icons left">add</i>问题/建议递交</a>
+        </li>
+    </ul>
+{% endblock %}
+{% block content %}
+    <div class="modal" id="issueModal">
+        <form id="issueForm">
+            <div class="modal-content">
+                <div class="row">
+                    <div class="input-field col s6">
+                        <select id="issueType" name="issueType">
+                            <option value="" disabled selected>选择问题类型</option>
+                            {% for issue_type in db.IssueType %}
+                                <option value="{{ issue_type.name }}">{{ issue_type.value }}</option>
+                            {% endfor %}
+                        </select>
+                        <label>问题类型</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <textarea id="issueContent" class="materialize-textarea" name="issueContent"></textarea>
+                        <label for="issueContent">问题/建议内容</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <button class="btn waves-effect right" type="submit"><i class="material-icons right">send</i>提交</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="container">
+        <table class="bordered highlight">
+            <thead>
+            <tr>
+                <th>State</th>
+                <th>Module/Type</th>
+                <th>Description</th>
+                <th>Time</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for issue in issue_list %}
+                <tr>
+                    <td>
+                        {% if issue.state == db.IssueState.open %}
+                            <i class="material-icons orange-text left">info_outline</i>
+                            <a class="grey-text">Turned In</a>
+                        {% elif issue.state == db.IssueState.accept %}
+                            <i class="material-icons green-text left">done</i><a class="grey-text">Repaired</a>
+                        {% elif issue.state == db.IssueState.reject %}
+                            <i class="material-icons red-text left">close</i><a class="grey-text">Impossible</a>
+                        {% elif issue.state == db.IssueState.postpone %}
+                            <i class="material-icons grey-text left">remove</i><a class="grey-text">Postpone</a>
+                        {% endif %}
+                    </td>
+                    <td>{{ issue.module.value }}</td>
+                    <td>{{ issue.content }}</td>
+                    <td>{{ issue.time }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+{% block script_content %}
+    <script type="text/javascript">
+        backLnk='/index';
+        $('select').material_select();
+        $('.modal').modal();
+    </script>
+{% endblock %}

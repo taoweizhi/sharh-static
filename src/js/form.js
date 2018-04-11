@@ -69,11 +69,10 @@ const field = {
 const Form = {
   confirmForm: {
     content: {
-      newPassword: field.password,
-      confirmPassword: field.confimPassword,
+      number: field.number,
       name: field.text,
     },
-    url: '/profile/validate_phone',
+    url: '/profile/bind_info'
   },
   signinForm: {
     content: {
@@ -93,9 +92,8 @@ const Form = {
   },
   phoneForm: {
     content: {
-      phoneNumber: field.phoneNumber,
-      code: field.number,
-      name: field.require,
+      smsCode: field.number,
+      newPassword: field.password
     },
     url: '/profile/validate_phone',
   },
@@ -199,7 +197,14 @@ const Form = {
       activityChangeEndTime: field.require,
     },
     url: '/group/mutate_activity'
-  }
+  },
+    issueForm: {
+      content: {
+        issueType: field.require,
+        issueContent: field.text
+      },
+      url: '/issue'
+    }
 };
 
 const defaultErrorPlacement = (error, elem) => {
@@ -251,10 +256,17 @@ $(document).ready(
       errorPlacement: defaultErrorPlacement,
       submitHandler: $.afterPOST(loginFormHandler)(Form.loginForm.url),
     });
+    // 手机验证部分
+    $('#phoneForm').validate({
+      rules: Form.phoneForm.content,
+      errorPlacement: defaultErrorPlacement,
+      submitHandler: $.afterPOST(phoneFormHandler)(Form.phoneForm.url),
+    });
+    // 剩余绑定部分
     $('#confirmForm').validate({
       rules: Form.confirmForm.content,
       errorPlacement: defaultErrorPlacement,
-      submitHandler: $.afterPOST(phoneFormHandler)(Form.confirmForm.url),
+      submitHandler: $.afterPOST(confirmFormHandler)(Form.confirmForm.url),
     });
     $('#profileForm').validate({
       rules: Form.profileForm.content,
@@ -374,6 +386,11 @@ $(document).ready(
         $.post(`${Form.activityChangeForm.url}%3Fgroup%3D${groupId}%3Factivity%3D${$('#activityID').val()}`, $(form).serializeArray(),
           defaultAction(activityFormHandler));
       },
+    });
+    $('#issueForm').validate({
+       rules: Form.issueForm.content,
+       errorPlacement: defaultErrorPlacement,
+       submitHandler: $.afterPOST(issueFormHandler)(Form.issueForm.url)
     });
     $("title").append(style);
 
