@@ -63,6 +63,9 @@ const field = {
   require: {
     required: true,
   },
+  secondary: {
+    require: false,
+  }
 };
 
 
@@ -136,7 +139,7 @@ const Form = {
     content: {
       groupName: field.username,
       groupClass: field.require,
-      groupInfo: field.text,
+      groupInfo: field.secondary,
     },
     url: '/group/register'
   },
