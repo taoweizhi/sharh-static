@@ -16,10 +16,11 @@
 {% endblock %}
 {% block navbar_tabs %}
     <li class="tab"><a href="#public-body"><i class="material-icons left">announcement</i>公告</a></li>
-    <li class="tab"><a href="#chat-body"><i class="material-icons left"></i>全部消息</a></li>
-    <li class="tab"><a href="#activity-body"><i class="material-icons left"></i>活动</a></li>
+    <li class="tab"><a href="#chat-body">消息</a></li>
+    <li class="tab"><a href="#activity-body">活动</a></li>
     {% if AdminPermission %}
-        <li class="tab manage"><a href="#manage-body"><i class="material-icons left"></i>管理</a></li>
+        <li class="tab manage"><a href="#member-body">成员</a></li>
+        <li class="tab manage"><a href="#manage-body">属性</a></li>
     {% endif %}
 {% endblock %}
 {% block content %}
@@ -39,6 +40,27 @@
             top: 50%;
             left: 50%;
             transform: translateX(-50%);
+        }
+
+        .modal.bottom-sheet {
+            max-height: 100%;
+        }
+
+        .secondary-content {
+            margin-top: 7px;
+        }
+
+        .btn-narrow {
+            padding: 0 20%;
+        }
+
+        .app-reject:checked + label:after,
+        .app-reject:checked + label:before {
+            border: 2px solid #e57373 !important;
+        }
+
+        .app-reject:checked + label:after {
+            background-color: #e57373 !important;
         }
     </style>
     <div class="full-screen" id="preloader">
@@ -92,6 +114,7 @@
             </div>
         </div>
     </div>
+    <!-- Modals -->
     {% if AdminPermission %}
         <div id="activity" class="modal" style="max-height: 88%">
             <form class="col s12" id="activityForm">
@@ -246,6 +269,108 @@
                 </div>
             </form>
         </div>
+        <div id="activity_menu" class="modal bottom-sheet">
+            <div class="modal-content">
+                <h4 id="activity_menu_title"></h4>
+                <ul class="collection">
+                    <li class="collection-item">
+                        <div class="row" onclick="$('#activity_menu').modal('close'); getActInfo(currentActId);"
+                             style="margin-bottom: 0">
+                            <div class="col s10">
+                                <span class="title">活动详情<br><font color="#808080">显示活动相关信息</font></span>
+                            </div>
+                            <div class="col s2">
+                                <a class="secondary-content"><i class="material-icons">more_horiz</i></a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="collection-item">
+                        <div class="row" onclick="$('#activity_menu').modal('close'); editAct(currentActId);"
+                             style="margin-bottom: 0">
+                            <div class="col s10">
+                                <span class="title">修改活动<br><font color="#808080">修改活动相关信息</font></span></div>
+                            <div class="col s2">
+                                <a class="secondary-content"><i class="material-icons">mode_edit</i></a></div>
+                        </div>
+                    </li>
+                    <li id="activity_menu_toggle_active" class="collection-item" hidden>
+                        <div class="row" onclick="$('#activity_menu').modal('close'); switchAct(currentActId, 1);"
+                             style="margin-bottom: 0">
+                            <div class="col s10">
+                                <span class="title">激活活动<br><font color="#808080">激活后活动将显示在签到页面</font></span></div>
+                            <div class="col s2">
+                                <a class="secondary-content"><i class="material-icons">check_circle</i></a></div>
+                        </div>
+                    </li>
+                    <li id="activity_menu_toggle_deactive" class="collection-item" hidden>
+                        <div class="row" onclick="$('#activity_menu').modal('close'); switchAct(currentActId, 0);"
+                             style="margin-bottom: 0">
+                            <div class="col s10">
+                                <span class="title">停用活动<br><font color="#808080">活动将结束并生成签到统计数据</font></span></div>
+                            <div class="col s2">
+                                <a class="secondary-content"><i class="material-icons red-text">pause_circle_filled</i></a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="collection-item">
+                        <div class="row" onclick="$('#activity_menu').modal('close'); deleteAct(currentActId);"
+                             style="margin-bottom: 0">
+                            <div class="col s10">
+                                <span class="title">删除活动<br><font color="#808080">彻底删除该活动及相关记录</font></span></div>
+                            <div class="col s2">
+                                <a class="secondary-content"><i class="material-icons">delete</i></a></div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div id="require_menu" class="modal">
+            <form id="acceptApplicationForm">
+                <div class="modal-content">
+                    <h5>入群请求</h5>
+                    <ul class="collection">
+                        <li class="collection-item">
+                            <div class="row" style="margin-bottom: 0">
+                                <div class="col s6">
+                                    <a class="waves-effect waves-light btn btn-narrow"
+                                       onclick="$('.app-accept').prop('checked', 1)">全部接受</a>
+                                </div>
+                                <div class="col s6">
+                                    <a class="waves-effect waves-light btn red lighten-2 btn-narrow"
+                                       onclick="$('.app-reject').prop('checked', 1)">全部拒绝</a>
+                                </div>
+                            </div>
+                        </li>
+                        {% for _idx, req in msg_dict_req.items() %}
+                            <li class="collection-item">
+                                <div class="row" style="margin-bottom: 0">
+                                    <div class="col s8">
+                                        <span class="title">{{ req.username }}<br><font
+                                                color="#808080">{{ req.content }}</font></span>
+                                    </div>
+                                    <div class="col s4">
+                                        <input class="with-gap app-accept" name="{{ req.user_id }}" value="a"
+                                               type="radio"
+                                               id="a_{{ _idx }}"/>
+                                        <label for="a_{{ _idx }}">接受</label>
+                                        <input class="with-gap app-reject" name="{{ req.user_id }}" value="r"
+                                               type="radio"
+                                               id="r_{{ _idx }}"/>
+                                        <label for="r_{{ _idx }}">拒绝</label>
+                                    </div>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <a href="#!" class="modal-action modal-close waves-effect waves-red btn-flat ">关闭</a>
+                    <button type="submit"
+                            class="modal-action modal-close waves-effect waves-green btn-flat ">确认
+                    </button>
+                </div>
+            </form>
+        </div>
     {% endif %}
     <div id="activity_info" class="modal" style="max-height: 88%">
         <div class="modal-content">
@@ -270,6 +395,8 @@
             </div>
         </div>
     </div>
+
+    <!-- Pages -->
     <br>
     <div class="container" style="width: 85%">
         <div class="col s12 m10 l9" id="public-body">
@@ -383,7 +510,7 @@
             </div>
         </div>
         <div class="col s12 m10 l9" id="activity-body">
-            <a href="{{url_for('attendance.group_activity_list', group_id=group.id)}}">查看近期活动统计情况</a>
+            <a href="{{ url_for('attendance.group_activity_list', group_id=group.id) }}">查看近期活动统计情况</a>
             <br>
             <br>
             <blockquote>
@@ -392,28 +519,16 @@
             <ul class="collection">
                 {% for activity in activated_acts %}
                     <li class="collection-item">
-                        <div class="row" style="margin-bottom: 0">
-                            <div class="col l1 s1"><i class="material-icons left">event_available</i></div>
-                            <div class="col l5 s3">{{ activity.name }}</div>
-                            <div class="col l1 s2 manage center"><a onclick="deleteAct({{ activity.id }})"
-                                                                    class="btn btn-floating waves-effect red darken-4"><i
-                                    class="material-icons">close</i></a>
-                                <br><span>删除</span>
+                        <div class="row" onclick="showActMenuModal({{ activity.id }}, '{{ activity.name }}', 0)"
+                             style="margin-bottom: 0">
+                            <div class="col s2"><i class="material-icons left"
+                                                   style="margin-top: 7px;">event_available</i></div>
+                            <div class="col s8">
+                                {{ activity.name }}<br><font
+                                    color="#808080">{{ activity.ref_groups.first().start or "时间未确定" }}</font>
                             </div>
-                            <div class="col l1 s2 manage center"><a onclick="editAct({{ activity.id }})"
-                                                                    class="btn btn-floating waves-effect"><i
-                                    class="material-icons">create</i></a>
-                                <br><span>修改</span>
-                            </div>
-                            <div class="col l1 s2 manage center"><a onclick="switchAct({{ activity.id }},0)"
-                                                                    class="btn btn-floating waves-effect"><i
-                                    class="material-icons">assignment_late</i></a>
-                                <br><span>停用</span>
-                            </div>
-                            <div class="col l1 s2 center"><a onclick="getActInfo({{ activity.id }})"
-                                                             class="btn btn-floating waves-effect"><i
-                                    class="material-icons">more_horiz</i></a>
-                                <br><span>更多</span>
+                            <div class="col s2">
+                                <a class="secondary-content"><i class="material-icons">chevron_right</i></a>
                             </div>
                         </div>
                     </li>
@@ -426,28 +541,16 @@
                 <ul class="collection">
                     {% for activity in deactivated_acts %}
                         <li class="collection-item">
-                            <div class="row" style="margin-bottom: 0">
-                                <div class="col l1 s1"><i class="material-icons left">event_available</i></div>
-                                <div class="col l5 s3">{{ activity.name }}</div>
-                                <div class="col l1 s2 center"><a onclick="deleteAct({{ activity.id }})"
-                                                                 class="btn btn-floating waves-effect red darken-4"><i
-                                        class="material-icons">close</i></a>
-                                    <br><span>删除</span>
+                            <div class="row" onclick="showActMenuModal({{ activity.id }}, '{{ activity.name }}', 1)"
+                                 style="margin-bottom: 0">
+                                <div class="col s2"><i class="material-icons left" style="margin-top: 7px;">event_available</i>
                                 </div>
-                                <div class="col l1 s2 center"><a onclick="editAct({{ activity.id }})"
-                                                                 class="btn btn-floating waves-effect"><i
-                                        class="material-icons">create</i></a>
-                                    <br><span>修改</span>
+                                <div class="col s8">
+                                    {{ activity.name }}<br><font
+                                        color="#808080">{{ activity.ref_groups.first().start or "时间未确定" }}</font>
                                 </div>
-                                <div class="col l1 s2 center"><a onclick="switchAct({{ activity.id }},1)"
-                                                                 class="btn btn-floating waves-effect"><i
-                                        class="material-icons">assignment_turned_in</i></a>
-                                    <br><span>激活</span>
-                                </div>
-                                <div class="col l1 s2 center"><a onclick="getActInfo({{ activity.id }})"
-                                                                 class="btn btn-floating waves-effect"><i
-                                        class="material-icons">more_horiz</i></a>
-                                    <br><span>更多</span>
+                                <div class="col s2">
+                                    <a class="secondary-content"><i class="material-icons">chevron_right</i></a>
                                 </div>
                             </div>
                         </li>
@@ -458,213 +561,207 @@
         {% if AdminPermission %}
             <div class="col s12 m10 l9" id="manage-body">
                 <div class="row">
-                    <div class="col s12 l4">
+                    <div class="col s12 l6">
                         <blockquote>
-                            加群请求
+                            群设置
                         </blockquote>
-                        <ul class="collection with-header">
-                            <li class="collection-item" style="padding-left: 14px">
-                                {% for _idx, req in msg_dict_req.items() %}
-                                    <div class="row" style="margin-bottom: 0;">
-                                        <div class="col s1 m1 l2"><i
-                                                class="material-icons purple-text">insert_comment</i>
-                                        </div>
-                                        <div class="col s8 m8 l6">{{ req.username }}:<br>{{ req.content }}</div>
-                                        <div class="col s3 m3 l4">
-                                            <a href="{{ url_for('group.delete_msg', group_id=group.id,channel='apply_in',index=_idx) }}"
-                                               class="red-text"><i class="material-icons">close</i></a>
-                                            <a href="{{ url_for('group.enter_group',group_id=group.id,invited_user_id=req.user_id,msg_index=_idx) }}"
-                                               class="secondary-content"><i class="material-icons">check</i></a>
-                                        </div>
+                        <div class="container">
+                            <form id="mutateGroupForm">
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <input value="{{ group.name }}" id="groupName" name="groupName"
+                                               type="text">
+                                        <label for="groupName">群名称</label>
                                     </div>
-                                {% endfor %}
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="col s12 l8">
-                        <div class="row">
-                            <div class="col s12 l6">
-                                <blockquote>
-                                    管理成员
-                                </blockquote>
-                                <ul class="collection with-header">
-                                    {% for member_ref in group.ref_users %}
-                                        <li class="collection-item" style="padding-left: 14px">
-                                            {% if member_ref.user_cls == db.Role.leader %}
-                                                <div class="row" style="margin-bottom: 0;">
-                                                    <div class="col s1"><i class="material-icons">account_circle</i>
-                                                    </div>
-                                                    <div class="col s11"
-                                                         style="margin-top: 3px">{{ member_ref.user.nickname or member_ref.user.account }}</div>
-                                                </div>
-                                            {% elif member_ref.user_cls == db.Role.admin %}
-                                                <div class="row" style="margin-bottom: 0">
-                                                    <div class="col s1"><i class="material-icons">assignment_ind</i>
-                                                    </div>
-                                                    <div class="col s5"
-                                                         style="margin-top: 3px">{{ member_ref.user.nickname or member_ref.user.account }}</div>
-                                                    <a href="#"
-                                                       onclick="kickOut({{ group.id }},{{ member_ref.user.id }})"
-                                                       class="secondary-content red-text">
-                                                        <i class="material-icons left">close</i>
-                                                        <span>删除成员</span>
-                                                    </a>
-                                                </div>
-                                                <div class="row" style="margin-bottom: 0">
-                                                    <a href="#"
-                                                       onclick="switchRole({{ group.id }},{{ member_ref.user.id }},'normal')"
-                                                       class="secondary-content">
-                                                        <i class="material-icons left">not_interested</i>
-                                                        <span>删除管理员</span>
-                                                    </a>
-                                                </div>
-                                            {% elif member_ref.user_cls == db.Role.normal %}
-                                                <div class="row" style="margin-bottom: 0">
-                                                    <div class="col s1"><i class="material-icons">book</i></div>
-                                                    <div class="col s5"
-                                                         style="margin-top: 3px">{{ member_ref.user.nickname or member_ref.user.account }}</div>
-                                                    <a href="#"
-                                                       onclick="kickOut({{ group.id }},{{ member_ref.user.id }})"
-                                                       class="secondary-content red-text">
-                                                        <i class="material-icons left">close</i>
-                                                        <span>删除成员</span>
-                                                    </a>
-                                                </div>
-                                                <div class="row" style="margin-bottom: 0">
-                                                    <a href="#"
-                                                       onclick="switchRole({{ group.id }},{{ member_ref.user.id }},'admin')"
-                                                       class="secondary-content">
-                                                        <i class="material-icons left">assignment_turned_in</i>
-                                                        <span>设置管理员</span>
-                                                    </a>
-                                                </div>
-                                            {% endif %}
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            </div>
-                            <div class="col s12 l6">
-                                <blockquote>
-                                    群设置
-                                </blockquote>
-                                <div class="container">
-                                    <form id="mutateGroupForm">
-                                        <div class="row">
-                                            <div class="input-field col s12">
-                                                <input value="{{ group.name }}" id="groupName" name="groupName"
-                                                       type="text">
-                                                <label for="groupName">群名称</label>
-                                            </div>
-                                            <div class="input-field col s12">
-                                                <select id="groupClass" name="groupClass">
-                                                    <option value="" disabled>选择群类型</option>
-                                                    <option value="academic">学术类</option>
-                                                    <option value="sport">体育类</option>
-                                                    <option value="art">艺术类</option>
-                                                    <option value="practice">实践类</option>
-                                                    <option value="lecture">讲座</option>
-                                                    <option value="daily">生活类</option>
-                                                    <option value="other">其他</option>
-                                                </select>
-                                                <label for="groupClass">群类型</label>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="input-field col s12">
-                                        <textarea id="groupInfo" class="materialize-textarea"
-                                                  name="groupInfo"></textarea>
-                                                <label for="groupInfo">简介</label>
-                                            </div>
-                                        </div>
-                                        <button class="btn waves-effect waves-light right" type="submit">
-                                            提交修改
-                                            <i class="material-icons right">send</i>
-                                        </button>
-                                        <br><br>
-                                    </form>
-                                    <blockquote>
-                                        关键操作
-                                    </blockquote>
-                                    <div class="row">
-                                        <div class="col s6 l12 col-btn">
-                                            <a class="waves-effect waves-light btn red modal-trigger"
-                                               href="#delete_modal">删除群<i class="material-icons right">close</i></a>
-                                        </div>
-                                        <div class="col s6 l12 col-btn">
-                                            <a class="waves-effect waves-light btn red modal-trigger"
-                                               href="#delete_board_msg">清空公告板<i class="material-icons right">delete_forever</i></a>
-                                        </div>
-                                        <div class="col s6 l12 col-btn">
-                                            <a class="waves-effect waves-light btn red modal-trigger"
-                                               href="#delete_public_msg">清空聊天室<i class="material-icons right">delete_forever</i></a>
-                                        </div>
-                                        <div class="col s6 l12 col-btn">
-                                            <a class="waves-effect waves-light btn red modal-trigger"
-                                               href="#trans_group">转让群<i class="material-icons right">delete_forever</i></a>
-                                        </div>
-                                    </div>
-                                    <div id="trans_group" class="modal">
-                                        <div class="modal-content">
-                                            <h5><i class="material-icons left">report_problem</i>注意</h5>
-                                            <p>即将转让群主给</p>
-                                            <div class="input-field col s12">
-                                                <select id="trans_select">
-                                                    <option value="" disabled selected>选择成员</option>
-                                                    {% for member_ref in group.ref_users %}
-                                                        {% if member_ref.user_cls != db.Role.leader %}
-                                                            <option value="{{ member_ref.user.id }}">{{ member_ref.user.nickname or member_ref.user.account }}</option>
-                                                        {% endif %}
-                                                    {% endfor %}
-                                                </select>
-                                            </div>
-                                            <p>您将成为该群的普通成员，继续？</p>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <a onclick="trans_group()"
-                                               class="modal-action modal-close waves-effect waves-red btn-flat">确认</a>
-                                            <a href="#!"
-                                               class="modal-action modal-close waves-effect waves-green btn-flat">取消</a>
-                                        </div>
-                                    </div>
-                                    <div id="delete_modal" class="modal">
-                                        <div class="modal-content">
-                                            <h5><i class="material-icons left">report_problem</i>注意</h5>
-                                            <p>正在删除群，所有成员将会被解散，确认？</p>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <a href="{{ url_for('group.delete_group', group_id=group.id) }}"
-                                               class="modal-action modal-close waves-effect waves-red btn-flat">确认</a>
-                                            <a href="#!"
-                                               class="modal-action modal-close waves-effect waves-green btn-flat">取消</a>
-                                        </div>
-                                    </div>
-                                    <div id="delete_board_msg" class="modal">
-                                        <div class="modal-content">
-                                            <h5><i class="material-icons left">report_problem</i>注意</h5>
-                                            <p>正在清空公告板，该操作不可逆，确认？</p>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <a onclick="clearMsg('board')"
-                                               class="modal-action modal-close waves-effect waves-red btn-flat">确认</a>
-                                            <a href="#!"
-                                               class="modal-action modal-close waves-effect waves-green btn-flat">取消</a>
-                                        </div>
-                                    </div>
-                                    <div id="delete_public_msg" class="modal">
-                                        <div class="modal-content">
-                                            <h5><i class="material-icons left">report_problem</i>注意</h5>
-                                            <p>正在清空聊天内容，该操作不可逆，确认？</p>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <a onclick="clearMsg('public')"
-                                               class="modal-action modal-close waves-effect waves-red btn-flat">确认</a>
-                                            <a href="#!"
-                                               class="modal-action modal-close waves-effect waves-green btn-flat">取消</a>
-                                        </div>
+                                    <div class="input-field col s12">
+                                        <select id="groupClass" name="groupClass">
+                                            <option value="" disabled>选择群类型</option>
+                                            <option value="academic">学术类</option>
+                                            <option value="sport">体育类</option>
+                                            <option value="art">艺术类</option>
+                                            <option value="practice">实践类</option>
+                                            <option value="lecture">讲座</option>
+                                            <option value="daily">生活类</option>
+                                            <option value="other">其他</option>
+                                        </select>
+                                        <label for="groupClass">群类型</label>
                                     </div>
                                 </div>
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <textarea id="groupInfo" class="materialize-textarea"
+                                                  name="groupInfo"></textarea>
+                                        <label for="groupInfo">简介</label>
+                                    </div>
+                                </div>
+                                <button class="btn waves-effect waves-light right" type="submit">
+                                    提交修改
+                                    <i class="material-icons right">send</i>
+                                </button>
+                                <br><br>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col s12 l6">
+                        <blockquote>
+                            关键操作
+                        </blockquote>
+                        <div class="row">
+                            <div class="col s6 l12 col-btn">
+                                <a class="waves-effect waves-light btn red modal-trigger"
+                                   href="#delete_modal">删除群<i class="material-icons right">close</i></a>
+                            </div>
+                            <div class="col s6 l12 col-btn">
+                                <a class="waves-effect waves-light btn red modal-trigger"
+                                   href="#delete_board_msg">清空公告板<i class="material-icons right">delete_forever</i></a>
+                            </div>
+                            <div class="col s6 l12 col-btn">
+                                <a class="waves-effect waves-light btn red modal-trigger"
+                                   href="#delete_public_msg">清空聊天室<i class="material-icons right">delete_forever</i></a>
+                            </div>
+                            <div class="col s6 l12 col-btn">
+                                <a class="waves-effect waves-light btn red modal-trigger"
+                                   href="#trans_group">转让群<i class="material-icons right">delete_forever</i></a>
                             </div>
                         </div>
+                        <div id="trans_group" class="modal">
+                            <div class="modal-content">
+                                <h5><i class="material-icons left">report_problem</i>注意</h5>
+                                <p>即将转让群主给</p>
+                                <div class="input-field col s12">
+                                    <select id="trans_select">
+                                        <option value="" disabled selected>选择成员</option>
+                                        {% for member_ref in group.ref_users %}
+                                            {% if member_ref.user_cls != db.Role.leader %}
+                                                <option value="{{ member_ref.user.id }}">{{ member_ref.user.nickname or member_ref.user.account }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <p>您将成为该群的普通成员，继续？</p>
+                            </div>
+                            <div class="modal-footer">
+                                <a onclick="trans_group()"
+                                   class="modal-action modal-close waves-effect waves-red btn-flat">确认</a>
+                                <a href="#!"
+                                   class="modal-action modal-close waves-effect waves-green btn-flat">取消</a>
+                            </div>
+                        </div>
+                        <div id="delete_modal" class="modal">
+                            <div class="modal-content">
+                                <h5><i class="material-icons left">report_problem</i>注意</h5>
+                                <p>正在删除群，所有成员将会被解散，确认？</p>
+                            </div>
+                            <div class="modal-footer">
+                                <a href="{{ url_for('group.delete_group', group_id=group.id) }}"
+                                   class="modal-action modal-close waves-effect waves-red btn-flat">确认</a>
+                                <a href="#!"
+                                   class="modal-action modal-close waves-effect waves-green btn-flat">取消</a>
+                            </div>
+                        </div>
+                        <div id="delete_board_msg" class="modal">
+                            <div class="modal-content">
+                                <h5><i class="material-icons left">report_problem</i>注意</h5>
+                                <p>正在清空公告板，该操作不可逆，确认？</p>
+                            </div>
+                            <div class="modal-footer">
+                                <a onclick="clearMsg('board')"
+                                   class="modal-action modal-close waves-effect waves-red btn-flat">确认</a>
+                                <a href="#!"
+                                   class="modal-action modal-close waves-effect waves-green btn-flat">取消</a>
+                            </div>
+                        </div>
+                        <div id="delete_public_msg" class="modal">
+                            <div class="modal-content">
+                                <h5><i class="material-icons left">report_problem</i>注意</h5>
+                                <p>正在清空聊天内容，该操作不可逆，确认？</p>
+                            </div>
+                            <div class="modal-footer">
+                                <a onclick="clearMsg('public')"
+                                   class="modal-action modal-close waves-effect waves-red btn-flat">确认</a>
+                                <a href="#!"
+                                   class="modal-action modal-close waves-effect waves-green btn-flat">取消</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col s12 m10 l9" id="member-body">
+                <div class="row">
+                    <div class="col s12">
+                        <blockquote>
+                            成员管理
+                        </blockquote>
+                        {% if msg_dict_req.__len__() %}
+                            <div class="collection">
+                                <a class="collection-item" onclick="$('#require_menu').modal('open')"><span
+                                        class="new badge"
+                                        data-badge-caption="请求">{{ msg_dict_req.__len__() }}</span>入群请求</a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12">
+                        <ul class="collection">
+                            {% for member_ref in group.ref_users %}
+                                <li class="collection-item avatar">
+                                    <img src="{{ member_ref.user.avatar }}" alt="" class="circle">
+                                    <span class="title">{{ member_ref.user.nickname or member_ref.user.account }}</span>
+                                    <p>{{ member_ref.user_cls }}</p>
+                                    <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+{#                                    {% if member_ref.user_cls == db.Role.leader %}#}
+{#                                        <div class="row" style="margin-bottom: 0;">#}
+{#                                            <div class="col s1"><i class="material-icons">account_circle</i>#}
+{#                                            </div>#}
+{#                                            <div class="col s11"#}
+{#                                                 style="margin-top: 3px">{{ member_ref.user.nickname or member_ref.user.account }}</div>#}
+{#                                        </div>#}
+{#                                    {% elif member_ref.user_cls == db.Role.admin %}#}
+{#                                        <div class="row" style="margin-bottom: 0">#}
+{#                                            <div class="col s1"><i class="material-icons">assignment_ind</i>#}
+{#                                            </div>#}
+{#                                            <div class="col s5"#}
+{#                                                 style="margin-top: 3px">{{ member_ref.user.nickname or member_ref.user.account }}</div>#}
+{#                                            <a href="#"#}
+{#                                               onclick="kickOut({{ group.id }},{{ member_ref.user.id }})"#}
+{#                                               class="secondary-content red-text">#}
+{#                                                <i class="material-icons left">close</i>#}
+{#                                                <span>删除成员</span>#}
+{#                                            </a>#}
+{#                                        </div>#}
+{#                                        <div class="row" style="margin-bottom: 0">#}
+{#                                            <a href="#"#}
+{#                                               onclick="switchRole({{ group.id }},{{ member_ref.user.id }},'normal')"#}
+{#                                               class="secondary-content">#}
+{#                                                <i class="material-icons left">not_interested</i>#}
+{#                                                <span>删除管理员</span>#}
+{#                                            </a>#}
+{#                                        </div>#}
+{#                                    {% elif member_ref.user_cls == db.Role.normal %}#}
+{#                                        <div class="row" style="margin-bottom: 0">#}
+{#                                            <div class="col s1"><i class="material-icons">book</i></div>#}
+{#                                            <div class="col s5"#}
+{#                                                 style="margin-top: 3px">{{ member_ref.user.nickname or member_ref.user.account }}</div>#}
+{#                                            <a href="#"#}
+{#                                               onclick="kickOut({{ group.id }},{{ member_ref.user.id }})"#}
+{#                                               class="secondary-content red-text">#}
+{#                                                <i class="material-icons left">close</i>#}
+{#                                                <span>删除成员</span>#}
+{#                                            </a>#}
+{#                                        </div>#}
+{#                                        <div class="row" style="margin-bottom: 0">#}
+{#                                            <a href="#"#}
+{#                                               onclick="switchRole({{ group.id }},{{ member_ref.user.id }},'admin')"#}
+{#                                               class="secondary-content">#}
+{#                                                <i class="material-icons left">assignment_turned_in</i>#}
+{#                                                <span>设置管理员</span>#}
+{#                                            </a>#}
+{#                                        </div>#}
+{#                                    {% endif %}#}
+                                </li>
+                            {% endfor %}
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -765,6 +862,7 @@
     <script type="text/javascript">
         $('footer').css('display', 'none');
         var activityStartDate = new Date();
+        var currentActId;
         $(document).ready(function () {
             $('select').material_select();
             $('#groupName').val('{{ group.name }}');
@@ -865,7 +963,17 @@
                 Materialize.showStaggeredList('#chat-body');
             });
 
+            $('#acceptApplicationForm').validate({
+                submitHandler: function (form) {
+                    $.post(
+                        "/enter_group?group_id=" + getId().toString(),
+                        $(form).serializeArray(),
+                        function (data) {
 
+                        }
+                    );
+                }
+            });
         });
 
         function manageMsg(msg_id, msg_title, msg_content) {
@@ -880,9 +988,27 @@
             return {{ group.id }};
         }
 
-        function trans_group(){
+        function trans_group() {
             var userID = $('#trans_select').val();
-            $.get('/group/trans_group%3Fgroup%3D'+'{{ group.id }}'+'%3Fuser%3D'+userID);
+            $.get('/group/trans_group%3Fgroup%3D' + '{{ group.id }}' + '%3Fuser%3D' + userID);
+        }
+
+        function showActMenuModal(act_id, act_name, act_state) {
+            currentActId = act_id;
+            {% if AdminPermission %}
+                $('#activity_menu_title').text(act_name);
+                if (act_state) {
+                    $('#activity_menu_toggle_deactive').hide();
+                    $('#activity_menu_toggle_active').show();
+                }
+                else {
+                    $('#activity_menu_toggle_active').hide();
+                    $('#activity_menu_toggle_deactive').show();
+                }
+                $('#activity_menu').modal('open');
+            {% else %}
+                getActInfo(currentActId);
+            {% endif %}
         }
     </script>
 {% endblock %}
