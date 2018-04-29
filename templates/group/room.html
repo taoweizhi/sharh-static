@@ -62,6 +62,18 @@
         .app-reject:checked + label:after {
             background-color: #e57373 !important;
         }
+
+        .member-list {
+            min-height: 64px !important;
+        }
+
+        .member-spec {
+            margin-right: 5px !important;
+        }
+
+        .member-spec-text {
+            line-height: 1.8rem !important;
+        }
     </style>
     <div class="full-screen" id="preloader">
         <div class="preloader-wrapper small active">
@@ -687,7 +699,7 @@
                 </div>
             </div>
             <div class="col s12 m10 l9" id="member-body">
-                <div class="row">
+                <div class="row" style="margin-bottom: 0">
                     <div class="col s12">
                         <blockquote>
                             成员管理
@@ -698,70 +710,64 @@
                                         class="new badge"
                                         data-badge-caption="请求">{{ msg_dict_req.__len__() }}</span>入群请求</a>
                             </div>
+                        {% else %}
+                            <div class="collection">
+                                <a class="collection-item" href="#"><span
+                                        class="badge"
+                                        data-badge-caption="">暂无</span>入群请求</a>
+                            </div>
                         {% endif %}
                     </div>
                 </div>
                 <div class="row">
                     <div class="col s12">
-                        <ul class="collection">
-                            {% for member_ref in group.ref_users %}
-                                <li class="collection-item avatar">
-                                    <img src="{{ member_ref.user.avatar }}" alt="" class="circle">
-                                    <span class="title">{{ member_ref.user.nickname or member_ref.user.account }}</span>
-                                    <p>{{ member_ref.user_cls }}</p>
-                                    <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
-{#                                    {% if member_ref.user_cls == db.Role.leader %}#}
-{#                                        <div class="row" style="margin-bottom: 0;">#}
-{#                                            <div class="col s1"><i class="material-icons">account_circle</i>#}
-{#                                            </div>#}
-{#                                            <div class="col s11"#}
-{#                                                 style="margin-top: 3px">{{ member_ref.user.nickname or member_ref.user.account }}</div>#}
-{#                                        </div>#}
-{#                                    {% elif member_ref.user_cls == db.Role.admin %}#}
-{#                                        <div class="row" style="margin-bottom: 0">#}
-{#                                            <div class="col s1"><i class="material-icons">assignment_ind</i>#}
-{#                                            </div>#}
-{#                                            <div class="col s5"#}
-{#                                                 style="margin-top: 3px">{{ member_ref.user.nickname or member_ref.user.account }}</div>#}
-{#                                            <a href="#"#}
-{#                                               onclick="kickOut({{ group.id }},{{ member_ref.user.id }})"#}
-{#                                               class="secondary-content red-text">#}
-{#                                                <i class="material-icons left">close</i>#}
-{#                                                <span>删除成员</span>#}
-{#                                            </a>#}
-{#                                        </div>#}
-{#                                        <div class="row" style="margin-bottom: 0">#}
-{#                                            <a href="#"#}
-{#                                               onclick="switchRole({{ group.id }},{{ member_ref.user.id }},'normal')"#}
-{#                                               class="secondary-content">#}
-{#                                                <i class="material-icons left">not_interested</i>#}
-{#                                                <span>删除管理员</span>#}
-{#                                            </a>#}
-{#                                        </div>#}
-{#                                    {% elif member_ref.user_cls == db.Role.normal %}#}
-{#                                        <div class="row" style="margin-bottom: 0">#}
-{#                                            <div class="col s1"><i class="material-icons">book</i></div>#}
-{#                                            <div class="col s5"#}
-{#                                                 style="margin-top: 3px">{{ member_ref.user.nickname or member_ref.user.account }}</div>#}
-{#                                            <a href="#"#}
-{#                                               onclick="kickOut({{ group.id }},{{ member_ref.user.id }})"#}
-{#                                               class="secondary-content red-text">#}
-{#                                                <i class="material-icons left">close</i>#}
-{#                                                <span>删除成员</span>#}
-{#                                            </a>#}
-{#                                        </div>#}
-{#                                        <div class="row" style="margin-bottom: 0">#}
-{#                                            <a href="#"#}
-{#                                               onclick="switchRole({{ group.id }},{{ member_ref.user.id }},'admin')"#}
-{#                                               class="secondary-content">#}
-{#                                                <i class="material-icons left">assignment_turned_in</i>#}
-{#                                                <span>设置管理员</span>#}
-{#                                            </a>#}
-{#                                        </div>#}
-{#                                    {% endif %}#}
-                                </li>
-                            {% endfor %}
-                        </ul>
+                        <form id="memberChangeForm">
+                            <ul class="collection">
+                                {% for member_ref in group.ref_users %}
+                                    <li class="collection-item avatar member-list">
+                                        <img src="{{ member_ref.user.avatar }}" alt="" class="circle">
+                                        <span class="title">{{ member_ref.user.nickname or member_ref.user.account }}</span>
+                                        {% if member_ref.user_cls == db.Role.leader %}
+                                            <p><font color="#daa520" class="member-spec-text"><i
+                                                    class="material-icons left member-spec">grade</i>群主</font></p>
+                                        {% elif member_ref.user_cls == db.Role.admin %}
+                                            <p><font color="orange" class="member-spec-text"><i
+                                                    class="material-icons left member-spec">grade</i>管理员</font></p>
+                                            <p class="secondary-content">
+                                                <input type="checkbox" id="{{ member_ref.user.id }}_deop"
+                                                       name="{{ member_ref.user.id }}" value="deop"
+                                                       onclick="$('#{{ member_ref.user.id }}_rm').prop('checked', 0)"/>
+                                                <label for="{{ member_ref.user.id }}_deop">移除权限</label>
+                                            </p>
+                                            <p class="secondary-content" style="margin-right: 110px">
+                                                <input type="checkbox" id="{{ member_ref.user.id }}_rm"
+                                                       name="{{ member_ref.user.id }}" value="rm"
+                                                       onclick="$('#{{ member_ref.user.id }}_deop').prop('checked', 0)"/>
+                                                <label for="{{ member_ref.user.id }}_rm">删除成员</label>
+                                            </p>
+                                        {% elif member_ref.user_cls == db.Role.normal %}
+                                            <p><font color="gray" class="member-spec-text"><i
+                                                    class="material-icons left member-spec">grade</i>成员</font></p>
+                                            <p class="secondary-content">
+                                                <input type="checkbox" id="{{ member_ref.user.id }}_op"
+                                                       name="{{ member_ref.user.id }}" value="op"
+                                                       onclick="$('#{{ member_ref.user.id }}_rm').prop('checked', 0)"/>
+                                                <label for="{{ member_ref.user.id }}_op">赋予权限</label>
+                                            </p>
+                                            <p class="secondary-content" style="margin-right: 110px">
+                                                <input type="checkbox" id="{{ member_ref.user.id }}_rm"
+                                                       name="{{ member_ref.user.id }}" value="rm"
+                                                       onclick="$('#{{ member_ref.user.id }}_op').prop('checked', 0)"/>
+                                                <label for="{{ member_ref.user.id }}_rm">删除成员</label>
+                                            </p>
+                                        {% endif %}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                            <button type="submit"
+                                    class="btn waves-effect right">提交修改
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -967,6 +973,18 @@
                 submitHandler: function (form) {
                     $.post(
                         "/enter_group?group_id=" + getId().toString(),
+                        $(form).serializeArray(),
+                        function (data) {
+
+                        }
+                    );
+                }
+            });
+
+            $('#memberChangeForm').validate({
+                submitHandler: function (form) {
+                    $.post(
+                        "/change_role?group_id=" + getId().toString(),
                         $(form).serializeArray(),
                         function (data) {
 
