@@ -11,6 +11,7 @@
         <li><a href="#create" class="modal-trigger">创建群组</a></li>
         <li class="divider"></li>
         <li><a href="#add" class="modal-trigger">添加群组</a></li>
+        <li><a href="#spot" class="modal-trigger">添加热点</a></li>
     </ul>
 {% endblock %}
 {% block navbar_tabs %}
@@ -69,6 +70,22 @@
                 </button>
             </form>
             <br><br id="insert">
+        </div>
+    </div>
+    <div id="spot" class="modal">
+        <div class="modal-content">
+            <h5>添加热点</h5>
+            <br>
+            <form id="addSpot">
+                <div class="input-field col s12">
+                    <input id="groupName" name="groupName" type="text" class="validate">
+                    <label for="groupName">神秘代码</label>
+                </div>
+                <button class="btn waves-effect waves-light right" type="submit" name="action">查找
+                    <i class="material-icons right">send</i>
+                </button>
+            </form>
+            <br>
         </div>
     </div>
     <div class="container">
@@ -249,6 +266,19 @@
             $(modal_hd).modal('close');
             $(modal_sh).modal('open');
         }
+
+        $('#addSpot').validate({
+                submitHandler: function (form) {
+                    $.post(
+                        "/group/spot_group_init",
+                        $(form).serializeArray(),
+                        defaultAction(
+                            function (data) {
+                                Materialize.toast(data, 3000);
+                            })
+                    );
+                }
+            });
 
     </script>
 {% endblock %}
