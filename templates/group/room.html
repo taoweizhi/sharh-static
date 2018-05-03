@@ -361,11 +361,11 @@
                                                 color="#808080">{{ req.content }}</font></span>
                                     </div>
                                     <div class="col s4">
-                                        <input class="with-gap app-accept" name="{{ req.user_id }}" value="a"
+                                        <input class="with-gap app-accept" name="{{ _idx }}_{{ req.user_id }}" value="a"
                                                type="radio"
                                                id="a_{{ _idx }}"/>
                                         <label for="a_{{ _idx }}">接受</label>
-                                        <input class="with-gap app-reject" name="{{ req.user_id }}" value="r"
+                                        <input class="with-gap app-reject" name="{{ _idx }}_{{ req.user_id }}" value="r"
                                                type="radio"
                                                id="r_{{ _idx }}"/>
                                         <label for="r_{{ _idx }}">拒绝</label>
@@ -954,6 +954,8 @@
                 $('ul.tabs').tabs('select_tab', 'manage-body');
             {% elif channel_branch == 'act' %}
                 $('ul.tabs').tabs('select_tab', 'activity-body');
+            {% elif channel_branch == 'member' %}
+                $('ul.tabs').tabs('select_tab', 'member-body');
             {% endif %}
 
             $('#preloader').fadeOut(500, function () {
@@ -972,11 +974,12 @@
             $('#acceptApplicationForm').validate({
                 submitHandler: function (form) {
                     $.post(
-                        "/enter_group?group_id=" + getId().toString(),
+                        "/group/enter_group%3Fgroup_id%3D" + getId().toString(),
                         $(form).serializeArray(),
-                        function (data) {
-
-                        }
+                        defaultAction(
+                            function (data) {
+                                Materialize.toast(data, 3000);
+                            })
                     );
                 }
             });
@@ -984,11 +987,12 @@
             $('#memberChangeForm').validate({
                 submitHandler: function (form) {
                     $.post(
-                        "/change_role?group_id=" + getId().toString(),
+                        "/group/switch_role%3Fgroup_id%3D" + getId().toString(),
                         $(form).serializeArray(),
-                        function (data) {
-
-                        }
+                        defaultAction(
+                            function (data) {
+                                Materialize.toast(data, 3000);
+                            })
                     );
                 }
             });
