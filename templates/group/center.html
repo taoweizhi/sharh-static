@@ -270,7 +270,7 @@
         $('#addSpot').validate({
                 submitHandler: function (form) {
                     $.post(
-                        "/group/spot_group_init",
+                        "/group/spot_group__init",
                         $(form).serializeArray(),
                         defaultAction(
                             function (data) {
