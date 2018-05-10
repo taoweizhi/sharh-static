@@ -7,6 +7,9 @@
                 <div id="qrcode-container">
                 </div>
             </div>
+            <div class="progress">
+                <div id="qrcode_refresh_process" class="determinate" style="width: 0"></div>
+            </div>
             <div class="row center">
                 <a class="btn btn-large waves-effect waves-light orange"
                    href="{{ url_for('attendance.stop_sign',sign_name = sign_name) }}">
@@ -125,15 +128,29 @@
             width: 95% !important;
         }
 
+    #qrcode_refresh_process {
+        transition: none;
+    }
     </style>
-<script>
-      $(document).ready(function get_qrcode() {
-        var container = $('#qrcode-container');
-        $.get('/get_wechat_qrcode%3Fscence_str%3D' + "{{sign_name}}", function(result) {
-          container.append($('<img id="wechat_qrcode" src="' + result.qrcode_url + '"' + 'alt="' + result.qrcode_url + '"' + '/>'))
+    <script type="text/javascript">
+        var currentCount = 0;
+        const timeout = 30;
+        $(document).ready(function get_qrcode() {
+            var container = $('#qrcode-container');
+            setInterval(updateQrcode, 100);
         });
-      });
-      {% with messages = get_flashed_messages() %}
+
+        function updateQrcode() {
+            $('#qrcode_refresh_process').css('width', ((currentCount % (timeout * 10))*100 / (timeout * 10)).toString()+'%');
+            if (!(currentCount % (timeout * 10))) {
+                $.get('/get_wechat_qrcode%3Fscence_str%3D' + "{{sign_name}}", function (result) {
+                    container.empty();
+                    container.append($('<img id="wechat_qrcode" src="' + result.qrcode_url + '"' + 'alt="' + result.qrcode_url + '"' + '/>'))
+                });
+            }
+            currentCount += 1;
+        }
+        {% with messages = get_flashed_messages() %}
             {% if messages %}
                 {% for message in messages %}
                     if ($.cookie('toast_ctrl_index') !== '{{ message }}') {
@@ -142,7 +159,7 @@
                     }
                 {% endfor %}
             {% endif %}
-      {% endwith %}
+        {% endwith %}
 
-</script>
+    </script>
 {% endblock %}
